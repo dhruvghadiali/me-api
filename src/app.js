@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 var cors = require('cors');
 
 const errorHandler = require("./middleware/error");
-const commonRouter = require("./router/commonRouter");
+const studentRouter = require("./router/studentRouter");
+const schoolAdminRouter = require("./router/schoolAdminRouter");
+const superAdminRouter = require("./router/superAdminRouter");
 
 const app = express();
 
@@ -18,7 +20,9 @@ app.use(cors());
     await mongoose.connect(process.env.DB_URI);
     app.listen(3000);
 
-    app.use("/", commonRouter);
+    app.use("/", studentRouter);
+    app.use("/super-admin/", superAdminRouter);
+    app.use("/school-admin/", schoolAdminRouter);
     app.use((req, res) => {
       res.status(404);
       res.sendFile(path.join(__dirname, "errorPage", "invalidEndpoint.html"));
