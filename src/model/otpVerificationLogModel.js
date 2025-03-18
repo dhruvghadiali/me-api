@@ -1,5 +1,7 @@
 const moment = require("moment");
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
+
 const validationMessage = require("../helpers/validationMessage");
 
 const { Schema } = mongoose;
@@ -21,14 +23,14 @@ const otpVerificationLog = Schema(
     email_otp: {
       type: Number,
       required: [true, validationMessage.emailOTPRequired],
-      max: [6, validationMessage.emailOTPMaxLength],
-      min: [6, validationMessage.emailOTPMinLength],
+      max: [999999, validationMessage.emailOTPMaxLength],
+      min: [100000, validationMessage.emailOTPMinLength],
     },
     phone_otp: {
       type: Number,
       required: [true, validationMessage.phoneOTPRequired],
-      max: [6, validationMessage.phoneOTPMaxLength],
-      min: [6, validationMessage.phoneOTPMinLength],
+      max: [999999, validationMessage.phoneOTPMaxLength],
+      min: [100000, validationMessage.phoneOTPMinLength],
     },
     verification_type: {
       type: String,
@@ -49,10 +51,12 @@ const otpVerificationLog = Schema(
 
 otpVerificationLog.pre("save", async function (next) {
   let now = moment.utc(moment());
+  const salt = await bcrypt.genSalt(10);
 
   this.updated_at = now;
   this.created_at = now;
   this.is_otp_verified = false;
+  this.verification_token = await bcrypt.hash(this.verification_token, salt);
   next();
 });
 

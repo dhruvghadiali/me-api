@@ -1,7 +1,7 @@
 const moment = require("moment");
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const validationMessage = require("../helpers/validationMessage");
 
 const { Schema } = mongoose;
