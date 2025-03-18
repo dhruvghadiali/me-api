@@ -19,6 +19,17 @@ const validationMessage = {
   passwordRequired: "Password is required",
   passwordMaxLength: "Password must be less then 200 characters",
   passwordMinLength: "Password must be greater then 5 characters",
+  userIdRequired: "User id is required",
+  verificationTokenRequired: "Verification token is required",
+  verificationMaxLength: "Verification token must be less then 200 characters",
+  verificationMinLength: "Verification token must be greater then 20 characters",
+  emailOTPRequired: "Email OTP is required",
+  emailOTPMaxLength: "Email OTP must be 6 digit",
+  emailOTPMinLength: "Email OTP must be 6 digit",
+  phoneOTPRequired: "Phone OTP is required",
+  phoneOTPMaxLength: "Phone OTP must be 6 digit",
+  phoneOTPMinLength: "Phone OTP must be 6 digit",
+  otpExpiryDateTimeRequired: "OTP expiry datetime is required",
 };
 
 module.exports = validationMessage;

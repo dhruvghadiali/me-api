@@ -5,7 +5,7 @@ const {
   signup,
   changePassword,
   resetPassword,
-  forgottenPasswordFindUserAccount
+  forgottenPasswordFindUserAccount,
 } = require("../controller/studentAuthController/studentAuthController");
 
 const {
@@ -21,7 +21,7 @@ router.route("/signin").post(signin);
 
 router.route("/signup").post(signup);
 
-router.route("/signup/send-otp").get(signupSendOtp);
+router.route("/signup/send-otp").post(signupSendOtp);
 
 router.route("/signup/otp-verification").get(signupOtpVerification);
 
@@ -38,5 +38,14 @@ router.route("/forgotten-password/reset-password").post(resetPassword);
 router.route("/change-password").post(changePassword);
 
 router.route("/schools").get(testRoute);
+
+router.route("/profile").get(testRoute).post(testRoute).put(testRoute);
+
+router
+  .route("/admissions")
+  .get(testRoute)
+  .post(testRoute)
+  .put(testRoute)
+  .delete(testRoute);
 
 module.exports = router;

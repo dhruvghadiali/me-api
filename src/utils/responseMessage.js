@@ -8,7 +8,8 @@ const responseMessage = {
   duplicateField: "Duplicate field value entered",
   invalidFormat: "Invalid format",
   serverError: "Something went wrong please try again",
-  studentSignupSuccess: "Sign up process successfully completed"
+  studentSignUpSuccess: "Student Signup process successfully completed",
+  studentSignInSuccess: "Students signin process successfully completed"
 };
 
 module.exports = responseMessage;

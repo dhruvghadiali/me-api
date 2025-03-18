@@ -64,8 +64,6 @@ const userSchema = Schema(
       enum: ["SUPER_ADMIN", "SCHOOL_ADMIN", "STUDENT"],
       default: "STUDENT",
     },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
     is_active: {
       type: Boolean,
       default: false,

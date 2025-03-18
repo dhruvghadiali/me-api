@@ -5,10 +5,36 @@ const ErrorResponse = require("../../utils/errorResponse");
 const responseMessage = require("../../utils/responseMessage");
 
 exports.signin = asyncHandler(async (req, res, next) => {
-  res.status(200).json({
-    data: [],
-    message: "Student signin controller",
-  });
+  if (req.body.username && req.body.password) {
+    const user = await User.findOne({
+      username: req.body.username,
+      is_active: true,
+      user_type: "STUDENT",
+    }).select("+password -is_active -created_at -updated_at -__v");
+
+    if (user) {
+      const isPasswordMatch = await user.matchPassword(req.body.password);
+
+      if (isPasswordMatch) {
+        let token = user.getSignedJwtToken();
+        user._doc.token = token;
+        delete user._doc.user_type;
+        delete user._doc.password;
+
+        res.status(200).json({
+          data: [user],
+          message: responseMessage.studentSignInSuccess,
+          status: 200,
+        });
+      } else {
+        next(new ErrorResponse(responseMessage.invalidCredentials, 401));
+      }
+    } else {
+      next(new ErrorResponse(responseMessage.invalidCredentials, 401));
+    }
+  } else {
+    next(new ErrorResponse(responseMessage.invalidFormat, 400));
+  }
 });
 
 exports.signup = asyncHandler(async (req, res, next) => {
@@ -22,7 +48,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
     delete user._doc.__v;
     res.status(201).json({
       data: [user],
-      message: responseMessage.studentSignupSuccess,
+      message: responseMessage.studentSignUpSuccess,
       status: 201,
     });
   } else {
