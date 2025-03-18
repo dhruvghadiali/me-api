@@ -1,7 +1,7 @@
 const moment = require("moment");
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const validationMessage = require("../helpers/validationMessage");
 
 const { Schema } = mongoose;
@@ -64,8 +64,6 @@ const userSchema = Schema(
       enum: ["SUPER_ADMIN", "SCHOOL_ADMIN", "STUDENT"],
       default: "STUDENT",
     },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
     is_active: {
       type: Boolean,
       default: false,
