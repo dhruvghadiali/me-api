@@ -11,6 +11,13 @@ const responseMessage = {
   studentSignUpSuccess: "Student Signup process successfully completed",
   studentSignInSuccess: "Students signin process successfully completed",
   otpSendSuccess: "OTP send successfully on your register email and phone",
+  emailOTPInvalid: "Invalid email OTP",
+  phoneOTPInvalid: "Invalid phone OTP",
+  otpVerificationTimeExpire: "OTP validation time is expired",
+  signUpOTPVerificationError: "OTP validation failed please try after sometime",
+  signUpOTPVerificationSuccess: "Signup OTP verification process successfully completed",
+  forgottenPasswordOTPVerificationError: "OTP validation failed please try after sometime",
+  forgottenPasswordOTPVerificationSuccess: "Forgotten password OTP verification process successfully completed"
 };
 
 module.exports = responseMessage;
