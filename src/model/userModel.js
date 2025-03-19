@@ -8,14 +8,14 @@ const { Schema } = mongoose;
 
 const userSchema = Schema(
   {
-    firstName: {
+    first_name: {
       type: String,
       trim: true,
       required: [true, validationMessage.firstNameRequired],
       maxlength: [25, validationMessage.firstNameMaxLength],
       minlength: [5, validationMessage.firstNameMinLength],
     },
-    lastName: {
+    last_name: {
       type: String,
       trim: true,
       required: [true, validationMessage.lastNameRequired],
@@ -33,7 +33,7 @@ const userSchema = Schema(
         validationMessage.emailInvalid,
       ],
     },
-    phoneNumber: {
+    phone_number: {
       type: String,
       trim: true,
       required: [true, validationMessage.phoneNumberRequired],
@@ -68,6 +68,10 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
+    is_account_verified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
@@ -79,6 +83,7 @@ userSchema.pre("save", async function (next) {
   this.updated_at = now;
   this.created_at = now;
   this.is_active = false;
+  this.is_account_verified = false;
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
