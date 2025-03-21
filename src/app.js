@@ -1,11 +1,11 @@
 require("colors");
-require('module-alias/register');
+require("module-alias/register");
 
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 
-var cors = require('cors');
+var cors = require("cors");
 
 const errorHandler = require("@MEMiddleware/error");
 const studentRouter = require("@MERoutes/studentRouter");
@@ -20,7 +20,11 @@ app.use(cors());
 
 (async () => {
   try {
-    await mongoose.connect(process.env.DB_URI);
+    mongoose.set('strictQuery', false);
+    await mongoose.connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     app.listen(3000);
 
     app.use("/", studentRouter);

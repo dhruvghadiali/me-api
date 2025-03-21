@@ -7,7 +7,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node --env-file ./config/.env src/app.js",
-    "start:dev": "nodemon --env-file ./config/.env.development.local src/app.js",
+    "start:dev": "nodemon --watch src --ext js --env-file ./config/.env.development.local src/app.js",
     "start:loc": "nodemon --env-file ./config/.env.local src/app.js",
     "start:test": "nodemon --env-file ./config/.env.test.local src/app.js",
     "start:prod": "nodemon --env-file ./config/.env.production.local src/app.js",
