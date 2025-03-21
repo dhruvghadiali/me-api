@@ -1,19 +1,19 @@
 const express = require("express");
-const { testRoute } = require("../controller/testController");
+
 const {
   signin,
   signup,
   changePassword,
   resetPassword,
   forgottenPasswordFindUserAccount,
-} = require("../controller/studentAuthController/studentAuthController");
+} = require("@MEControllers/studentAuthController/studentAuthController");
 
 const {
   signupSendOtp,
   signupOtpVerification,
   forgottenPasswordSendOtp,
   forgottenPasswordOtpVerification,
-} = require("../controller/studentAuthController/studentAuthVerificationController");
+} = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
 const router = express.Router();
 
@@ -37,15 +37,15 @@ router.route("/forgotten-password/reset-password").post(resetPassword);
 
 router.route("/change-password").post(changePassword);
 
-router.route("/schools").get(testRoute);
+router.route("/schools").get(changePassword);
 
-router.route("/profile").get(testRoute).post(testRoute).put(testRoute);
+router.route("/profile").get(changePassword).post(changePassword).put(changePassword);
 
 router
   .route("/admissions")
-  .get(testRoute)
-  .post(testRoute)
-  .put(testRoute)
-  .delete(testRoute);
+  .get(changePassword)
+  .post(changePassword)
+  .put(changePassword)
+  .delete(changePassword);
 
 module.exports = router;

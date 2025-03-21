@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@MEUtils/*": ["src/utils/*"],
+        "@MEHelpers/*": ["src/helpers/*"],
+        "@MERoutes/*": ["src/routes/*"],
+        "@MEModels/*": ["src/models/*"],
+        "@MEMiddleware/*": ["src/middleware/*"],
+        "@MEControllers/*": ["src/controllers/*"],
+      }
+    }
+  }

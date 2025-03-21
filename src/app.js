@@ -1,13 +1,16 @@
 require("colors");
+require("module-alias/register");
+
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
-var cors = require('cors');
 
-const errorHandler = require("./middleware/error");
-const studentRouter = require("./router/studentRouter");
-const schoolAdminRouter = require("./router/schoolAdminRouter");
-const superAdminRouter = require("./router/superAdminRouter");
+var cors = require("cors");
+
+const errorHandler = require("@MEMiddleware/error");
+const studentRouter = require("@MERoutes/studentRouter");
+const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
+const superAdminRouter = require("@MERoutes/superAdminRouter");
 
 const app = express();
 
@@ -17,7 +20,11 @@ app.use(cors());
 
 (async () => {
   try {
-    await mongoose.connect(process.env.DB_URI);
+    mongoose.set('strictQuery', false);
+    await mongoose.connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     app.listen(3000);
 
     app.use("/", studentRouter);
