@@ -1,12 +1,12 @@
 const moment = require("moment");
 
-const { sendOTP } = require("../../helpers/email");
-const { asyncHandler } = require("../../middleware/async");
+const { sendOTP } = require("@MEHelpers/email");
+const { asyncHandler } = require("@MEMiddleware/async");
 
-const User = require("../../model/userModel");
-const ErrorResponse = require("../../utils/errorResponse");
-const responseMessage = require("../../utils/responseMessage");
-const otpVerificationLog = require("../../model/otpVerificationLogModel");
+const User = require("@MEModels/userModel");
+const ErrorResponse = require("@MEUtils/errorResponse");
+const responseMessage = require("@MEUtils/responseMessage");
+const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
 
 exports.signupSendOtp = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ _id: req.body.user_id, is_active: false });

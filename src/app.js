@@ -1,13 +1,16 @@
 require("colors");
+require('module-alias/register');
+
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+
 var cors = require('cors');
 
-const errorHandler = require("./middleware/error");
-const studentRouter = require("./router/studentRouter");
-const schoolAdminRouter = require("./router/schoolAdminRouter");
-const superAdminRouter = require("./router/superAdminRouter");
+const errorHandler = require("@MEMiddleware/error");
+const studentRouter = require("@MERoutes/studentRouter");
+const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
+const superAdminRouter = require("@MERoutes/superAdminRouter");
 
 const app = express();
 
