@@ -17,7 +17,10 @@ const responseMessage = {
   signUpOTPVerificationError: "OTP validation failed please try after sometime",
   signUpOTPVerificationSuccess: "Signup OTP verification process successfully completed",
   forgottenPasswordOTPVerificationError: "OTP validation failed please try after sometime",
-  forgottenPasswordOTPVerificationSuccess: "Forgotten password OTP verification process successfully completed"
+  forgottenPasswordOTPVerificationSuccess: "Forgotten password OTP verification process successfully completed",
+  accountDetailsRequired: "Please provide account details",
+  forgottenPasswordFindUserAccountError: "This account details are not present in over database",
+  forgottenPasswordFindUserAccountSuccess: "Account details found"
 };
 
 module.exports = responseMessage;

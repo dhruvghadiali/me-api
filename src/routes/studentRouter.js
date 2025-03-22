@@ -25,7 +25,7 @@ router.route("/signup/send-otp").post(signupSendOtp);
 
 router.route("/signup/otp-verification").post(signupOtpVerification);
 
-router.route("/forgotten-password").get(forgottenPasswordFindUserAccount);
+router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
 
 router.route("/forgotten-password/send-otp").get(forgottenPasswordSendOtp);
 

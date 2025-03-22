@@ -72,9 +72,37 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
 exports.forgottenPasswordFindUserAccount = asyncHandler(
   async (req, res, next) => {
-    res.status(200).json({
-      data: [],
-      message: "Student forgotten password find user account controller",
-    });
+    const { account_name } = req.body;
+
+    if (!account_name) {
+      next(new ErrorResponse(responseMessage.accountDetailsRequired, 400));
+    } else {
+      const user = await User.find({
+        $or: [
+          { email: account_name },
+          { phone_number: account_name },
+          { username: account_name },
+        ],
+        is_active: true,
+        is_account_verified: true,
+        user_type: "STUDENT",
+      }).select(
+        "-password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
+      );
+
+      if (!user) {
+        res.status(200).json({
+          data: [],
+          message: responseMessage.forgottenPasswordFindUserAccountError,
+          status: 200,
+        });
+      } else {
+        res.status(200).json({
+          data: user,
+          message: responseMessage.forgottenPasswordFindUserAccountSuccess,
+          status: 200,
+        });
+      }
+    }
   }
 );
