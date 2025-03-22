@@ -9,7 +9,7 @@ const responseMessage = require("@MEUtils/responseMessage");
 const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
 
 exports.signupSendOtp = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ _id: req.body.user_id});
+  const user = await User.findOne({ _id: req.body.user_id, user_type: "STUDENT", });
 
   if (user) {
     const data = {
@@ -115,7 +115,12 @@ exports.signupOtpVerification = asyncHandler(async (req, res, next) => {
 });
 
 exports.forgottenPasswordSendOtp = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ _id: req.body.user_id, is_active: true });
+  const user = await User.findOne({
+    _id: req.body.user_id,
+    is_active: true,
+    is_account_verified: true,
+    user_type: "STUDENT",
+  });
 
   if (user) {
     const otp = Math.floor(100000 + Math.random() * 900000);

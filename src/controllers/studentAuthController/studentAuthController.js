@@ -1,4 +1,9 @@
 const { asyncHandler } = require("@MEMiddleware/async");
+const {
+  maskEmail,
+  maskPhoneNumber,
+  maskUsername,
+} = require("@MEHelpers/maskingValue");
 
 const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
@@ -77,7 +82,7 @@ exports.forgottenPasswordFindUserAccount = asyncHandler(
     if (!account_name) {
       next(new ErrorResponse(responseMessage.accountDetailsRequired, 400));
     } else {
-      const user = await User.find({
+      const users = await User.find({
         $or: [
           { email: account_name },
           { phone_number: account_name },
@@ -90,15 +95,24 @@ exports.forgottenPasswordFindUserAccount = asyncHandler(
         "-password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
       );
 
-      if (!user) {
+      if (users.length === 0) {
         res.status(200).json({
           data: [],
           message: responseMessage.forgottenPasswordFindUserAccountError,
           status: 200,
         });
       } else {
+        const maskedUsers = users.map((user) => ({
+          ...user.toObject(),
+          email: user.email ? maskEmail(user.email) : "",
+          phone_number: user.phone_number
+            ? maskPhoneNumber(user.phone_number)
+            : "",
+          username: user.username ? maskUsername(user.username) : "",
+        }));
+
         res.status(200).json({
-          data: user,
+          data: maskedUsers,
           message: responseMessage.forgottenPasswordFindUserAccountSuccess,
           status: 200,
         });
