@@ -9,7 +9,7 @@ const responseMessage = require("@MEUtils/responseMessage");
 const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
 
 exports.signupSendOtp = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ _id: req.body.user_id, is_active: false });
+  const user = await User.findOne({ _id: req.body.user_id});
 
   if (user) {
     const data = {
