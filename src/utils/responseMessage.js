@@ -20,7 +20,8 @@ const responseMessage = {
   forgottenPasswordOTPVerificationSuccess: "Forgotten password OTP verification process successfully completed",
   accountDetailsRequired: "Please provide account details",
   forgottenPasswordFindUserAccountError: "This account details are not present in over database",
-  forgottenPasswordFindUserAccountSuccess: "Account details found"
+  forgottenPasswordFindUserAccountSuccess: "Account details found",
+  forgottenPasswordResetPasswordSuccess: "User password reset successfully",
 };
 
 module.exports = responseMessage;

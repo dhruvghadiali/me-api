@@ -15,7 +15,9 @@ exports.signin = asyncHandler(async (req, res, next) => {
       username: req.body.username,
       is_active: true,
       user_type: "STUDENT",
-    }).select("+password -is_active -created_at -updated_at -__v");
+    }).select(
+      "+password -is_active -reset_password_token -created_at -updated_at -__v"
+    );
 
     if (user) {
       const isPasswordMatch = await user.matchPassword(req.body.password);
@@ -48,6 +50,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
   if (user) {
     delete user._doc.password;
     delete user._doc.user_type;
+    delete user._doc.reset_password_token;
     delete user._doc.is_active;
     delete user._doc.updated_at;
     delete user._doc.__v;
@@ -69,10 +72,28 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
 });
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
-  res.status(200).json({
-    data: [],
-    message: "Student reset password controller",
-  });
+  const user = await User.findOneAndUpdate(
+    {
+      _id: req.body.user_id,
+      reset_password_toke: req.body.reset_password_toke,
+      is_active: true,
+      is_account_verified: true,
+      user_type: "STUDENT",
+    },
+    { password: req.body.password, reset_password_toke: "" },
+    { new: true, runValidators: true }
+  ).select(
+    "-password -is_active -is_account_verified -user_type -username -reset_password_token -created_at -updated_at -__v"
+  );
+
+  if (!user) {
+    next(new ErrorResponse(responseMessage.serverError, 400));
+  } else {
+    res.status(200).json({
+      data: [],
+      message: responseMessage.forgottenPasswordResetPasswordSuccess,
+    });
+  }
 });
 
 exports.forgottenPasswordFindUserAccount = asyncHandler(
@@ -92,7 +113,7 @@ exports.forgottenPasswordFindUserAccount = asyncHandler(
         is_account_verified: true,
         user_type: "STUDENT",
       }).select(
-        "-password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
+        "-password -is_active -is_account_verified -user_type -reset_password_token -created_at -updated_at -__v"
       );
 
       if (users.length === 0) {
