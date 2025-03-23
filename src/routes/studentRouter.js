@@ -27,11 +27,11 @@ router.route("/signup/otp-verification").post(signupOtpVerification);
 
 router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
 
-router.route("/forgotten-password/send-otp").get(forgottenPasswordSendOtp);
+router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOtp);
 
 router
   .route("/forgotten-password/otp-verification")
-  .get(forgottenPasswordOtpVerification);
+  .post(forgottenPasswordOtpVerification);
 
 router.route("/forgotten-password/reset-password").post(resetPassword);
 

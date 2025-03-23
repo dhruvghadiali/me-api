@@ -180,10 +180,10 @@ exports.forgottenPasswordOtpVerification = asyncHandler(
     if (!otpVerificationData) {
       next(new ErrorResponse(responseMessage.invalidFormat, 400));
     } else {
-      if (otpVerificationData.email_otp !== req.body.email_otp) {
+      if (otpVerificationData.email_otp !== req.body.otp) {
         next(new ErrorResponse(responseMessage.emailOTPInvalid, 400));
       } else {
-        if (otpVerificationData.phone_otp !== req.body.phone_otp) {
+        if (otpVerificationData.phone_otp !== req.body.otp) {
           next(new ErrorResponse(responseMessage.phoneOTPInvalid, 400));
         } else {
           if (moment().isAfter(otpVerificationData.otp_expire_time)) {
