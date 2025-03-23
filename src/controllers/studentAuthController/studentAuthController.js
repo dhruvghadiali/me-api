@@ -72,22 +72,29 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
 });
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
+  const { user_id, reset_password_token, password } = req.body;
+  
   const user = await User.findOneAndUpdate(
     {
-      _id: req.body.user_id,
-      reset_password_toke: req.body.reset_password_toke,
+      _id: user_id,
+      reset_password_token: reset_password_token,
       is_active: true,
       is_account_verified: true,
       user_type: "STUDENT",
     },
-    { password: req.body.password, reset_password_toke: "" },
+    { password: password, reset_password_token: "" },
     { new: true, runValidators: true }
   ).select(
     "-password -is_active -is_account_verified -user_type -username -reset_password_token -created_at -updated_at -__v"
   );
 
   if (!user) {
-    next(new ErrorResponse(responseMessage.serverError, 400));
+    next(
+      new ErrorResponse(
+        responseMessage.forgottenPasswordResetPasswordError,
+        400
+      )
+    );
   } else {
     res.status(200).json({
       data: [],

@@ -213,7 +213,7 @@ exports.forgottenPasswordOtpVerification = asyncHandler(
             const updateUserResetPasswordTokenResponse =
               await User.findByIdAndUpdate(
                 user_id,
-                { reset_password_toke: resetPasswordToken },
+                { reset_password_token: resetPasswordToken },
                 {
                   new: true,
                   runValidators: true,

@@ -22,6 +22,7 @@ const responseMessage = {
   forgottenPasswordFindUserAccountError: "This account details are not present in over database",
   forgottenPasswordFindUserAccountSuccess: "Account details found",
   forgottenPasswordResetPasswordSuccess: "User password reset successfully",
+  forgottenPasswordResetPasswordError: "User password is not reset right now, Please after sometime",
 };
 
 module.exports = responseMessage;

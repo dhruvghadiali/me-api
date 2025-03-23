@@ -76,8 +76,6 @@ const userSchema = Schema(
     reset_password_token:{
       type: String,
       trim: true,
-      maxlength: [200, validationMessage.verificationMaxLength],
-      minlength: [20, validationMessage.verificationMinLength],
     }
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
