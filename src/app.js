@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 
 var cors = require("cors");
 
+const setupSwagger = require("@MEConfig/swagger");
 const errorHandler = require("@MEMiddleware/error");
 const studentRouter = require("@MERoutes/studentRouter");
 const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
@@ -17,6 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 app.use(cors());
+
+setupSwagger(app);
 
 (async () => {
   try {
