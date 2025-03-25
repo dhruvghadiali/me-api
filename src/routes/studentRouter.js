@@ -1,37 +1,37 @@
 const express = require("express");
 
 const {
-  signin,
-  signup,
+  signIn,
+  signUp,
   changePassword,
   resetPassword,
   forgottenPasswordFindUserAccount,
 } = require("@MEControllers/studentAuthController/studentAuthController");
 
 const {
-  signupSendOtp,
-  signupOtpVerification,
-  forgottenPasswordSendOtp,
-  forgottenPasswordOtpVerification,
+  signUpSendOTP,
+  signUpOTPVerification,
+  forgottenPasswordSendOTP,
+  forgottenPasswordOTPVerification,
 } = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
 const router = express.Router();
 
-router.route("/signin").post(signin);
+router.route("/signin").post(signIn);
 
-router.route("/signup").post(signup);
+router.route("/signup").post(signUp);
 
-router.route("/signup/send-otp").post(signupSendOtp);
+router.route("/signup/send-otp").post(signUpSendOTP);
 
-router.route("/signup/otp-verification").post(signupOtpVerification);
+router.route("/signup/otp-verification").post(signUpOTPVerification);
 
 router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
 
-router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOtp);
+router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOTP);
 
 router
   .route("/forgotten-password/otp-verification")
-  .post(forgottenPasswordOtpVerification);
+  .post(forgottenPasswordOTPVerification);
 
 /**
  * @swagger

@@ -9,7 +9,7 @@ const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEUtils/responseMessage");
 
-exports.signin = asyncHandler(async (req, res, next) => {
+exports.signIn = asyncHandler(async (req, res, next) => {
   if (req.body.username && req.body.password) {
     const user = await User.findOne({
       username: req.body.username,
@@ -44,7 +44,7 @@ exports.signin = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.signup = asyncHandler(async (req, res, next) => {
+exports.signUp = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
 
   if (user) {
@@ -99,6 +99,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [],
       message: responseMessage.forgottenPasswordResetPasswordSuccess,
+      status:200
     });
   }
 });

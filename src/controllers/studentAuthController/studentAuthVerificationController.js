@@ -9,7 +9,7 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEUtils/responseMessage");
 const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
 
-exports.signupSendOtp = asyncHandler(async (req, res, next) => {
+exports.signUpSendOTP = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     _id: req.body.user_id,
     user_type: "STUDENT",
@@ -61,7 +61,7 @@ exports.signupSendOtp = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.signupOtpVerification = asyncHandler(async (req, res, next) => {
+exports.signUpOTPVerification = asyncHandler(async (req, res, next) => {
   const otpVerificationData = await otpVerificationLog.findOne({
     user: req.body.user_id,
     verification_token: req.body.verification_token,
@@ -118,7 +118,7 @@ exports.signupOtpVerification = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.forgottenPasswordSendOtp = asyncHandler(async (req, res, next) => {
+exports.forgottenPasswordSendOTP = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     _id: req.body.user_id,
     is_active: true,
@@ -173,7 +173,7 @@ exports.forgottenPasswordSendOtp = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.forgottenPasswordOtpVerification = asyncHandler(
+exports.forgottenPasswordOTPVerification = asyncHandler(
   async (req, res, next) => {
     const { user_id, verification_token, otp } = req.body;
 
