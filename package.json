@@ -24,7 +24,9 @@
     "moment": "^2.29.4",
     "mongodb": "^5.0.1",
     "mongoose": "^6.9.1",
-    "resend": "^4.1.2"
+    "resend": "^4.1.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "colors": "^1.4.0",
@@ -35,10 +37,10 @@
     "supertest": "^6.3.3"
   },
   "_moduleAliases": {
+    "@MEUtils": "./src/utils",
     "@MEConfig": "./src/config",
     "@MEModels": "./src/models",
     "@MERoutes": "./src/routes",
-    "@MEUtils": "./src/utils",
     "@MEHelpers": "./src/helpers",
     "@MEControllers": "./src/controllers",
     "@MEMiddleware": "./src/middleware"

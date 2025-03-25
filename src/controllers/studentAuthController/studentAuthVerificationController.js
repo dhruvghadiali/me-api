@@ -1,4 +1,5 @@
 const moment = require("moment");
+const bcrypt = require("bcryptjs");
 
 const { sendOTP } = require("@MEHelpers/email");
 const { asyncHandler } = require("@MEMiddleware/async");
@@ -8,8 +9,11 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEUtils/responseMessage");
 const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
 
-exports.signupSendOtp = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ _id: req.body.user_id, user_type: "STUDENT", });
+exports.signUpSendOTP = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({
+    _id: req.body.user_id,
+    user_type: "STUDENT",
+  });
 
   if (user) {
     const data = {
@@ -57,7 +61,7 @@ exports.signupSendOtp = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.signupOtpVerification = asyncHandler(async (req, res, next) => {
+exports.signUpOTPVerification = asyncHandler(async (req, res, next) => {
   const otpVerificationData = await otpVerificationLog.findOne({
     user: req.body.user_id,
     verification_token: req.body.verification_token,
@@ -114,7 +118,7 @@ exports.signupOtpVerification = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.forgottenPasswordSendOtp = asyncHandler(async (req, res, next) => {
+exports.forgottenPasswordSendOTP = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     _id: req.body.user_id,
     is_active: true,
@@ -169,21 +173,23 @@ exports.forgottenPasswordSendOtp = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.forgottenPasswordOtpVerification = asyncHandler(
+exports.forgottenPasswordOTPVerification = asyncHandler(
   async (req, res, next) => {
+    const { user_id, verification_token, otp } = req.body;
+
     const otpVerificationData = await otpVerificationLog.findOne({
-      user: req.body.user_id,
-      verification_token: req.body.verification_token,
+      user: user_id,
+      verification_token: verification_token,
       is_otp_verified: false,
     });
 
     if (!otpVerificationData) {
       next(new ErrorResponse(responseMessage.invalidFormat, 400));
     } else {
-      if (otpVerificationData.email_otp !== req.body.otp) {
+      if (otpVerificationData.email_otp !== otp) {
         next(new ErrorResponse(responseMessage.emailOTPInvalid, 400));
       } else {
-        if (otpVerificationData.phone_otp !== req.body.otp) {
+        if (otpVerificationData.phone_otp !== otp) {
           next(new ErrorResponse(responseMessage.phoneOTPInvalid, 400));
         } else {
           if (moment().isAfter(otpVerificationData.otp_expire_time)) {
@@ -191,6 +197,9 @@ exports.forgottenPasswordOtpVerification = asyncHandler(
               new ErrorResponse(responseMessage.otpVerificationTimeExpire, 400)
             );
           } else {
+            const saltRounds = await bcrypt.genSalt(10);
+            const resetPasswordToken = await bcrypt.hash(user_id, saltRounds);
+
             const updateOTPVerificationStatusResponse =
               await otpVerificationLog.findByIdAndUpdate(
                 otpVerificationData.id,
@@ -201,9 +210,24 @@ exports.forgottenPasswordOtpVerification = asyncHandler(
                 }
               );
 
-            if (updateOTPVerificationStatusResponse) {
+            const updateUserResetPasswordTokenResponse =
+              await User.findByIdAndUpdate(
+                user_id,
+                { reset_password_token: resetPasswordToken },
+                {
+                  new: true,
+                  runValidators: true,
+                }
+              ).select(
+                "-first_name -last_name -email -phone_number -username -password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
+              );
+
+            if (
+              updateOTPVerificationStatusResponse &&
+              updateUserResetPasswordTokenResponse
+            ) {
               res.status(200).json({
-                data: [],
+                data: [updateUserResetPasswordTokenResponse],
                 message:
                   responseMessage.forgottenPasswordOTPVerificationSuccess,
                 status: 200,

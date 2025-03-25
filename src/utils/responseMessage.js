@@ -20,7 +20,16 @@ const responseMessage = {
   forgottenPasswordOTPVerificationSuccess: "Forgotten password OTP verification process successfully completed",
   accountDetailsRequired: "Please provide account details",
   forgottenPasswordFindUserAccountError: "This account details are not present in over database",
-  forgottenPasswordFindUserAccountSuccess: "Account details found"
+  forgottenPasswordFindUserAccountSuccess: "Account details found",
+  forgottenPasswordResetPasswordSuccess: "User password reset successfully",
+  forgottenPasswordResetPasswordError: "User password is not reset right now, Please after sometime",
+  superAdminSignUpError: "Super admin already exist in our database",
+  superAdminSignUpSuccess: "Super admin signup process successfully completed",
+  superAdminSignUpDBError: "Super admin signup process failed, Please try after sometime",
+  superAdminSignUpActivationError: "Super admin account activation failed, Please try after sometime",
+  superAdminSignInSuccess: "Super admin signin process successfully completed",
+  superAdminPasswordChangedSuccess: "Super admin password changed successfully",
+  superAdminPasswordChangedError: "Super admin password changed failed, Please try after sometime",
 };
 
 module.exports = responseMessage;

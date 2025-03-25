@@ -1,11 +1,15 @@
 const express = require("express");
-const { testRoute } = require("@MEControllers/testController");
 
+const {
+  signIn,
+  signUp,
+  changePassword,
+} = require("@MEControllers/superAdminAuthController/superAdminAuthController");
 
 const router = express.Router();
 
-router
-    .route("/super-admin-test-route")
-    .get(testRoute);
+router.route("/signin").post(signIn);
+router.route("/signup").post(signUp);
+router.route("/change-password").post(changePassword);
 
 module.exports = router;

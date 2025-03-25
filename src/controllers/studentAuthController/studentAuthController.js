@@ -9,13 +9,15 @@ const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEUtils/responseMessage");
 
-exports.signin = asyncHandler(async (req, res, next) => {
+exports.signIn = asyncHandler(async (req, res, next) => {
   if (req.body.username && req.body.password) {
     const user = await User.findOne({
       username: req.body.username,
       is_active: true,
       user_type: "STUDENT",
-    }).select("+password -is_active -created_at -updated_at -__v");
+    }).select(
+      "+password -is_active -reset_password_token -created_at -updated_at -__v"
+    );
 
     if (user) {
       const isPasswordMatch = await user.matchPassword(req.body.password);
@@ -42,12 +44,13 @@ exports.signin = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.signup = asyncHandler(async (req, res, next) => {
+exports.signUp = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
 
   if (user) {
     delete user._doc.password;
     delete user._doc.user_type;
+    delete user._doc.reset_password_token;
     delete user._doc.is_active;
     delete user._doc.updated_at;
     delete user._doc.__v;
@@ -69,10 +72,36 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
 });
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
-  res.status(200).json({
-    data: [],
-    message: "Student reset password controller",
-  });
+  const { user_id, reset_password_token, password } = req.body;
+  
+  const user = await User.findOneAndUpdate(
+    {
+      _id: user_id,
+      reset_password_token: reset_password_token,
+      is_active: true,
+      is_account_verified: true,
+      user_type: "STUDENT",
+    },
+    { password: password, reset_password_token: "" },
+    { new: true, runValidators: true }
+  ).select(
+    "-password -is_active -is_account_verified -user_type -username -reset_password_token -created_at -updated_at -__v"
+  );
+
+  if (!user) {
+    next(
+      new ErrorResponse(
+        responseMessage.forgottenPasswordResetPasswordError,
+        400
+      )
+    );
+  } else {
+    res.status(200).json({
+      data: [],
+      message: responseMessage.forgottenPasswordResetPasswordSuccess,
+      status:200
+    });
+  }
 });
 
 exports.forgottenPasswordFindUserAccount = asyncHandler(
@@ -92,7 +121,7 @@ exports.forgottenPasswordFindUserAccount = asyncHandler(
         is_account_verified: true,
         user_type: "STUDENT",
       }).select(
-        "-password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
+        "-password -is_active -is_account_verified -user_type -reset_password_token -created_at -updated_at -__v"
       );
 
       if (users.length === 0) {
