@@ -9,10 +9,19 @@ const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEUtils/responseMessage");
 
+/**
+ * @desc    Sign in user
+ * @route   POST /signin
+ * @access  Public
+ */
 exports.signIn = asyncHandler(async (req, res, next) => {
-  if (req.body.username && req.body.password) {
+  const { username, password } = req.body;
+
+  // Validate request body
+  if (username && password) {
+    // Find user by username
     const user = await User.findOne({
-      username: req.body.username,
+      username: username,
       is_active: true,
       user_type: "STUDENT",
     }).select(
@@ -20,26 +29,34 @@ exports.signIn = asyncHandler(async (req, res, next) => {
     );
 
     if (user) {
-      const isPasswordMatch = await user.matchPassword(req.body.password);
+      // Compare password
+      const isPasswordMatch = await user.matchPassword(password);
 
       if (isPasswordMatch) {
+        // Generate JWT Token
         let token = user.getSignedJwtToken();
         user._doc.token = token;
+
+        // Remove user_type and password from response
         delete user._doc.user_type;
         delete user._doc.password;
 
+        // Send response
         res.status(200).json({
           data: [user],
           message: responseMessage.studentSignInSuccess,
           status: 200,
         });
       } else {
+        // Send error response
         next(new ErrorResponse(responseMessage.invalidCredentials, 401));
       }
     } else {
+      // Send error response
       next(new ErrorResponse(responseMessage.invalidCredentials, 401));
     }
   } else {
+    // Send error response
     next(new ErrorResponse(responseMessage.invalidFormat, 400));
   }
 });
