@@ -9,6 +9,8 @@ const {
 
 const {
   addState,
+  updateState,
+  deleteState,
   getStates,
 } = require("@MEControllers/stateController/stateController");
 const {
@@ -28,7 +30,12 @@ const router = express.Router();
 router.route("/signin").post(signIn);
 router.route("/signup").post(signUp);
 router.route("/change-password").post(changePassword);
-router.route("/states").post(protect, addState).get(protect, getStates);
+router
+  .route("/states")
+  .post(protect, addState)
+  .put(protect, updateState)
+  .delete(protect, deleteState)
+  .get(protect, getStates);
 router
   .route("/districts")
   .post(protect, addDistrict)
