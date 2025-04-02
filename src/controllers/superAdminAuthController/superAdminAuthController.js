@@ -12,7 +12,7 @@ exports.signIn = asyncHandler(async (req, res, next) => {
       is_account_verified: true,
       user_type: "SUPER_ADMIN",
     }).select(
-      "+password -first_name -last_name -email -phone_number -is_active -is_account_verified -user_type -reset_password_token -created_at -updated_at -__v"
+      "+password -first_name -last_name -email -phone_number -is_active -is_account_verified -reset_password_token -created_at -updated_at -__v"
     );
 
     if (user) {
@@ -22,6 +22,7 @@ exports.signIn = asyncHandler(async (req, res, next) => {
         let token = user.getSignedJwtToken();
         user._doc.token = token;
         delete user._doc.password;
+        delete user._doc.user_type;
 
         res.status(200).json({
           data: [user],
