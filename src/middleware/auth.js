@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-const ErrorResponse = require("../utils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 
 const User = require("@MEModels/userModel");
-const responseMessage = require("../utils/responseMessage");
+const ErrorResponse = require("@MEUtils/errorResponse");
+const responseMessage = require("@MEUtils/responseMessage");
 
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
