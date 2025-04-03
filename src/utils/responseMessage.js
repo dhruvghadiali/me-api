@@ -72,6 +72,13 @@ const responseMessage = {
   schoolTypePutRequestFail: "Facing issue while updating school type details",
   schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
   schoolTypeDeleteRequestFail: "Facing issue while deleting school type details",
+  eductionBoardGetRequestSuccess: "Eduction board details found successfully",
+  eductionBoardPostRequestSuccess: "New eduction board added successfully",
+  eductionBoardPostRequestFail: "Facing issue while adding new eduction board details",
+  eductionBoardPutRequestSuccess: "Eduction board details updated successfully",
+  eductionBoardPutRequestFail: "Facing issue while updating eduction board details",
+  eductionBoardDeleteRequestSuccess: "Eduction board details deleted successfully",
+  eductionBoardDeleteRequestFail: "Facing issue while deleting eduction board details",
 };
 
 module.exports = responseMessage;

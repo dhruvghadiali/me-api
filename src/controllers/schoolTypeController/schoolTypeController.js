@@ -41,8 +41,6 @@ exports.addSchoolType = asyncHandler(async (req, res, next) => {
 
   if (response) {
     delete response._doc.is_active;
-    delete response._doc.created_at;
-    delete response._doc.updated_at;
     delete response._doc.__v;
 
     res.status(201).json({

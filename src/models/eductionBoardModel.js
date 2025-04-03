@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 
 const eductionBoardSchema = Schema(
   {
-    name: {
+    eduction_board_name: {
       type: String,
       trim: true,
       lowercase: true,
