@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 
 const feeTypeSchema = Schema(
   {
-    name: {
+    fee_type: {
       type: String,
       trim: true,
       lowercase: true,

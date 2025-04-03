@@ -20,7 +20,7 @@ const facilitySchema = Schema(
         message: validationMessage.facilityTypeInvalid,
       },
     },
-    name: {
+    facility_name: {
       type: String,
       trim: true,
       lowercase: true,

@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 
 const facilityTypeSchema = Schema(
   {
-    name: {
+    facility_type: {
       type: String,
       trim: true,
       lowercase: true,

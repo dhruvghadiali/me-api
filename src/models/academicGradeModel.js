@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 
 const academicGradeSchema = Schema(
   {
-    name: {
+    academic_grade: {
       type: String,
       trim: true,
       lowercase: true,
