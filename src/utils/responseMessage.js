@@ -65,6 +65,20 @@ const responseMessage = {
   zipcodePutRequestFail: "Facing issue while updating zipcode details",
   zipcodeDeleteRequestSuccess: "Zipcode details deleted successfully",
   zipcodeDeleteRequestFail: "Facing issue while deleting zipcode details",
+  schoolTypeGetRequestSuccess: "School type details found successfully",
+  schoolTypePostRequestSuccess: "New school type added successfully",
+  schoolTypePostRequestFail: "Facing issue while adding new school type details",
+  schoolTypePutRequestSuccess: "School type details updated successfully",
+  schoolTypePutRequestFail: "Facing issue while updating school type details",
+  schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
+  schoolTypeDeleteRequestFail: "Facing issue while deleting school type details",
+  eductionBoardGetRequestSuccess: "Eduction board details found successfully",
+  eductionBoardPostRequestSuccess: "New eduction board added successfully",
+  eductionBoardPostRequestFail: "Facing issue while adding new eduction board details",
+  eductionBoardPutRequestSuccess: "Eduction board details updated successfully",
+  eductionBoardPutRequestFail: "Facing issue while updating eduction board details",
+  eductionBoardDeleteRequestSuccess: "Eduction board details deleted successfully",
+  eductionBoardDeleteRequestFail: "Facing issue while deleting eduction board details",
 };
 
 module.exports = responseMessage;

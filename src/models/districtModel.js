@@ -15,7 +15,7 @@ const districtSchema = Schema(
       validate: {
         validator: async function (value) {
           const stateExists = await State.findById(value);
-          return !!stateExists; 
+          return !!stateExists;
         },
         message: validationMessage.stateNameInvalid,
       },
