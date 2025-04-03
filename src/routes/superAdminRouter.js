@@ -24,6 +24,12 @@ const {
 const {
   addAreaName,
 } = require("@MEControllers/areaNameController/areaNameController");
+const {
+  addSchoolType,
+  getSchoolTypes,
+  updateSchoolType,
+  deleteSchoolType,
+} = require("@MEControllers/schoolTypeController/schoolTypeController");
 
 const router = express.Router();
 
@@ -44,5 +50,13 @@ router.route("/districts/:id").get(protect, getDistricts);
 router.route("/cities").post(protect, addCity);
 router.route("/area-names").post(protect, addAreaName);
 router.route("/zipcodes").post(protect, addZipcode);
+router
+  .route("/school-types")
+  .get(protect, getSchoolTypes)
+  .post(protect, addSchoolType);
+router
+  .route("/school-types/:id")
+  .put(protect, updateSchoolType)
+  .delete(protect, deleteSchoolType);
 
 module.exports = router;

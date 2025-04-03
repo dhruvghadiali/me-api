@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 
 const schoolTypeSchema = Schema(
   {
-    name: {
+    school_type: {
       type: String,
       trim: true,
       lowercase: true,
