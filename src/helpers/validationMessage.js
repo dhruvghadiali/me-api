@@ -16,6 +16,7 @@ const validationMessage = {
   usernameRequired: "Username is required",
   usernameMaxLength: "Username must be less then 200 characters",
   usernameMinLength: "Username must be greater then 5 characters",
+  usernameInvalid: "Invalid username. No matching username found",
   passwordRequired: "Password is required",
   passwordMaxLength: "Password must be less then 200 characters",
   passwordMinLength: "Password must be greater then 5 characters",
