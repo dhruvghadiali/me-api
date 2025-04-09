@@ -12,20 +12,48 @@ const router = express.Router();
 
 /**
  * @swagger
- * /school-types:
- *  get:
- *    summary: Get all school types.
- *    description: This API allows to get all school types.
- *    tags: [Super Admin]
- *    requestBody:
- *      required: false
- *      content:
- *      application/json:
- *        schema:
- *  post:
- *    summary: Create a new user account for student
- *    description: This API allows student to sign in to their account.
- *     tags: [Student]
+ * /super-admin/school-types:
+ *   get:
+ *     summary: Get all school types
+ *     tags: [Super Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of school types
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       school_type:
+ *                         type: string
+ *                       created_by:
+ *                         type: string
+ *                       updated_by:
+ *                         type: string
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                       updated_at:
+ *                         type: string
+ *                         format: date-time
+ *                 message:
+ *                   type: string
+ *                   example: "School types fetched successfully"
+ *
+ *   post:
+ *     summary: Add a new school type or re-enable an existing one
+ *     tags: [Super Admin]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -33,78 +61,45 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - username
- *               - password
+ *               - school_type
  *             properties:
- *               username:
+ *               school_type:
  *                 type: string
- *                 description: The username of the user (Student).
- *                 example: "student123"
- *               password:
- *                 type: string
- *                 description: The password of the user (Student).
- *                 example: "Student@123"
+ *                 example: "private"
  *     responses:
- *       200:
- *         description: Students signin process successfully completed
+ *       201:
+ *         description: School type created or re-activated successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 data:
- *                  type: array
- *                  example: [
- *                    {
- *                      "_id": "67daf6b639fe768cb8cdcca8",
- *                      "first_name": "first name",
- *                      "last_name": "last name",
- *                      "email": "testemail@domain.com",
- *                      "phone_number": "1234567890",
- *                      "username": "student123",
- *                      "is_account_verified": true,
- *                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGFmNmI2MzlmZTc2OGNiOGNkY2NhOCIsImlhdCI6MTc0Mjk5ODQ1OSwiZXhwIjoxNzQyOTk4NTE5fQ.2N94qPTXdxIxF8DgHYCPbh7qbM7qovxabBfvpiTfG4A",
- *                      "id": "67daf6b639fe768cb8cdcca8"
- *                    }
- *                  ]
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       school_type:
+ *                         type: string
+ *                       created_by:
+ *                         type: string
+ *                       updated_by:
+ *                         type: string
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                       updated_at:
+ *                         type: string
+ *                         format: date-time
  *                 message:
- *                  type: string
- *                  example: "Students signin process successfully completed"
- *                 status:
- *                  type: number
- *                  example: 200
+ *                   type: string
+ *                   example: "School type created successfully"
  *       400:
- *         description: Bad request - Invalid format
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                  type: array
- *                  example: []
- *                 message:
- *                  type: string
- *                  example: "Invalid format"
- *                 status:
- *                  type: number
- *                  example: 400
+ *         description: Bad request
  *       401:
- *         description: Invalid credentials
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                  type: array
- *                  example: []
- *                 message:
- *                  type: string
- *                  example: "Invalid credentials"
- *                 status:
- *                  type: number
- *                  example: 400
+ *         description: Unauthorized
  */
 router
   .route("/school-types")
