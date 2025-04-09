@@ -5,7 +5,6 @@ const responseMessage = require("@MEUtils/responseMessage");
 const { asyncHandler } = require("@MEMiddleware/async");
 
 exports.getSchoolTypes = asyncHandler(async (req, res, next) => {
-  console.log("getSchoolTypes called", req);
   const schoolTypes = await SchoolType.find({
     is_active: true,
   })
@@ -50,16 +49,7 @@ exports.addSchoolType = asyncHandler(async (req, res, next) => {
         new: true,
         runValidators: true,
       }
-    )
-      .populate({
-        path: "created_by_user_info",
-        select: ["username"],
-      })
-      .populate({
-        path: "updated_by_user_info",
-        select: ["username"],
-      })
-      .select(["school_type", "created_at", "updated_at"]);
+    );
   } else {
     response = await SchoolType.create({
       school_type,
@@ -69,6 +59,20 @@ exports.addSchoolType = asyncHandler(async (req, res, next) => {
   }
 
   if (response) {
+    delete response._doc.is_active;
+    delete response._doc.__v;
+
+    await response.populate([
+      {
+        path: "created_by_user_info",
+        select: ["username"],
+      },
+      {
+        path: "updated_by_user_info",
+        select: ["username"],
+      },
+    ]);
+
     res.status(201).json({
       data: [response],
       message: responseMessage.schoolTypePostRequestSuccess,
@@ -95,7 +99,13 @@ exports.updateSchoolType = asyncHandler(async (req, res, next) => {
       path: "updated_by_user_info",
       select: ["username"],
     })
-    .select(["school_type", "created_at", "updated_at"]);
+    .select([
+      "school_type",
+      "created_at",
+      "updated_at",
+      "created_by",
+      "updated_by",
+    ]);
 
   if (schoolTypeInfo) {
     res.status(200).json({

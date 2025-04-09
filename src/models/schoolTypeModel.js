@@ -6,6 +6,14 @@ const validationMessage = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
+const isActiveUserValidator = {
+  validator: async function (value) {
+    const user = await User.findById(value);
+    return !!(user && user.is_active);
+  },
+  message: validationMessage.usernameInvalid,
+};
+
 const schoolTypeSchema = Schema(
   {
     school_type: {
@@ -26,31 +34,13 @@ const schoolTypeSchema = Schema(
       type: Schema.Types.ObjectId,
       required: [true, validationMessage.usernameRequired],
       ref: "user",
-      validate: {
-        validator: async function (value) {
-          const user = await User.findById(value);
-          if (user && user.is_active) {
-            return true;
-          }
-          return false;
-        },
-        message: validationMessage.usernameInvalid,
-      },
+      validate: isActiveUserValidator,
     },
     updated_by: {
       type: Schema.Types.ObjectId,
       required: [true, validationMessage.usernameRequired],
       ref: "user",
-      validate: {
-        validator: async function (value) {
-          const user = await User.findById(value);
-          if (user && user.is_active) {
-            return true;
-          }
-          return false;
-        },
-        message: validationMessage.usernameInvalid,
-      },
+      validate: isActiveUserValidator,
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
