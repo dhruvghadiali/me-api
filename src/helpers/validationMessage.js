@@ -67,7 +67,7 @@ const validationMessage = {
   eductionBoardNameMinLength: "Eduction board name must be greater then 10 characters",
   academicGradeNameRequired: "Academic grade name is required",
   academicGradeNameMaxLength: "Academic grade name must be less then 100 characters",
-  academicGradeNameMinLength: "Academic grade name must be greater then 10 characters",
+  academicGradeNameMinLength: "Academic grade name must be greater then 2 characters",
   schoolTypeNameRequired: "School type is required",
   schoolTypeNameMaxLength: "School type must be less then 100 characters",
   schoolTypeNameMinLength: "School type must be greater then 2 characters",

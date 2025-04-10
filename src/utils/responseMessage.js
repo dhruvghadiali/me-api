@@ -15,21 +15,29 @@ const responseMessage = {
   phoneOTPInvalid: "Invalid phone OTP",
   otpVerificationTimeExpire: "OTP validation time is expired",
   signUpOTPVerificationError: "OTP validation failed please try after sometime",
-  signUpOTPVerificationSuccess: "Signup OTP verification process successfully completed",
-  forgottenPasswordOTPVerificationError: "OTP validation failed please try after sometime",
-  forgottenPasswordOTPVerificationSuccess: "Forgotten password OTP verification process successfully completed",
+  signUpOTPVerificationSuccess:
+    "Signup OTP verification process successfully completed",
+  forgottenPasswordOTPVerificationError:
+    "OTP validation failed please try after sometime",
+  forgottenPasswordOTPVerificationSuccess:
+    "Forgotten password OTP verification process successfully completed",
   accountDetailsRequired: "Please provide account details",
-  forgottenPasswordFindUserAccountError: "This account details are not present in over database",
+  forgottenPasswordFindUserAccountError:
+    "This account details are not present in over database",
   forgottenPasswordFindUserAccountSuccess: "Account details found",
   forgottenPasswordResetPasswordSuccess: "User password reset successfully",
-  forgottenPasswordResetPasswordError: "User password is not reset right now, Please after sometime",
+  forgottenPasswordResetPasswordError:
+    "User password is not reset right now, Please after sometime",
   superAdminSignUpError: "Super admin already exist in our database",
   superAdminSignUpSuccess: "Super admin signup process successfully completed",
-  superAdminSignUpDBError: "Super admin signup process failed, Please try after sometime",
-  superAdminSignUpActivationError: "Super admin account activation failed, Please try after sometime",
+  superAdminSignUpDBError:
+    "Super admin signup process failed, Please try after sometime",
+  superAdminSignUpActivationError:
+    "Super admin account activation failed, Please try after sometime",
   superAdminSignInSuccess: "Super admin signin process successfully completed",
   superAdminPasswordChangedSuccess: "Super admin password changed successfully",
-  superAdminPasswordChangedError: "Super admin password changed failed, Please try after sometime",
+  superAdminPasswordChangedError:
+    "Super admin password changed failed, Please try after sometime",
   statesGetRequestSuccess: "States details found successfully",
   statePostRequestSuccess: "New state added successfully",
   statePostRequestFail: "Facing issue while adding new state details",
@@ -67,18 +75,35 @@ const responseMessage = {
   zipcodeDeleteRequestFail: "Facing issue while deleting zipcode details",
   schoolTypeGetRequestSuccess: "School type details found successfully",
   schoolTypePostRequestSuccess: "New school type added successfully",
-  schoolTypePostRequestFail: "Facing issue while adding new school type details",
+  schoolTypePostRequestFail:
+    "Facing issue while adding new school type details",
   schoolTypePutRequestSuccess: "School type details updated successfully",
   schoolTypePutRequestFail: "Facing issue while updating school type details",
   schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
-  schoolTypeDeleteRequestFail: "Facing issue while deleting school type details",
+  schoolTypeDeleteRequestFail:
+    "Facing issue while deleting school type details",
   eductionBoardGetRequestSuccess: "Eduction board details found successfully",
   eductionBoardPostRequestSuccess: "New eduction board added successfully",
-  eductionBoardPostRequestFail: "Facing issue while adding new eduction board details",
+  eductionBoardPostRequestFail:
+    "Facing issue while adding new eduction board details",
   eductionBoardPutRequestSuccess: "Eduction board details updated successfully",
-  eductionBoardPutRequestFail: "Facing issue while updating eduction board details",
-  eductionBoardDeleteRequestSuccess: "Eduction board details deleted successfully",
-  eductionBoardDeleteRequestFail: "Facing issue while deleting eduction board details",
+  eductionBoardPutRequestFail:
+    "Facing issue while updating eduction board details",
+  eductionBoardDeleteRequestSuccess:
+    "Eduction board details deleted successfully",
+  eductionBoardDeleteRequestFail:
+    "Facing issue while deleting eduction board details",
+  academicGradesGetRequestSuccess: "Academic grades details found successfully",
+  academicGradePostRequestSuccess: "New academic grade added successfully",
+  academicGradePostRequestFail:
+    "Facing issue while adding new academic grade details",
+  academicGradePutRequestSuccess: "Academic grade details updated successfully",
+  academicGradePutRequestFail:
+    "Facing issue while updating academic grade details",
+  academicGradeDeleteRequestSuccess:
+    "Academic grade details deleted successfully",
+  academicGradeDeleteRequestFail:
+    "Facing issue while deleting academic grade details",
 };
 
 module.exports = responseMessage;

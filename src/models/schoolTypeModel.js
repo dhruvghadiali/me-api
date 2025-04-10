@@ -1,18 +1,10 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const User = require("@MEModels/userModel");
 const validationMessage = require("@MEHelpers/validationMessage");
+const { isActiveUserValidator } = require("@MEUtils/utility");
 
 const { Schema } = mongoose;
-
-const isActiveUserValidator = {
-  validator: async function (value) {
-    const user = await User.findById(value);
-    return !!(user && user.is_active);
-  },
-  message: validationMessage.usernameInvalid,
-};
 
 const schoolTypeSchema = Schema(
   {
