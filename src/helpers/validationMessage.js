@@ -23,7 +23,8 @@ const validationMessage = {
   userIdRequired: "User id is required",
   verificationTokenRequired: "Verification token is required",
   verificationMaxLength: "Verification token must be less then 200 characters",
-  verificationMinLength: "Verification token must be greater then 20 characters",
+  verificationMinLength:
+    "Verification token must be greater then 20 characters",
   emailOTPRequired: "Email OTP is required",
   emailOTPMaxLength: "Email OTP must be 6 digit",
   emailOTPMinLength: "Email OTP must be 6 digit",
@@ -49,9 +50,9 @@ const validationMessage = {
   areaNameInvalid: "Invalid area name. No matching area name found",
   zipcodeRequired: "Zipcode is required",
   invalidZipcode: "Invalid zipcode",
-  schoolTypeNameRequired: "School type name is required",
-  schoolTypeNameMaxLength: "School type name must be less then 100 characters",
-  schoolTypeNameMinLength: "School type name must be greater then 2 characters",
+  schoolTypeNameRequired: "School type is required",
+  schoolTypeNameMaxLength: "School type must be less then 100 characters",
+  schoolTypeNameMinLength: "School type must be greater then 2 characters",
   feeTypeRequired: "Fee type is required",
   feeTypeMaxLength: "Fee type must be less then 100 characters",
   feeTypeMinLength: "Fee type must be greater then 2 characters",
@@ -63,11 +64,15 @@ const validationMessage = {
   facilityTypeMinLength: "Facility type must be greater then 10 characters",
   facilityTypeInvalid: "Invalid facility type. No matching facility type found",
   eductionBoardNameRequired: "Eduction board name is required",
-  eductionBoardNameMaxLength: "Eduction board name must be less then 100 characters",
-  eductionBoardNameMinLength: "Eduction board name must be greater then 10 characters",
+  eductionBoardNameMaxLength:
+    "Eduction board name must be less then 100 characters",
+  eductionBoardNameMinLength:
+    "Eduction board name must be greater then 10 characters",
   academicGradeNameRequired: "Academic grade name is required",
-  academicGradeNameMaxLength: "Academic grade name must be less then 100 characters",
-  academicGradeNameMinLength: "Academic grade name must be greater then 2 characters",
+  academicGradeNameMaxLength:
+    "Academic grade name must be less then 100 characters",
+  academicGradeNameMinLength:
+    "Academic grade name must be greater then 2 characters",
   schoolTypeNameRequired: "School type is required",
   schoolTypeNameMaxLength: "School type must be less then 100 characters",
   schoolTypeNameMinLength: "School type must be greater then 2 characters",
