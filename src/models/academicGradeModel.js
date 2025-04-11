@@ -14,9 +14,9 @@ const academicGradeSchema = Schema(
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.academicGradeNameRequired],
-      maxlength: [100, validationMessage.academicGradeNameMaxLength],
-      minlength: [2, validationMessage.academicGradeNameMinLength],
+      required: [true, validationMessage.academicGradeRequired],
+      maxlength: [100, validationMessage.academicGradeMaxLength],
+      minlength: [2, validationMessage.academicGradeMinLength],
     },
     is_active: {
       type: Boolean,

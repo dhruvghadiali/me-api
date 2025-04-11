@@ -14,9 +14,9 @@ const schoolTypeSchema = Schema(
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.schoolTypeNameRequired],
-      maxlength: [100, validationMessage.schoolTypeNameMaxLength],
-      minlength: [2, validationMessage.schoolTypeNameMinLength],
+      required: [true, validationMessage.schoolTypeRequired],
+      maxlength: [100, validationMessage.schoolTypeMaxLength],
+      minlength: [2, validationMessage.schoolTypeMinLength],
     },
     is_active: {
       type: Boolean,
@@ -70,8 +70,12 @@ schoolTypeSchema.virtual("updated_by_user").get(function () {
 schoolTypeSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
-    response.created_by = response?.created_by_user ? response.created_by_user : null;
-    response.updated_by = response?.updated_by_user ? response.updated_by_user : null;
+    response.created_by = response?.created_by_user
+      ? response.created_by_user
+      : null;
+    response.updated_by = response?.updated_by_user
+      ? response.updated_by_user
+      : null;
     delete response.created_by_user_info;
     delete response.updated_by_user_info;
     delete response.created_by_user;
