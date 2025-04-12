@@ -16,7 +16,7 @@ const educationBoardSchema = Schema(
       unique: true,
       required: [true, validationMessage.educationBoardRequired],
       maxlength: [100, validationMessage.educationBoardMaxLength],
-      minlength: [10, validationMessage.educationBoardMinLength],
+      minlength: [2, validationMessage.educationBoardMinLength],
     },
     is_active: {
       type: Boolean,

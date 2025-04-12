@@ -65,7 +65,7 @@ const validationMessage = {
   facilityTypeInvalid: "Invalid facility type. No matching facility type found",
   educationBoardRequired: "Education board is required",
   educationBoardMaxLength: "Education board must be less then 100 characters",
-  educationBoardMinLength: "Education board must be greater then 10 characters",
+  educationBoardMinLength: "Education board must be greater then 2 characters",
   academicGradeRequired: "Academic grade is required",
   academicGradeMaxLength: "Academic grade must be less then 100 characters",
   academicGradeMinLength: "Academic grade must be greater then 2 characters",
