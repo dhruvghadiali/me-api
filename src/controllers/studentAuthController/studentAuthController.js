@@ -7,7 +7,7 @@ const {
 
 const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
+const responseMessage = require("@MEHelpers/responseMessage");
 
 /**
  * @desc    Sign in user
@@ -90,7 +90,7 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   const { user_id, reset_password_token, password } = req.body;
-  
+
   const user = await User.findOneAndUpdate(
     {
       _id: user_id,
@@ -116,7 +116,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [],
       message: responseMessage.forgottenPasswordResetPasswordSuccess,
-      status:200
+      status: 200,
     });
   }
 });

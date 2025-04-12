@@ -1,6 +1,6 @@
 const AcademicGrade = require("@MEModels/academicGradeModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
+const responseMessage = require("@MEHelpers/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 

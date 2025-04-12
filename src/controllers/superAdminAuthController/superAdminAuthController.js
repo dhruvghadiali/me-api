@@ -2,7 +2,7 @@ const { asyncHandler } = require("@MEMiddleware/async");
 
 const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
+const responseMessage = require("@MEHelpers/responseMessage");
 
 exports.signIn = asyncHandler(async (req, res, next) => {
   if (req.body.username && req.body.password) {
