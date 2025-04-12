@@ -82,17 +82,18 @@ const responseMessage = {
   schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
   schoolTypeDeleteRequestFail:
     "Facing issue while deleting school type details",
-  eductionBoardGetRequestSuccess: "Eduction board details found successfully",
-  eductionBoardPostRequestSuccess: "New eduction board added successfully",
-  eductionBoardPostRequestFail:
-    "Facing issue while adding new eduction board details",
-  eductionBoardPutRequestSuccess: "Eduction board details updated successfully",
-  eductionBoardPutRequestFail:
-    "Facing issue while updating eduction board details",
-  eductionBoardDeleteRequestSuccess:
-    "Eduction board details deleted successfully",
-  eductionBoardDeleteRequestFail:
-    "Facing issue while deleting eduction board details",
+  educationBoardGetRequestSuccess: "Education board details found successfully",
+  educationBoardPostRequestSuccess: "New education board added successfully",
+  educationBoardPostRequestFail:
+    "Facing issue while adding new education board details",
+  educationBoardPutRequestSuccess:
+    "Education board details updated successfully",
+  educationBoardPutRequestFail:
+    "Facing issue while updating education board details",
+  educationBoardDeleteRequestSuccess:
+    "Education board details deleted successfully",
+  educationBoardDeleteRequestFail:
+    "Facing issue while deleting education board details",
   academicGradesGetRequestSuccess: "Academic grades details found successfully",
   academicGradePostRequestSuccess: "New academic grade added successfully",
   academicGradePostRequestFail:

@@ -6,17 +6,17 @@ const { isActiveUserValidator } = require("@MEUtils/utility");
 
 const { Schema } = mongoose;
 
-const eductionBoardSchema = Schema(
+const educationBoardSchema = Schema(
   {
-    eduction_board: {
+    education_board: {
       type: String,
       trim: true,
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.eductionBoardRequired],
-      maxlength: [100, validationMessage.eductionBoardMaxLength],
-      minlength: [10, validationMessage.eductionBoardMinLength],
+      required: [true, validationMessage.educationBoardRequired],
+      maxlength: [100, validationMessage.educationBoardMaxLength],
+      minlength: [10, validationMessage.educationBoardMinLength],
     },
     is_active: {
       type: Boolean,
@@ -38,7 +38,7 @@ const eductionBoardSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-eductionBoardSchema.pre("save", async function (next) {
+educationBoardSchema.pre("save", async function (next) {
   let now = moment.utc(moment());
 
   this.updated_at = now;
@@ -47,27 +47,27 @@ eductionBoardSchema.pre("save", async function (next) {
   next();
 });
 
-eductionBoardSchema.virtual("created_by_user_info", {
+educationBoardSchema.virtual("created_by_user_info", {
   ref: "user",
   localField: "created_by",
   foreignField: "_id",
 });
 
-eductionBoardSchema.virtual("updated_by_user_info", {
+educationBoardSchema.virtual("updated_by_user_info", {
   ref: "user",
   localField: "updated_by",
   foreignField: "_id",
 });
 
-eductionBoardSchema.virtual("created_by_user").get(function () {
+educationBoardSchema.virtual("created_by_user").get(function () {
   return this.created_by_user_info?.[0]?.username || null;
 });
 
-eductionBoardSchema.virtual("updated_by_user").get(function () {
+educationBoardSchema.virtual("updated_by_user").get(function () {
   return this.updated_by_user_info?.[0]?.username || null;
 });
 
-eductionBoardSchema.set("toJSON", {
+educationBoardSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
     response.created_by = response?.created_by_user
@@ -83,6 +83,6 @@ eductionBoardSchema.set("toJSON", {
     return response;
   },
 });
-eductionBoardSchema.set("toObject", { virtuals: true });
+educationBoardSchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("eduction_board", eductionBoardSchema);
+module.exports = mongoose.model("education_board", educationBoardSchema);

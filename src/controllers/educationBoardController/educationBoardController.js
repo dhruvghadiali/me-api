@@ -1,4 +1,4 @@
-const EductionBoard = require("@MEModels/eductionBoardModel");
+const EducationBoard = require("@MEModels/educationBoardModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEUtils/responseMessage");
 
@@ -9,13 +9,13 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @route   GET /super-admin/education-boards
  * @access  Super Admin
  */
-exports.getEductionBoards = asyncHandler(async (req, res, next) => {
-  // Find eduction boards that are active status and sort them by eduction_board
-  const eductionBoards = await EductionBoard.find({
+exports.getEducationBoards = asyncHandler(async (req, res, next) => {
+  // Find education boards that are active status and sort them by education_board
+  const educationBoards = await EducationBoard.find({
     is_active: true,
   })
     .select([
-      "eduction_board",
+      "education_board",
       "created_at",
       "updated_at",
       "created_by",
@@ -29,12 +29,12 @@ exports.getEductionBoards = asyncHandler(async (req, res, next) => {
       path: "updated_by_user_info",
       select: ["username"],
     })
-    .sort({ eduction_board: 1 });
+    .sort({ education_board: 1 });
 
   // Send response
   res.status(200).json({
-    data: eductionBoards,
-    message: responseMessage.eductionBoardGetRequestSuccess,
+    data: educationBoards,
+    message: responseMessage.educationBoardGetRequestSuccess,
   });
 });
 
@@ -43,21 +43,21 @@ exports.getEductionBoards = asyncHandler(async (req, res, next) => {
  * @route   POST /super-admin/education-boards
  * @access  Super Admin
  */
-exports.addEductionBoard = asyncHandler(async (req, res, next) => {
+exports.addEducationBoard = asyncHandler(async (req, res, next) => {
   let response;
-  const { eduction_board } = req.body;
+  const { education_board } = req.body;
   const { id } = req.user;
 
-  // Find eduction board that is_active status false
-  const eductionBoardInfo = await EductionBoard.findOne({
-    eduction_board: eduction_board ? eduction_board : "",
+  // Find education board that is_active status false
+  const educationBoardInfo = await EducationBoard.findOne({
+    education_board: education_board ? education_board : "",
     is_active: false,
   });
 
-  if (eductionBoardInfo) {
-    // If eduction board is already present, update the is_active status to true with the user who signin
-    response = await EductionBoard.findByIdAndUpdate(
-      eductionBoardInfo.id,
+  if (educationBoardInfo) {
+    // If education board is already present, update the is_active status to true with the user who signin
+    response = await EducationBoard.findByIdAndUpdate(
+      educationBoardInfo.id,
       { is_active: true, updated_by: id },
       {
         new: true,
@@ -65,9 +65,9 @@ exports.addEductionBoard = asyncHandler(async (req, res, next) => {
       }
     );
   } else {
-    // If eduction board is not present, create a new eduction board with the user who signin
-    response = await EductionBoard.create({
-      eduction_board,
+    // If education board is not present, create a new education board with the user who signin
+    response = await EducationBoard.create({
+      education_board,
       created_by: id,
       updated_by: id,
     });
@@ -93,27 +93,27 @@ exports.addEductionBoard = asyncHandler(async (req, res, next) => {
     // Send response
     res.status(201).json({
       data: [response],
-      message: responseMessage.eductionBoardPostRequestSuccess,
+      message: responseMessage.educationBoardPostRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.eductionBoardPostRequestFail, 400));
+    next(new ErrorResponse(responseMessage.educationBoardPostRequestFail, 400));
   }
 });
 
 /**
- * @desc    Update eduction board
+ * @desc    Update education board
  * @route   PUT /super-admin/education-boards/:id
  * @access  Super Admin
  */
-exports.updateEductionBoard = asyncHandler(async (req, res, next) => {
-  const { eduction_board } = req.body;
+exports.updateEducationBoard = asyncHandler(async (req, res, next) => {
+  const { education_board } = req.body;
   const { id } = req.user;
 
-  // Find eduction board id and update eduction board with user who signin
-  const eductionBoardInfo = await EductionBoard.findByIdAndUpdate(
+  // Find education board id and update education board with user who signin
+  const educationBoardInfo = await EducationBoard.findByIdAndUpdate(
     req.params.id,
-    { eduction_board, updated_by: id },
+    { education_board, updated_by: id },
     {
       new: true,
       runValidators: true,
@@ -128,7 +128,7 @@ exports.updateEductionBoard = asyncHandler(async (req, res, next) => {
       select: ["username"],
     })
     .select([
-      "eduction_board",
+      "education_board",
       "created_at",
       "updated_at",
       "created_by",
@@ -136,25 +136,25 @@ exports.updateEductionBoard = asyncHandler(async (req, res, next) => {
     ]);
 
   // Send response
-  if (eductionBoardInfo) {
+  if (educationBoardInfo) {
     res.status(200).json({
-      data: [eductionBoardInfo],
-      message: responseMessage.eductionBoardPutRequestSuccess,
+      data: [educationBoardInfo],
+      message: responseMessage.educationBoardPutRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.eductionBoardPutRequestFail, 400));
+    next(new ErrorResponse(responseMessage.educationBoardPutRequestFail, 400));
   }
 });
 
 /**
- * @desc    Delete eduction board
+ * @desc    Delete education board
  * @route   DELETE /super-admin/education-boards/:id
  * @access  Super Admin
  */
-exports.deleteEductionBoard = asyncHandler(async (req, res, next) => {
-  // Find eduction board id and update is active status to false
-  const educationBoardInfo = await EductionBoard.findByIdAndUpdate(
+exports.deleteEducationBoard = asyncHandler(async (req, res, next) => {
+  // Find education board id and update is active status to false
+  const educationBoardInfo = await EducationBoard.findByIdAndUpdate(
     req.params.id,
     { is_active: false },
     {
@@ -167,12 +167,12 @@ exports.deleteEductionBoard = asyncHandler(async (req, res, next) => {
   if (educationBoardInfo) {
     res.status(200).json({
       data: [],
-      message: responseMessage.eductionBoardDeleteRequestSuccess,
+      message: responseMessage.educationBoardDeleteRequestSuccess,
     });
   } else {
     // Send error response
     next(
-      new ErrorResponse(responseMessage.eductionBoardDeleteRequestFail, 400)
+      new ErrorResponse(responseMessage.educationBoardDeleteRequestFail, 400)
     );
   }
 });
