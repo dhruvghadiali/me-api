@@ -1,17 +1,34 @@
+const {
+  addressMinLength,
+  addressMaxLength,
+  phoneNumberLength,
+  aadhaarNumberLength,
+  organizationMemberPositionMinLength,
+  organizationMemberPositionMaxLength,
+} = require("@MEHelpers/validationConst");
+
 const validationMessage = {
+  firstNameInvalidFormate: "First name must be string formate",
+  firstNameEmpty: "First name cannot be empty",
   firstNameRequired: "First name is required",
   firstNameMaxLength: "First name must be less then 25 characters",
   firstNameMinLength: "First name must be greater then 5 characters",
+  lastNameInvalidFormate: "First name must be string formate",
+  lastNameEmpty: "Last name cannot be empty",
   lastNameRequired: "Last name is required",
   lastNameMaxLength: "Last name must be less then 25 characters",
   lastNameMinLength: "Last name must be greater then 5 characters",
+  emailInvalidFormate: "Email must be string formate",
+  emailEmpty: "Email cannot be empty",
   emailRequired: "Email is required",
   emailMaxLength: "Email must be less then 100 characters",
   emailMinLength: "Email must be greater then 5 characters",
   emailInvalid: "Invalid email format",
+  phoneNumberInvalidFormate: "Phone number must be string formate",
+  phoneNumberEmpty: "Phone number cannot be empty",
   phoneNumberRequired: "Phone number is required",
-  phoneNumberMaxLength: "Phone number must be 10 characters",
-  phoneNumberMinLength: "Phone number must be 10 characters",
+  phoneNumberMaxLength: `Phone number must be ${phoneNumberLength} characters`,
+  phoneNumberMinLength: `Phone number must be ${phoneNumberLength} characters`,
   phoneNumberInvalid: "Invalid phone number format",
   usernameRequired: "Username is required",
   usernameMaxLength: "Username must be less then 200 characters",
@@ -36,20 +53,31 @@ const validationMessage = {
   stateNameMaxLength: "State name must be less then 100 characters",
   stateNameMinLength: "State name must be greater then 2 characters",
   stateNameInvalid: "Invalid state name. No matching state found",
+  stateNameNotFound: "State name not found in database",
   districtNameRequired: "District name is required",
   districtNameMaxLength: "District name must be less then 100 characters",
   districtNameMinLength: "District name must be greater then 2 characters",
   districtNameInvalid: "Invalid district name. No matching district found",
+  districtNameNotFound: "District name not found in database",
   cityNameRequired: "City name is required",
   cityNameMaxLength: "City name must be less then 100 characters",
   cityNameMinLength: "City name must be greater then 2 characters",
   cityNameInvalid: "Invalid city. No matching city found",
+  cityNameNotFound: "City name not found in database",
   areaNameRequired: "Area name is required",
   areaNameMaxLength: "Area name must be less then 100 characters",
   areaNameMinLength: "Area name must be greater then 2 characters",
   areaNameInvalid: "Invalid area name. No matching area name found",
+  areaNameNotFound: "Area name not found in database",
   zipcodeRequired: "Zipcode is required",
   invalidZipcode: "Invalid zipcode",
+  zipcodeInvalid: "Invalid zipcode. No matching zipcode found",
+  zipcodeNotFound: "Zipcode not found in database",
+  addressInvalidFormate: "Address must be string formate",
+  addressEmpty: "Address name cannot be empty",
+  addressRequired: "Address is required",
+  addressMaxLength: `Address must be less then ${addressMaxLength} characters`,
+  addressMinLength: `Address must be greater then ${addressMinLength} characters`,
   schoolTypeRequired: "School type is required",
   schoolTypeMaxLength: "School type must be less then 100 characters",
   schoolTypeMinLength: "School type must be greater then 2 characters",
@@ -72,6 +100,73 @@ const validationMessage = {
   schoolTypeNameRequired: "School type is required",
   schoolTypeNameMaxLength: "School type must be less then 100 characters",
   schoolTypeNameMinLength: "School type must be greater then 2 characters",
+  organizationDetailsRequired: "Organization details are required",
+  organizationDetailsMustBeObject:
+    "Organization details must be object formate",
+  organizationDetailsEmpty: "Organization details cannot be empty",
+  organizationDetailsUnknownProperty:
+    "Organization details have unknown property",
+  organizationNameInvalidFormate: "Organization name must be string formate",
+  organizationNameEmpty: "Organization name cannot be empty",
+  organizationNameRequired: "Organization name is required",
+  organizationNameMaxLength:
+    "Organization name must be less then 100 characters",
+  organizationNameMinLength:
+    "Organization name must be greater then 2 characters",
+  organizationShortNameInvalidFormate:
+    "Organization short name must be string formate",
+  organizationShortNameEmpty: "Organization short name cannot be empty",
+  organizationShortNameMaxLength:
+    "Organization short name must be less then 50 characters",
+  organizationShortNameMinLength:
+    "Organization short name must be greater then 2 characters",
+  governmentRegistrationNumberInvalidFormate:
+    "Government registration number must be string formate",
+  governmentRegistrationNumberEmpty:
+    "Government registration number cannot be empty",
+  governmentRegistrationNumberRequired:
+    "Government registration number is required",
+  governmentRegistrationNumberMaxLength:
+    "Government registration number must be less then 50 characters",
+  governmentRegistrationNumberMinLength:
+    "Government registration number must be greater then 2 characters",
+  schoolDetailsRequired: "School details are required",
+  schoolDetailsUnknownProperty: "School details have unknown property",
+  schoolDetailsMustBeObjectRequired: "School details must be object formate",
+  schoolDetailsEmpty: "School details cannot be empty",
+  organizationMembersDetailsRequired:
+    "Organization member's details are required",
+  organizationMembersDetailsEmpty:
+    "Organization member's details can not be empty",
+  organizationMembersDetailsMustBeArray:
+    "Organization member's details must be array formate",
+  organizationMembersDetailsMinLength:
+    "Provide at least one organization member details",
+  organizationMembersDetailsMaxLength:
+    "Can't add more then 5 organization member details",
+  organizationMemberDetailsRequired: "Organization member details are required",
+  organizationMemberDetailsMustBeObject:
+    "Organization member details must be object formate",
+  organizationMemberDetailsEmpty: "Organization member details cannot be empty",
+  organizationMemberDetailsUnknownProperty:
+    "Organization member details have unknown property",
+  organizationMemberDetailsEmailDuplicate: "Member email must be unique",
+  organizationMemberDetailsNameDuplicate: "Member name must be unique",
+  organizationMemberDetailsPhoneNumberDuplicate:
+    "Member phone number must be unique",
+  organizationMemberDetailsAadhaarNumberDuplicate:
+    "Aadhaar number must be unique",
+  aadhaarNumberInvalidFormate: "Aadhaar number must be string formate",
+  aadhaarNumberEmpty: "Aadhaar number cannot be empty",
+  aadhaarNumberMaxLength: `Aadhaar number must be ${aadhaarNumberLength} characters`,
+  aadhaarNumberMinLength: `Aadhaar number must be ${aadhaarNumberLength} characters`,
+  aadhaarNumberRequired: "Aadhaar number is required",
+  organizationMemberPositionInvalidFormate:
+    "Member position must be string formate",
+  organizationMemberPositionEmpty: "Member position cannot be empty",
+  organizationMemberPositionMaxLength: `Member position must be less then ${organizationMemberPositionMinLength} characters`,
+  organizationMemberPositionMinLength: `Member position must be greater then ${organizationMemberPositionMaxLength} characters`,
+  organizationMemberPositionRequired: "Member position is required",
 };
 
 module.exports = validationMessage;

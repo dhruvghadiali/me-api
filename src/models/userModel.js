@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
 const validationMessage = require("@MEHelpers/validationMessage");
+const { emailRegex, phoneRegex } = require("@MEUtils/utility");
 
 const { Schema } = mongoose;
 
@@ -14,14 +15,14 @@ const userSchema = Schema(
       trim: true,
       required: [true, validationMessage.firstNameRequired],
       maxlength: [25, validationMessage.firstNameMaxLength],
-      minlength: [5, validationMessage.firstNameMinLength],
+      minlength: [2, validationMessage.firstNameMinLength],
     },
     last_name: {
       type: String,
       trim: true,
       required: [true, validationMessage.lastNameRequired],
       maxlength: [25, validationMessage.lastNameMaxLength],
-      minlength: [5, validationMessage.lastNameMinLength],
+      minlength: [2, validationMessage.lastNameMinLength],
     },
     email: {
       type: String,
@@ -29,10 +30,7 @@ const userSchema = Schema(
       required: [true, validationMessage.emailRequired],
       maxlength: [100, validationMessage.emailMaxLength],
       minlength: [5, validationMessage.emailMinLength],
-      match: [
-        /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-        validationMessage.emailInvalid,
-      ],
+      match: [emailRegex, validationMessage.emailInvalid],
     },
     phone_number: {
       type: String,
@@ -40,10 +38,7 @@ const userSchema = Schema(
       required: [true, validationMessage.phoneNumberRequired],
       maxlength: [10, validationMessage.phoneNumberMaxLength],
       minlength: [10, validationMessage.phoneNumberMinLength],
-      match: [
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        validationMessage.phoneNumberInvalid,
-      ],
+      match: [phoneRegex, validationMessage.phoneNumberInvalid],
     },
     username: {
       type: String,
@@ -73,10 +68,10 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
-    reset_password_token:{
+    reset_password_token: {
       type: String,
       trim: true,
-    }
+    },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
