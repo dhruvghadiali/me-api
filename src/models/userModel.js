@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
 const validationMessage = require("@MEHelpers/validationMessage");
+const validationConst = require("@MEHelpers/validationConst");
+
 const { emailRegex, phoneRegex } = require("@MEUtils/utility");
 
 const { Schema } = mongoose;
@@ -14,30 +16,54 @@ const userSchema = Schema(
       type: String,
       trim: true,
       required: [true, validationMessage.firstNameRequired],
-      maxlength: [25, validationMessage.firstNameMaxLength],
-      minlength: [2, validationMessage.firstNameMinLength],
+      maxlength: [
+        validationConst.firstNameMaxLength,
+        validationMessage.firstNameMaxLength,
+      ],
+      minlength: [
+        validationConst.firstNameMinLength,
+        validationMessage.firstNameMinLength,
+      ],
     },
     last_name: {
       type: String,
       trim: true,
       required: [true, validationMessage.lastNameRequired],
-      maxlength: [25, validationMessage.lastNameMaxLength],
-      minlength: [2, validationMessage.lastNameMinLength],
+      maxlength: [
+        validationConst.lastNameMaxLength,
+        validationMessage.lastNameMaxLength,
+      ],
+      minlength: [
+        validationConst.lastNameMinLength,
+        validationMessage.lastNameMinLength,
+      ],
     },
     email: {
       type: String,
       trim: true,
       required: [true, validationMessage.emailRequired],
-      maxlength: [100, validationMessage.emailMaxLength],
-      minlength: [5, validationMessage.emailMinLength],
+      maxlength: [
+        validationConst.emailMaxLength,
+        validationMessage.emailMaxLength,
+      ],
+      minlength: [
+        validationConst.emailMinLength,
+        validationMessage.emailMinLength,
+      ],
       match: [emailRegex, validationMessage.emailInvalid],
     },
     phone_number: {
       type: String,
       trim: true,
       required: [true, validationMessage.phoneNumberRequired],
-      maxlength: [10, validationMessage.phoneNumberMaxLength],
-      minlength: [10, validationMessage.phoneNumberMinLength],
+      maxlength: [
+        validationConst.phoneNumberLength,
+        validationMessage.phoneNumberMaxLength,
+      ],
+      minlength: [
+        validationConst.phoneNumberLength,
+        validationMessage.phoneNumberMinLength,
+      ],
       match: [phoneRegex, validationMessage.phoneNumberInvalid],
     },
     username: {
@@ -45,14 +71,26 @@ const userSchema = Schema(
       trim: true,
       index: { unique: true },
       required: [true, validationMessage.usernameRequired],
-      maxlength: [25, validationMessage.usernameMaxLength],
-      minlength: [5, validationMessage.usernameMinLength],
+      maxlength: [
+        validationConst.usernameMaxLength,
+        validationMessage.usernameMaxLength,
+      ],
+      minlength: [
+        validationConst.usernameMinLength,
+        validationMessage.usernameMinLength,
+      ],
     },
     password: {
       type: String,
       required: [true, validationMessage.passwordRequired],
-      maxlength: [200, validationMessage.passwordMaxLength],
-      minlength: [5, validationMessage.passwordMinLength],
+      maxlength: [
+        validationConst.passwordMaxLengthWithEncryption,
+        validationMessage.passwordMaxLength,
+      ],
+      minlength: [
+        validationConst.passwordMinLength,
+        validationMessage.passwordMinLength,
+      ],
       select: false,
     },
     user_type: {
@@ -109,8 +147,8 @@ userSchema.methods.getSignedJwtToken = function () {
 userSchema.set("toObject", { virtuals: true });
 userSchema.set("toJSON", { virtuals: true });
 
-userSchema.methods.matchPassword = async function (enterdPassword) {
-  return await bcrypt.compare(enterdPassword, this.password);
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 module.exports = mongoose.model("user", userSchema);

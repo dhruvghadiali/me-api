@@ -1,36 +1,23 @@
 const Joi = require("joi");
 
 const validationMessage = require("@MEHelpers/validationMessage");
+const validationConst = require("@MEHelpers/validationConst");
 
+const { emailRegex, phoneRegex } = require("@MEUtils/utility");
 const {
-  emailRegex,
-  phoneRegex,
   isCityExists,
   isStateExists,
   isZipcodeExists,
   isDistrictExists,
   isAreaNameExists,
   checkValidObjectId,
-} = require("@MEUtils/utility");
-const {
-  emailMinLength,
-  emailMaxLength,
-  addressMinLength,
-  addressMaxLength,
-  phoneNumberLength,
-  organizationNameMinLength,
-  organizationNameMaxLength,
-  organizationShortNameMinLength,
-  organizationShortNameMaxLength,
-  governmentRegistrationNumberMinLength,
-  governmentRegistrationNumberMaxLength,
-} = require("@MEHelpers/validationConst");
+} = require("@MEUtils/reqBodyValidator");
 
 exports.postOrganizationReqBodyValidationSchema = Joi.object({
   name: Joi.string()
     .trim()
-    .min(organizationNameMinLength)
-    .max(organizationNameMaxLength)
+    .min(validationConst.organizationNameMinLength)
+    .max(validationConst.organizationNameMaxLength)
     .required()
     .messages({
       "string.base": validationMessage.organizationNameInvalidFormate,
@@ -41,8 +28,8 @@ exports.postOrganizationReqBodyValidationSchema = Joi.object({
     }),
   short_name: Joi.string()
     .trim()
-    .min(organizationShortNameMinLength)
-    .max(organizationShortNameMaxLength)
+    .min(validationConst.organizationShortNameMinLength)
+    .max(validationConst.organizationShortNameMaxLength)
     .messages({
       "string.base": validationMessage.organizationShortNameInvalidFormate,
       "string.empty": validationMessage.organizationShortNameEmpty,
@@ -52,8 +39,8 @@ exports.postOrganizationReqBodyValidationSchema = Joi.object({
   email: Joi.string()
     .trim()
     .pattern(emailRegex)
-    .min(emailMinLength)
-    .max(emailMaxLength)
+    .min(validationConst.emailMinLength)
+    .max(validationConst.emailMaxLength)
     .required()
     .messages({
       "string.base": validationMessage.emailInvalidFormate,
@@ -66,8 +53,8 @@ exports.postOrganizationReqBodyValidationSchema = Joi.object({
   phone_number: Joi.string()
     .trim()
     .pattern(phoneRegex)
-    .min(phoneNumberLength)
-    .max(phoneNumberLength)
+    .min(validationConst.phoneNumberLength)
+    .max(validationConst.phoneNumberLength)
     .required()
     .messages({
       "string.base": validationMessage.phoneNumberInvalidFormate,
@@ -79,8 +66,8 @@ exports.postOrganizationReqBodyValidationSchema = Joi.object({
     }),
   government_registration_number: Joi.string()
     .trim()
-    .min(governmentRegistrationNumberMinLength)
-    .max(governmentRegistrationNumberMaxLength)
+    .min(validationConst.governmentRegistrationNumberMinLength)
+    .max(validationConst.governmentRegistrationNumberMaxLength)
     .required()
     .messages({
       "string.base":
@@ -93,8 +80,8 @@ exports.postOrganizationReqBodyValidationSchema = Joi.object({
   address: Joi.string()
     .trim()
     .lowercase()
-    .min(addressMinLength)
-    .max(addressMaxLength)
+    .min(validationConst.addressMinLength)
+    .max(validationConst.addressMaxLength)
     .required()
     .messages({
       "string.base": validationMessage.addressInvalidFormate,
@@ -162,8 +149,8 @@ exports.postOrganizationReqBodyValidationSchema = Joi.object({
 exports.putOrganizationReqBodyValidationSchema = Joi.object({
   name: Joi.string()
     .trim()
-    .min(organizationNameMinLength)
-    .max(organizationNameMaxLength)
+    .min(validationConst.organizationNameMinLength)
+    .max(validationConst.organizationNameMaxLength)
     .messages({
       "string.base": validationMessage.organizationNameInvalidFormate,
       "string.empty": validationMessage.organizationNameEmpty,
@@ -172,8 +159,8 @@ exports.putOrganizationReqBodyValidationSchema = Joi.object({
     }),
   short_name: Joi.string()
     .trim()
-    .min(organizationShortNameMinLength)
-    .max(organizationShortNameMaxLength)
+    .min(validationConst.organizationShortNameMinLength)
+    .max(validationConst.organizationShortNameMaxLength)
     .messages({
       "string.base": validationMessage.organizationShortNameInvalidFormate,
       "string.empty": validationMessage.organizationShortNameEmpty,
@@ -183,8 +170,8 @@ exports.putOrganizationReqBodyValidationSchema = Joi.object({
   email: Joi.string()
     .trim()
     .pattern(emailRegex)
-    .min(emailMinLength)
-    .max(emailMaxLength)
+    .min(validationConst.emailMinLength)
+    .max(validationConst.emailMaxLength)
     .messages({
       "string.base": validationMessage.organizationShortNameInvalidFormate,
       "string.empty": validationMessage.organizationShortNameEmpty,
@@ -195,8 +182,8 @@ exports.putOrganizationReqBodyValidationSchema = Joi.object({
   phone_number: Joi.string()
     .trim()
     .pattern(phoneRegex)
-    .min(phoneNumberLength)
-    .max(phoneNumberLength)
+    .min(validationConst.phoneNumberLength)
+    .max(validationConst.phoneNumberLength)
     .messages({
       "string.base": validationMessage.phoneNumberInvalidFormate,
       "string.empty": validationMessage.phoneNumberEmpty,
@@ -206,8 +193,8 @@ exports.putOrganizationReqBodyValidationSchema = Joi.object({
     }),
   government_registration_number: Joi.string()
     .trim()
-    .min(governmentRegistrationNumberMinLength)
-    .max(governmentRegistrationNumberMaxLength)
+    .min(validationConst.governmentRegistrationNumberMinLength)
+    .max(validationConst.governmentRegistrationNumberMaxLength)
     .messages({
       "string.base":
         validationMessage.governmentRegistrationNumberInvalidFormate,
@@ -218,8 +205,8 @@ exports.putOrganizationReqBodyValidationSchema = Joi.object({
   address: Joi.string()
     .trim()
     .lowercase()
-    .min(addressMinLength)
-    .max(addressMaxLength)
+    .min(validationConst.addressMinLength)
+    .max(validationConst.addressMaxLength)
     .messages({
       "string.base": validationMessage.addressInvalidFormate,
       "string.empty": validationMessage.addressEmpty,

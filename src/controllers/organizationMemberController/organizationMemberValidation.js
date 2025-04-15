@@ -1,33 +1,17 @@
 const Joi = require("joi");
 
 const validationMessage = require("@MEHelpers/validationMessage");
+const validationConst = require("@MEHelpers/validationConst");
 
+const { emailRegex, phoneRegex } = require("@MEUtils/utility");
 const {
-  emailRegex,
-  phoneRegex,
   isCityExists,
   isStateExists,
   isZipcodeExists,
   isDistrictExists,
   isAreaNameExists,
   checkValidObjectId,
-} = require("@MEUtils/utility");
-const {
-  emailMaxLength,
-  emailMinLength,
-  addressMinLength,
-  addressMaxLength,
-  phoneNumberLength,
-  lastNameMinLength,
-  lastNameMaxLength,
-  firstNameMinLength,
-  firstNameMaxLength,
-  aadhaarNumberLength,
-  organizationMembersDetailsMinLength,
-  organizationMembersDetailsMaxLength,
-  organizationMemberPositionMinLength,
-  organizationMemberPositionMaxLength,
-} = require("@MEHelpers/validationConst");
+} = require("@MEUtils/reqBodyValidator");
 
 const checkDuplicateRecord = (value, helpers) => {
   const names = value.map(
@@ -82,8 +66,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
     Joi.object({
       first_name: Joi.string()
         .trim()
-        .min(firstNameMinLength)
-        .max(firstNameMaxLength)
+        .min(validationConst.firstNameMinLength)
+        .max(validationConst.firstNameMaxLength)
         .required()
         .messages({
           "string.base": validationMessage.firstNameInvalidFormate,
@@ -94,8 +78,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
         }),
       last_name: Joi.string()
         .trim()
-        .min(lastNameMinLength)
-        .max(lastNameMaxLength)
+        .min(validationConst.lastNameMinLength)
+        .max(validationConst.lastNameMaxLength)
         .required()
         .messages({
           "string.base": validationMessage.lastNameInvalidFormate,
@@ -107,8 +91,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
       email: Joi.string()
         .trim()
         .pattern(emailRegex)
-        .min(emailMinLength)
-        .max(emailMaxLength)
+        .min(validationConst.emailMinLength)
+        .max(validationConst.emailMaxLength)
         .required()
         .messages({
           "string.base": validationMessage.emailInvalidFormate,
@@ -121,8 +105,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
       phone_number: Joi.string()
         .trim()
         .pattern(phoneRegex)
-        .min(phoneNumberLength)
-        .max(phoneNumberLength)
+        .min(validationConst.phoneNumberLength)
+        .max(validationConst.phoneNumberLength)
         .required()
         .messages({
           "string.base": validationMessage.phoneNumberInvalidFormate,
@@ -135,8 +119,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
       position: Joi.string()
         .trim()
         .lowercase()
-        .min(organizationMemberPositionMinLength)
-        .max(organizationMemberPositionMaxLength)
+        .min(validationConst.organizationMemberPositionMinLength)
+        .max(validationConst.organizationMemberPositionMaxLength)
         .required()
         .messages({
           "string.base":
@@ -149,8 +133,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
       aadhaar_number: Joi.string()
         .trim()
         .lowercase()
-        .min(aadhaarNumberLength)
-        .max(aadhaarNumberLength)
+        .min(validationConst.aadhaarNumberLength)
+        .max(validationConst.aadhaarNumberLength)
         .required()
         .messages({
           "string.base": validationMessage.aadhaarNumberInvalidFormate,
@@ -162,8 +146,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
       address: Joi.string()
         .trim()
         .lowercase()
-        .min(addressMinLength)
-        .max(addressMaxLength)
+        .min(validationConst.addressMinLength)
+        .max(validationConst.addressMaxLength)
         .required()
         .messages({
           "string.base": validationMessage.addressInvalidFormate,
@@ -229,8 +213,8 @@ exports.postOrganizationMembersReqBodyValidationSchema = Joi.array()
           validationMessage.organizationMemberDetailsUnknownProperty,
       })
   )
-  .min(organizationMembersDetailsMinLength)
-  .max(organizationMembersDetailsMaxLength)
+  .min(validationConst.organizationMembersDetailsMinLength)
+  .max(validationConst.organizationMembersDetailsMaxLength)
   .required()
   .custom(checkDuplicateRecord)
   .messages({
@@ -248,8 +232,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
     Joi.object({
       first_name: Joi.string()
         .trim()
-        .min(firstNameMinLength)
-        .max(firstNameMaxLength)
+        .min(validationConst.firstNameMinLength)
+        .max(validationConst.firstNameMaxLength)
         .messages({
           "string.base": validationMessage.firstNameInvalidFormate,
           "string.empty": validationMessage.firstNameEmpty,
@@ -258,8 +242,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
         }),
       last_name: Joi.string()
         .trim()
-        .min(lastNameMinLength)
-        .max(lastNameMaxLength)
+        .min(validationConst.lastNameMinLength)
+        .max(validationConst.lastNameMaxLength)
         .messages({
           "string.base": validationMessage.lastNameInvalidFormate,
           "string.empty": validationMessage.lastNameEmpty,
@@ -269,8 +253,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
       email: Joi.string()
         .trim()
         .pattern(emailRegex)
-        .min(emailMinLength)
-        .max(emailMaxLength)
+        .min(validationConst.emailMinLength)
+        .max(validationConst.emailMaxLength)
         .messages({
           "string.base": validationMessage.emailInvalidFormate,
           "string.empty": validationMessage.emailEmpty,
@@ -281,8 +265,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
       phone_number: Joi.string()
         .trim()
         .pattern(phoneRegex)
-        .min(phoneNumberLength)
-        .max(phoneNumberLength)
+        .min(validationConst.phoneNumberLength)
+        .max(validationConst.phoneNumberLength)
         .messages({
           "string.base": validationMessage.phoneNumberInvalidFormate,
           "string.empty": validationMessage.phoneNumberEmpty,
@@ -293,8 +277,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
       position: Joi.string()
         .trim()
         .lowercase()
-        .min(organizationMemberPositionMinLength)
-        .max(organizationMemberPositionMaxLength)
+        .min(validationConst.organizationMemberPositionMinLength)
+        .max(validationConst.organizationMemberPositionMaxLength)
         .messages({
           "string.base":
             validationMessage.organizationMemberPositionInvalidFormate,
@@ -305,8 +289,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
       aadhaar_number: Joi.string()
         .trim()
         .lowercase()
-        .min(aadhaarNumberLength)
-        .max(aadhaarNumberLength)
+        .min(validationConst.aadhaarNumberLength)
+        .max(validationConst.aadhaarNumberLength)
         .messages({
           "string.base": validationMessage.aadhaarNumberInvalidFormate,
           "string.empty": validationMessage.aadhaarNumberEmpty,
@@ -316,8 +300,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
       address: Joi.string()
         .trim()
         .lowercase()
-        .min(addressMinLength)
-        .max(addressMaxLength)
+        .min(validationConst.addressMinLength)
+        .max(validationConst.addressMaxLength)
         .messages({
           "string.base": validationMessage.addressInvalidFormate,
           "string.empty": validationMessage.addressEmpty,
@@ -371,8 +355,8 @@ exports.putOrganizationMembersReqBodyValidationSchema = Joi.array()
           validationMessage.organizationMemberDetailsUnknownProperty,
       })
   )
-  .min(organizationMembersDetailsMinLength)
-  .max(organizationMembersDetailsMaxLength)
+  .min(validationConst.organizationMembersDetailsMinLength)
+  .max(validationConst.organizationMembersDetailsMaxLength)
   .required()
   .custom(checkDuplicateRecord)
   .messages({

@@ -1,6 +1,10 @@
 const Joi = require("joi");
 
 const validationMessage = require("@MEHelpers/validationMessage");
+const {
+  schoolAdminSignUpReqBodyValidationSchema,
+} = require("@MEControllers/schoolAdminAuthController/schoolAdminAuthValidation");
+const validationConst = require("@MEHelpers/validationConst");
 
 const {
   isCityExists,
@@ -9,22 +13,17 @@ const {
   isDistrictExists,
   isAreaNameExists,
   checkValidObjectId,
-} = require("@MEUtils/utility");
-const {
-  addressMinLength,
-  addressMaxLength,
-  organizationMembersDetailsMinLength,
-  organizationMembersDetailsMaxLength,
-} = require("@MEHelpers/validationConst");
+} = require("@MEUtils/reqBodyValidator");
 
 exports.postSchoolAddressReqBodyValidationSchema = Joi.array()
   .items(
     Joi.object({
+      user: schoolAdminSignUpReqBodyValidationSchema,
       address: Joi.string()
         .trim()
         .lowercase()
-        .min(addressMinLength)
-        .max(addressMaxLength)
+        .min(validationConst.addressMinLength)
+        .max(validationConst.addressMaxLength)
         .required()
         .messages({
           "string.base": validationMessage.addressInvalidFormate,
@@ -90,8 +89,8 @@ exports.postSchoolAddressReqBodyValidationSchema = Joi.array()
           validationMessage.organizationMemberDetailsUnknownProperty,
       })
   )
-  .min(organizationMembersDetailsMinLength)
-  .max(organizationMembersDetailsMaxLength)
+  .min(validationConst.organizationMembersDetailsMinLength)
+  .max(validationConst.organizationMembersDetailsMaxLength)
   .required()
   .messages({
     "array.base": validationMessage.organizationMembersDetailsMustBeArray,
@@ -103,14 +102,14 @@ exports.postSchoolAddressReqBodyValidationSchema = Joi.array()
     "any.required": validationMessage.organizationMembersDetailsRequired,
   });
 
-exports.puttSchoolAddressReqBodyValidationSchema = Joi.array()
+exports.putSchoolAddressReqBodyValidationSchema = Joi.array()
   .items(
     Joi.object({
       address: Joi.string()
         .trim()
         .lowercase()
-        .min(addressMinLength)
-        .max(addressMaxLength)
+        .min(validationConst.addressMinLength)
+        .max(validationConst.addressMaxLength)
         .messages({
           "string.base": validationMessage.addressInvalidFormate,
           "string.empty": validationMessage.addressEmpty,
@@ -164,8 +163,8 @@ exports.puttSchoolAddressReqBodyValidationSchema = Joi.array()
           validationMessage.organizationMemberDetailsUnknownProperty,
       })
   )
-  .min(organizationMembersDetailsMinLength)
-  .max(organizationMembersDetailsMaxLength)
+  .min(validationConst.organizationMembersDetailsMinLength)
+  .max(validationConst.organizationMembersDetailsMaxLength)
   .required()
   .messages({
     "array.base": validationMessage.organizationMembersDetailsMustBeArray,
