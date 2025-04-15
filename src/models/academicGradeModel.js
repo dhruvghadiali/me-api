@@ -2,7 +2,7 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 
 const validationMessage = require("@MEHelpers/validationMessage");
-const { isActiveUserValidator } = require("@MEUtils/modelValidator");
+const { isActiveUserValidator } = require("@MEHelpers/modelValidator");
 
 const { Schema } = mongoose;
 

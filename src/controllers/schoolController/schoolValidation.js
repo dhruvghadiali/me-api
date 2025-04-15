@@ -6,20 +6,20 @@ const validationMessage = require("@MEHelpers/validationMessage");
 const validationConst = require("@MEHelpers/validationConst");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const { setValidationMessage } = require("@MEUtils/utility");
 const {
-  setValidationMessage,
   emailRegex,
   phoneRegex,
   youtubeURLRegex,
   facebookURLRegex,
   instagramURLRegex,
-} = require("@MEUtils/utility");
+} = require("@MEHelpers/regex");
 
 const {
   isSchoolTypeExists,
   checkValidObjectId,
   isEducationBoardsExists,
-} = require("@MEUtils/reqBodyValidator");
+} = require("@MEHelpers/reqBodyValidator");
 const {
   postOrganizationReqBodyValidationSchema,
 } = require("@MEControllers/organizationController/organizationValidation");

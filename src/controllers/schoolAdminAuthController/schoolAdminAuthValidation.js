@@ -3,7 +3,7 @@ const Joi = require("joi");
 const validationMessage = require("@MEHelpers/validationMessage");
 const validationConst = require("@MEHelpers/validationConst");
 
-const { emailRegex, phoneRegex } = require("@MEUtils/utility");
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
 exports.schoolAdminSignUpReqBodyValidationSchema = Joi.object({
   first_name: Joi.string()

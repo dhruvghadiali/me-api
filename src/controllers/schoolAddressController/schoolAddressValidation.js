@@ -13,7 +13,7 @@ const {
   isDistrictExists,
   isAreaNameExists,
   checkValidObjectId,
-} = require("@MEUtils/reqBodyValidator");
+} = require("@MEHelpers/reqBodyValidator");
 
 exports.postSchoolAddressReqBodyValidationSchema = Joi.array()
   .items(

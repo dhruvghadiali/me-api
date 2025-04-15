@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const validationMessage = require("@MEHelpers/validationMessage");
 const validationConst = require("@MEHelpers/validationConst");
 
-const { emailRegex, phoneRegex } = require("@MEUtils/utility");
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
 const { Schema } = mongoose;
 

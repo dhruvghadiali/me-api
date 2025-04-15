@@ -3,7 +3,7 @@ const Joi = require("joi");
 const validationMessage = require("@MEHelpers/validationMessage");
 const validationConst = require("@MEHelpers/validationConst");
 
-const { emailRegex, phoneRegex } = require("@MEUtils/utility");
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
   isCityExists,
   isStateExists,
@@ -11,7 +11,7 @@ const {
   isDistrictExists,
   isAreaNameExists,
   checkValidObjectId,
-} = require("@MEUtils/reqBodyValidator");
+} = require("@MEHelpers/reqBodyValidator");
 
 exports.postOrganizationReqBodyValidationSchema = Joi.object({
   name: Joi.string()
