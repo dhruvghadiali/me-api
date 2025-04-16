@@ -21,14 +21,7 @@ exports.getAcademicGrades = asyncHandler(async (req, res, next) => {
       "created_by",
       "updated_by",
     ])
-    .populate({
-      path: "created_by_user_info",
-      select: ["username"],
-    })
-    .populate({
-      path: "updated_by_user_info",
-      select: ["username"],
-    })
+    .populate("created_by updated_by")
     .sort({ academic_grade: 1 });
 
   // Send response
@@ -79,16 +72,7 @@ exports.addAcademicGrade = asyncHandler(async (req, res, next) => {
     delete response._doc.__v;
 
     // Populate the created_by and updated_by username
-    await response.populate([
-      {
-        path: "created_by_user_info",
-        select: ["username"],
-      },
-      {
-        path: "updated_by_user_info",
-        select: ["username"],
-      },
-    ]);
+    await response.populate("created_by updated_by");
 
     // Send response
     res.status(201).json({
@@ -119,14 +103,7 @@ exports.updateAcademicGrade = asyncHandler(async (req, res, next) => {
       runValidators: true,
     }
   )
-    .populate({
-      path: "created_by_user_info",
-      select: ["username"],
-    })
-    .populate({
-      path: "updated_by_user_info",
-      select: ["username"],
-    })
+    .populate("created_by updated_by")
     .select([
       "academic_grade",
       "created_at",

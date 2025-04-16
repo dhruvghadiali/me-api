@@ -103,6 +103,7 @@ const validationMessage = {
   schoolTypeNameRequired: "School type is required",
   schoolTypeNameMaxLength: "School type must be less then 100 characters",
   schoolTypeNameMinLength: "School type must be greater then 2 characters",
+  invalidOrganization: "Invalid organization details",
   organizationDetailsRequired: "Organization details are required",
   organizationDetailsMustBeObject:
     "Organization details must be object formate",

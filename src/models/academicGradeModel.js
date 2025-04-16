@@ -47,39 +47,15 @@ academicGradeSchema.pre("save", async function (next) {
   next();
 });
 
-academicGradeSchema.virtual("created_by_user_info", {
-  ref: "user",
-  localField: "created_by",
-  foreignField: "_id",
-});
-
-academicGradeSchema.virtual("updated_by_user_info", {
-  ref: "user",
-  localField: "updated_by",
-  foreignField: "_id",
-});
-
-academicGradeSchema.virtual("created_by_user").get(function () {
-  return this.created_by_user_info?.[0]?.username || null;
-});
-
-academicGradeSchema.virtual("updated_by_user").get(function () {
-  return this.updated_by_user_info?.[0]?.username || null;
-});
-
 academicGradeSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
-    response.created_by = response?.created_by_user
-      ? response.created_by_user
+    response.created_by = response?.created_by?.username
+      ? response.created_by.username
       : null;
-    response.updated_by = response?.updated_by_user
-      ? response.updated_by_user
+    response.updated_by = response?.updated_by?.username
+      ? response.updated_by.username
       : null;
-    delete response.created_by_user_info;
-    delete response.updated_by_user_info;
-    delete response.created_by_user;
-    delete response.updated_by_user;
     return response;
   },
 });

@@ -11,37 +11,45 @@ const {
   isCityExistsValidator,
   isAreaNameExistsValidator,
   isZipcodeExistsValidator,
+  isOrganizationExistsValidator,
 } = require("@MEHelpers/modelValidator");
 
 const { Schema } = mongoose;
 
-const organizationSchema = Schema(
+const organizationMemberSchema = Schema(
   {
-    name: {
-      type: String,
-      trim: true,
+    organization: {
+      type: Schema.Types.ObjectId,
       index: true,
       unique: true,
-      required: [true, validationMessage.organizationNameRequired],
-      maxlength: [
-        validationConst.organizationNameMaxLength,
-        validationMessage.organizationNameMaxLength,
-      ],
-      minlength: [
-        validationConst.organizationNameMinLength,
-        validationMessage.organizationNameMinLength,
-      ],
+      required: [true, validationMessage.organizationDetailsRequired],
+      ref: "state",
+      validate: isOrganizationExistsValidator,
     },
-    short_name: {
+    first_name: {
       type: String,
       trim: true,
+      required: [true, validationMessage.firstNameRequired],
       maxlength: [
-        validationConst.organizationShortNameMaxLength,
-        validationMessage.organizationShortNameMaxLength,
+        validationConst.firstNameMaxLength,
+        validationMessage.firstNameMaxLength,
       ],
       minlength: [
-        validationConst.organizationShortNameMinLength,
-        validationMessage.organizationShortNameMinLength,
+        validationConst.firstNameMinLength,
+        validationMessage.firstNameMinLength,
+      ],
+    },
+    last_name: {
+      type: String,
+      trim: true,
+      required: [true, validationMessage.lastNameRequired],
+      maxlength: [
+        validationConst.lastNameMaxLength,
+        validationMessage.lastNameMaxLength,
+      ],
+      minlength: [
+        validationConst.lastNameMinLength,
+        validationMessage.lastNameMinLength,
       ],
     },
     email: {
@@ -72,17 +80,32 @@ const organizationSchema = Schema(
       ],
       match: [regex.phoneRegex, validationMessage.phoneNumberInvalid],
     },
-    government_registration_number: {
+    position: {
       type: String,
       trim: true,
-      required: [true, validationMessage.governmentRegistrationNumberRequired],
+      lowercase: true,
+      required: [true, validationMessage.organizationMemberPositionRequired],
       maxlength: [
-        validationConst.governmentRegistrationNumberMaxLength,
-        validationMessage.governmentRegistrationNumberMaxLength,
+        validationConst.organizationMemberPositionMaxLength,
+        validationMessage.organizationMemberPositionMaxLength,
       ],
       minlength: [
-        validationConst.governmentRegistrationNumberMinLength,
-        validationMessage.governmentRegistrationNumberMinLength,
+        validationConst.organizationMemberPositionMinLength,
+        validationMessage.organizationMemberPositionMinLength,
+      ],
+    },
+    aadhaar_number: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: [true, validationMessage.aadhaarNumberRequired],
+      maxlength: [
+        validationConst.aadhaarNumberLength,
+        validationMessage.aadhaarNumberMaxLength,
+      ],
+      minlength: [
+        validationConst.aadhaarNumberLength,
+        validationMessage.aadhaarNumberMinLength,
       ],
     },
     address: {
@@ -149,7 +172,7 @@ const organizationSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-organizationSchema.pre("save", async function (next) {
+organizationMemberSchema.pre("save", async function (next) {
   let now = moment.utc(moment());
 
   this.updated_at = now;
@@ -158,7 +181,7 @@ organizationSchema.pre("save", async function (next) {
   next();
 });
 
-organizationSchema.set("toJSON", {
+organizationMemberSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
     response.created_by = response?.created_by?.username
@@ -170,6 +193,9 @@ organizationSchema.set("toJSON", {
     return response;
   },
 });
-organizationSchema.set("toObject", { virtuals: true });
+organizationMemberSchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("organization", organizationSchema);
+module.exports = mongoose.model(
+  "organization_member",
+  organizationMemberSchema
+);
