@@ -2,54 +2,44 @@ const User = require("@MEModels/userModel");
 const City = require("@MEModels/cityModel");
 const State = require("@MEModels/stateModel");
 const Zipcode = require("@MEModels/zipcodeModel");
-const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
-const validationMessage = require("@MEHelpers/validationMessage");
+const District = require("@MEModels/districtModel");
 
-exports.isActiveUserValidator = {
-  validator: async function (value) {
-    const user = await User.findById(value);
-    return !!(user && user.is_active);
-  },
-  message: validationMessage.usernameInvalid,
+const isActiveUserValidator = async () => {
+  const user = await User.findById(value);
+  return !!(user && user.is_active);
 };
 
-exports.isStateExistsValidator = {
-  validator: async function (value) {
-    const stateExists = await State.findById(value);
-    return !!stateExists;
-  },
-  message: validationMessage.stateNameInvalid,
+const isStateExistsValidator = async () => {
+  const stateExists = await State.findById(value);
+  return !!(stateExists && stateExists.is_active);
 };
 
-exports.isDistrictExistsValidator = {
-  validator: async function (value) {
-    const districtExists = await District.findById(value);
-    return !!districtExists;
-  },
-  message: validationMessage.districtNameInvalid,
+const isDistrictExistsValidator = async () => {
+  const districtExists = await District.findById(value);
+  return !!(districtExists && districtExists.is_active);
 };
 
-exports.isCityExistsValidator = {
-  validator: async function (value) {
-    const cityExists = await City.findById(value);
-    return !!cityExists;
-  },
-  message: validationMessage.cityNameInvalid,
+const isCityExistsValidator = async () => {
+  const cityExists = await City.findById(value);
+  return !!(cityExists && cityExists.is_active);
 };
 
-exports.isAreaNameExistsValidator = {
-  validator: async function (value) {
-    const areaNameExists = await AreaName.findById(value);
-    return !!areaNameExists;
-  },
-  message: validationMessage.areaNameInvalid,
+const isAreaNameExistsValidator = async () => {
+  const areaNameExists = await AreaName.findById(value);
+  return !!(areaNameExists && areaNameExists.is_active);
 };
 
-exports.isZipcodeExistsValidator = {
-  validator: async function (value) {
-    const zipcodeExists = await Zipcode.findById(value);
-    return !!zipcodeExists;
-  },
-  message: validationMessage.invalidZipcode,
+const isZipcodeExistsValidator = async () => {
+  const zipcodeExists = await Zipcode.findById(value);
+  return !!(zipcodeExists && zipcodeExists.is_active);
+};
+
+module.exports = {
+  isActiveUserValidator,
+  isCityExistsValidator,
+  isStateExistsValidator,
+  isZipcodeExistsValidator,
+  isDistrictExistsValidator,
+  isAreaNameExistsValidator,
 };

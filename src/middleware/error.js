@@ -32,7 +32,14 @@ const errorHandler = (error, req, res, next) => {
       break;
     case "ValidationError":
       let message = Object.values(error.errors)[0];
-      error = new ErrorResponse(message, 400);
+      if (message.name === "CastError" && message.kind === "ObjectId") {
+        error = new ErrorResponse(
+          `${responseMessage.invalidObjectId} ${message.path}`,
+          400
+        );
+      } else {
+        error = new ErrorResponse(message, 400);
+      }
       break;
     default:
   }

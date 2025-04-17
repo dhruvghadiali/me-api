@@ -26,13 +26,13 @@ const schoolTypeSchema = Schema(
       type: Schema.Types.ObjectId,
       required: [true, validationMessage.usernameRequired],
       ref: "user",
-      validate: isActiveUserValidator,
+      // validate: isActiveUserValidator(),
     },
     updated_by: {
       type: Schema.Types.ObjectId,
       required: [true, validationMessage.usernameRequired],
       ref: "user",
-      validate: isActiveUserValidator,
+      // validate: isActiveUserValidator(),
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }

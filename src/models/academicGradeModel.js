@@ -1,8 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage");
 const { isActiveUserValidator } = require("@MEHelpers/modelValidator");
+const {
+  academicGradeMinChar,
+  academicGradeMaxChar,
+} = require("@MEHelpers/validationConst");
+const {
+  academicGradeRequired,
+  academicGradeMaxLength,
+  academicGradeMinLength,
+  usernameRequired,
+  usernameInvalid,
+} = require("@MEHelpers/validationMessage/index");
 
 const { Schema } = mongoose;
 
@@ -14,9 +24,9 @@ const academicGradeSchema = Schema(
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.academicGradeRequired],
-      maxlength: [100, validationMessage.academicGradeMaxLength],
-      minlength: [2, validationMessage.academicGradeMinLength],
+      required: [true, academicGradeRequired],
+      maxlength: [academicGradeMaxChar, academicGradeMaxLength],
+      minlength: [academicGradeMinChar, academicGradeMinLength],
     },
     is_active: {
       type: Boolean,
@@ -24,15 +34,25 @@ const academicGradeSchema = Schema(
     },
     created_by: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.usernameRequired],
+      required: [true, usernameRequired],
       ref: "user",
-      validate: isActiveUserValidator,
+      validate: {
+        validator: async function (value) {
+          await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
     updated_by: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.usernameRequired],
+      required: [true, usernameRequired],
       ref: "user",
-      validate: isActiveUserValidator,
+      validate: {
+        validator: async function (value) {
+          await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
@@ -49,7 +69,7 @@ academicGradeSchema.pre("save", async function (next) {
 
 academicGradeSchema.set("toJSON", {
   virtuals: true,
-  transform: function (doc, response) {
+  transform: function (_, response) {
     response.created_by = response?.created_by?.username
       ? response.created_by.username
       : null;

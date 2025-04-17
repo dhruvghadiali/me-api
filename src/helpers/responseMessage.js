@@ -3,6 +3,7 @@ const responseMessage = {
   resourceNotFound: "Resource not found with id of",
   resourceNotFoundMessage: "Resource not found",
   invalidCredentials: "Invalid credentials",
+  invalidObjectId: "Invalid ObjectId provided for",
   unauthorizedUser: "Unauthorized: Access is denied due to invalid credentials",
   jwtTokenExpire: "Unauthorized: Access token is expired",
   jwtTokenError: "Not authorize to access this route",

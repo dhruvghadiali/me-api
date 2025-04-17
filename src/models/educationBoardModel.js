@@ -1,8 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage");
 const { isActiveUserValidator } = require("@MEHelpers/modelValidator");
+const {
+  educationBoardMinChar,
+  educationBoardMaxChar,
+} = require("@MEHelpers/validationConst");
+const {
+  usernameInvalid,
+  usernameRequired,
+  educationBoardRequired,
+  educationBoardMaxLength,
+  educationBoardMinLength,
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -14,9 +24,9 @@ const educationBoardSchema = Schema(
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.educationBoardRequired],
-      maxlength: [100, validationMessage.educationBoardMaxLength],
-      minlength: [2, validationMessage.educationBoardMinLength],
+      required: [true, educationBoardRequired],
+      maxlength: [educationBoardMaxChar, educationBoardMaxLength],
+      minlength: [educationBoardMinChar, educationBoardMinLength],
     },
     is_active: {
       type: Boolean,
@@ -24,15 +34,25 @@ const educationBoardSchema = Schema(
     },
     created_by: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.usernameRequired],
+      required: [true, usernameRequired],
       ref: "user",
-      validate: isActiveUserValidator,
+      validate: {
+        validator: async function (value) {
+          await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
     updated_by: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.usernameRequired],
+      required: [true, usernameRequired],
       ref: "user",
-      validate: isActiveUserValidator,
+      validate: {
+        validator: async function (value) {
+          await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
