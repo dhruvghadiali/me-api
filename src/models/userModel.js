@@ -3,8 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage");
-const validationConst = require("@MEHelpers/validationConst");
+const validationMessage = require("@MEHelpers/validationMessage/validationMessage");
+const validationConst = require("@MEHelpers/validationConst/validationConst");
 
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
@@ -144,11 +144,11 @@ userSchema.methods.getSignedJwtToken = function () {
   });
 };
 
-userSchema.set("toObject", { virtuals: true });
-userSchema.set("toJSON", { virtuals: true });
-
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+userSchema.set("toObject", { virtuals: true });
+userSchema.set("toJSON", { virtuals: true });
 
 module.exports = mongoose.model("user", userSchema);

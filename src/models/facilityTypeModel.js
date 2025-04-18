@@ -1,7 +1,7 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage");
+const validationMessage = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 

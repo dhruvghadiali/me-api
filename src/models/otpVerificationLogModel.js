@@ -2,7 +2,7 @@ const moment = require("moment");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage");
+const validationMessage = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -11,7 +11,7 @@ const otpVerificationLog = Schema(
     user: {
       type: Schema.Types.ObjectId,
       required: [true, validationMessage.userIdRequired],
-      ref: 'user'
+      ref: "user",
     },
     verification_token: {
       type: String,
@@ -37,7 +37,7 @@ const otpVerificationLog = Schema(
       enum: ["FP", "SU"],
       default: "SU",
     },
-    otp_expire_time:{
+    otp_expire_time: {
       type: Date,
       required: [true, validationMessage.otpExpiryDateTimeRequired],
     },

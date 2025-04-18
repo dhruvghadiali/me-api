@@ -2,13 +2,13 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 
 const {
-  isStateExistsValidator,
   isActiveUserValidator,
-} = require("@MEHelpers/modelValidator");
+  isActiveStateExistsValidator,
+} = require("@MEHelpers/dbQuery");
 const {
   districtNameMinChar,
   districtNameMaxChar,
-} = require("@MEHelpers/validationConst");
+} = require("@MEHelpers/validationConst/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
@@ -17,7 +17,7 @@ const {
   districtNameRequired,
   districtNameMaxLength,
   districtNameMinLength,
-} = require("@MEHelpers/validationMessage");
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 

@@ -1,18 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const { isActiveUserValidator } = require("@MEHelpers/modelValidator");
+const { isActiveUserValidator } = require("@MEHelpers/dbQuery");
 const {
   educationBoardMinChar,
   educationBoardMaxChar,
-} = require("@MEHelpers/validationConst");
+} = require("@MEHelpers/validationConst/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
   educationBoardRequired,
   educationBoardMaxLength,
   educationBoardMinLength,
-} = require("@MEHelpers/validationMessage");
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 

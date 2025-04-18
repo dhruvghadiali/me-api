@@ -2,13 +2,13 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 
 const {
-  isCityExistsValidator,
   isActiveUserValidator,
-} = require("@MEHelpers/modelValidator");
+  isActiveCityExistsValidator,
+} = require("@MEHelpers/dbQuery");
 const {
   areaNameMaxChar,
   areaNameMinChar,
-} = require("@MEHelpers/validationConst");
+} = require("@MEHelpers/validationConst/validationConst");
 const {
   usernameInvalid,
   cityNameInvalid,
@@ -17,7 +17,7 @@ const {
   areaNameRequired,
   areaNameMaxLength,
   areaNameMinLength,
-} = require("@MEHelpers/validationMessage");
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -29,7 +29,7 @@ const areaNameSchema = Schema(
       ref: "city",
       validate: {
         validator: async function (value) {
-          await isCityExistsValidator(value);
+          return await isActiveCityExistsValidator(value);
         },
         message: cityNameInvalid,
       },
@@ -52,7 +52,7 @@ const areaNameSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },
@@ -63,7 +63,7 @@ const areaNameSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },

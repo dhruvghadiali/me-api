@@ -2,13 +2,13 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 
 const {
-  isDistrictExistsValidator,
   isActiveUserValidator,
-} = require("@MEHelpers/modelValidator");
+  isActiveDistrictExistsValidator,
+} = require("@MEHelpers/dbQuery");
 const {
   cityNameMaxChar,
   cityNameMinChar,
-} = require("@MEHelpers/validationConst");
+} = require("@MEHelpers/validationConst/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
@@ -17,7 +17,7 @@ const {
   cityNameMinLength,
   districtNameRequired,
   districtNameInvalid,
-} = require("@MEHelpers/validationMessage");
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -29,7 +29,7 @@ const citySchema = Schema(
       ref: "district",
       validate: {
         validator: async function (value) {
-          await isDistrictExistsValidator(value);
+          await isActiveDistrictExistsValidator(value);
         },
         message: districtNameInvalid,
       },
