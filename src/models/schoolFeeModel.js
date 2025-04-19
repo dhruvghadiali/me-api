@@ -21,7 +21,7 @@ const {
 
 const { Schema } = mongoose;
 
-const feeTypeSchema = Schema(
+const schoolFeeSchema = Schema(
   {
     school: {
       type: Schema.Types.ObjectId,
@@ -90,12 +90,12 @@ const feeTypeSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-feeTypeSchema.index(
+schoolFeeSchema.index(
   { school: 1, fee_type: 1, academic_grade: 1 },
   { unique: true, index: true }
 );
 
-feeTypeSchema.pre("save", async function (next) {
+schoolFeeSchema.pre("save", async function (next) {
   let now = moment.utc(moment());
 
   this.updated_at = now;
@@ -104,7 +104,7 @@ feeTypeSchema.pre("save", async function (next) {
   next();
 });
 
-feeTypeSchema.set("toJSON", {
+schoolFeeSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
     response.created_by = response?.created_by?.username
@@ -116,6 +116,6 @@ feeTypeSchema.set("toJSON", {
     return response;
   },
 });
-feeTypeSchema.set("toObject", { virtuals: true });
+schoolFeeSchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("school_fee_type", feeTypeSchema);
+module.exports = mongoose.model("school_fee", schoolFeeSchema);
