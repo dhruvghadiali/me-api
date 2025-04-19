@@ -15,3 +15,45 @@ exports.addSchool = asyncHandler(async (req, res, next) => {
     message: "School detail added successfully",
   });
 });
+
+exports.getActiveSchoolAddressSchools = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School detail get successfully",
+  });
+});
+
+exports.getSchools = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School detail get successfully",
+  });
+});
+
+exports.getSchool = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School detail get successfully",
+  });
+});
+
+exports.updateSchool = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School detail get successfully",
+  });
+});
+
+exports.restoreSchool = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School detail get successfully",
+  });
+});
+
+exports.deleteSchool = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School detail get successfully",
+  });
+});

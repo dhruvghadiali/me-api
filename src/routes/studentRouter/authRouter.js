@@ -186,19 +186,8 @@ router.route("/forgotten-password/reset-password").post(resetPassword);
 
 router.route("/change-password").post(changePassword);
 
-router.route("/schools").get(changePassword);
-
 router
   .route("/profile")
   .get(changePassword)
   .post(changePassword)
   .put(changePassword);
-
-router
-  .route("/admissions")
-  .get(changePassword)
-  .post(changePassword)
-  .put(changePassword)
-  .delete(changePassword);
-
-module.exports = router;

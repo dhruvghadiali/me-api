@@ -17,6 +17,7 @@ const schoolValidationMessage = {
   schoolNameRequired: "School name is required",
   schoolNameEmpty: "School name cannot be empty",
   schoolNameInvalidFormate: "School name must be string formate",
+  schoolNameInvalid: `Invalid school name. No matching school name found`,
   schoolNameMaxLength: `School name must be less then ${schoolNameMaxChar} characters`,
   schoolNameMinLength: `School name must be greater then ${schoolNameMinChar} characters`,
   schoolShortNameRequired: "School short name is required",

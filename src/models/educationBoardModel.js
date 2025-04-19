@@ -38,7 +38,7 @@ const educationBoardSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },
@@ -49,7 +49,7 @@ const educationBoardSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },

@@ -29,7 +29,7 @@ const districtSchema = Schema(
       ref: "state",
       validate: {
         validator: async function (value) {
-          await isStateExistsValidator(value);
+          return await isActiveStateExistsValidator(value);
         },
         message: stateNameInvalid,
       },
@@ -52,7 +52,7 @@ const districtSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },
@@ -63,7 +63,7 @@ const districtSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },

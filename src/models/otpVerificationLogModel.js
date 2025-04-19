@@ -2,7 +2,25 @@ const moment = require("moment");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage/validationMessage");
+const {
+  otpMaxNumber,
+  otpMinNumber,
+  verificationTokenMaxChar,
+  verificationTokenMinChar,
+} = require("@MEHelpers/validationConst/validationConst");
+const {
+  userIdRequired,
+  emailOTPRequired,
+  emailOTPMaxLength,
+  emailOTPMinLength,
+  phoneOTPRequired,
+  phoneOTPMaxLength,
+  phoneOTPMinLength,
+  verificationMaxLength,
+  verificationMinLength,
+  verificationTokenRequired,
+  otpExpiryDateTimeRequired,
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -10,27 +28,27 @@ const otpVerificationLog = Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.userIdRequired],
+      required: [true, userIdRequired],
       ref: "user",
     },
     verification_token: {
       type: String,
       trim: true,
-      required: [true, validationMessage.verificationTokenRequired],
-      maxlength: [200, validationMessage.verificationMaxLength],
-      minlength: [20, validationMessage.verificationMinLength],
+      required: [true, verificationTokenRequired],
+      maxlength: [verificationTokenMaxChar, verificationMaxLength],
+      minlength: [verificationTokenMinChar, verificationMinLength],
     },
     email_otp: {
       type: Number,
-      required: [true, validationMessage.emailOTPRequired],
-      max: [999999, validationMessage.emailOTPMaxLength],
-      min: [100000, validationMessage.emailOTPMinLength],
+      required: [true, emailOTPRequired],
+      max: [otpMaxNumber, emailOTPMaxLength],
+      min: [otpMinNumber, emailOTPMinLength],
     },
     phone_otp: {
       type: Number,
-      required: [true, validationMessage.phoneOTPRequired],
-      max: [999999, validationMessage.phoneOTPMaxLength],
-      min: [100000, validationMessage.phoneOTPMinLength],
+      required: [true, phoneOTPRequired],
+      max: [otpMaxNumber, phoneOTPMaxLength],
+      min: [otpMinNumber, phoneOTPMinLength],
     },
     verification_type: {
       type: String,
@@ -39,7 +57,7 @@ const otpVerificationLog = Schema(
     },
     otp_expire_time: {
       type: Date,
-      required: [true, validationMessage.otpExpiryDateTimeRequired],
+      required: [true, otpExpiryDateTimeRequired],
     },
     is_otp_verified: {
       type: Boolean,

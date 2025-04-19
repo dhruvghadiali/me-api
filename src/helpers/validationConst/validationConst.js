@@ -10,6 +10,7 @@ const facilityValidationConst = require("@MEHelpers/validationConst/facilityVali
 const areaNameValidationConst = require("@MEHelpers/validationConst/areaNameValidationConst");
 const districtValidationConst = require("@MEHelpers/validationConst/districtValidationConst");
 const schoolTypeValidationConst = require("@MEHelpers/validationConst/schoolTypeValidationConst");
+const admissionDocumentTypeConst = require("@MEHelpers/validationConst/admissionDocumentTypeConst");
 const organizationValidationConst = require("@MEHelpers/validationConst/organizationValidationConst");
 const facilityTypeValidationConst = require("@MEHelpers/validationConst/facilityTypeValidationConst");
 const academicGradeValidationConst = require("@MEHelpers/validationConst/academicGradeValidationConst");
@@ -29,6 +30,7 @@ const validationConst = {
   ...areaNameValidationConst,
   ...districtValidationConst,
   ...schoolTypeValidationConst,
+  ...admissionDocumentTypeConst,
   ...organizationValidationConst,
   ...facilityTypeValidationConst,
   ...academicGradeValidationConst,

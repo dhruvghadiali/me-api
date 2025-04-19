@@ -3,10 +3,41 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage/validationMessage");
-const validationConst = require("@MEHelpers/validationConst/validationConst");
-
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
+const {
+  emailMaxChar,
+  emailMinChar,
+  passwordMinChar,
+  phoneNumberChar,
+  usernameMaxChar,
+  usernameMinChar,
+  lastNameMaxChar,
+  lastNameMinChar,
+  firstNameMaxChar,
+  firstNameMinChar,
+  passwordMaxCharWithEncryption,
+} = require("@MEHelpers/validationConst/validationConst");
+
+const {
+  emailRequired,
+  emailMaxLength,
+  emailMinLength,
+  passwordRequired,
+  usernameRequired,
+  lastNameRequired,
+  passwordMinLength,
+  usernameMaxLength,
+  usernameMinLength,
+  lastNameMaxLength,
+  lastNameMinLength,
+  firstNameRequired,
+  firstNameMaxLength,
+  firstNameMinLength,
+  phoneNumberRequired,
+  phoneNumberMaxLength,
+  phoneNumberMinLength,
+  passwordMaxLengthWithEncryption,
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -15,82 +46,49 @@ const userSchema = Schema(
     first_name: {
       type: String,
       trim: true,
-      required: [true, validationMessage.firstNameRequired],
-      maxlength: [
-        validationConst.firstNameMaxLength,
-        validationMessage.firstNameMaxLength,
-      ],
-      minlength: [
-        validationConst.firstNameMinLength,
-        validationMessage.firstNameMinLength,
-      ],
+      required: [true, firstNameRequired],
+      maxlength: [firstNameMaxChar, firstNameMaxLength],
+      minlength: [firstNameMinChar, firstNameMinLength],
     },
     last_name: {
       type: String,
       trim: true,
-      required: [true, validationMessage.lastNameRequired],
-      maxlength: [
-        validationConst.lastNameMaxLength,
-        validationMessage.lastNameMaxLength,
-      ],
-      minlength: [
-        validationConst.lastNameMinLength,
-        validationMessage.lastNameMinLength,
-      ],
+      required: [true, lastNameRequired],
+      maxlength: [lastNameMaxChar, lastNameMaxLength],
+      minlength: [lastNameMinChar, lastNameMinLength],
     },
     email: {
       type: String,
       trim: true,
-      required: [true, validationMessage.emailRequired],
-      maxlength: [
-        validationConst.emailMaxLength,
-        validationMessage.emailMaxLength,
-      ],
-      minlength: [
-        validationConst.emailMinLength,
-        validationMessage.emailMinLength,
-      ],
-      match: [emailRegex, validationMessage.emailInvalid],
+      required: [true, emailRequired],
+      maxlength: [emailMaxChar, emailMaxLength],
+      minlength: [emailMinChar, emailMinLength],
+      match: [emailRegex, emailInvalid],
     },
     phone_number: {
       type: String,
       trim: true,
-      required: [true, validationMessage.phoneNumberRequired],
-      maxlength: [
-        validationConst.phoneNumberLength,
-        validationMessage.phoneNumberMaxLength,
-      ],
-      minlength: [
-        validationConst.phoneNumberLength,
-        validationMessage.phoneNumberMinLength,
-      ],
-      match: [phoneRegex, validationMessage.phoneNumberInvalid],
+      required: [true, phoneNumberRequired],
+      maxlength: [phoneNumberChar, phoneNumberMaxLength],
+      minlength: [phoneNumberChar, phoneNumberMinLength],
+      match: [phoneRegex, phoneNumberInvalid],
     },
     username: {
       type: String,
       trim: true,
       index: { unique: true },
-      required: [true, validationMessage.usernameRequired],
-      maxlength: [
-        validationConst.usernameMaxLength,
-        validationMessage.usernameMaxLength,
-      ],
-      minlength: [
-        validationConst.usernameMinLength,
-        validationMessage.usernameMinLength,
-      ],
+      required: [true, usernameRequired],
+      maxlength: [usernameMaxChar, usernameMaxLength],
+      minlength: [usernameMinChar, usernameMinLength],
     },
     password: {
       type: String,
-      required: [true, validationMessage.passwordRequired],
+      required: [true, passwordRequired],
       maxlength: [
-        validationConst.passwordMaxLengthWithEncryption,
-        validationMessage.passwordMaxLength,
+        passwordMaxCharWithEncryption,
+        passwordMaxLengthWithEncryption,
       ],
-      minlength: [
-        validationConst.passwordMinLength,
-        validationMessage.passwordMinLength,
-      ],
+      minlength: [passwordMinChar, passwordMinLength],
       select: false,
     },
     user_type: {

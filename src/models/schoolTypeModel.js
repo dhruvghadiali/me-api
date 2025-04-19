@@ -1,8 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const validationMessage = require("@MEHelpers/validationMessage/validationMessage");
 const { isActiveUserValidator } = require("@MEHelpers/dbQuery");
+const {
+  schoolTypeMaxChar,
+  schoolTypeMinChar,
+} = require("@MEHelpers/validationConst/validationConst");
+const {
+  usernameInvalid,
+  usernameRequired,
+  schoolTypeRequired,
+  schoolTypeMaxLength,
+  schoolTypeMinLength,
+} = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -14,9 +24,9 @@ const schoolTypeSchema = Schema(
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.schoolTypeRequired],
-      maxlength: [100, validationMessage.schoolTypeMaxLength],
-      minlength: [2, validationMessage.schoolTypeMinLength],
+      required: [true, schoolTypeRequired],
+      maxlength: [schoolTypeMaxChar, schoolTypeMaxLength],
+      minlength: [schoolTypeMinChar, schoolTypeMinLength],
     },
     is_active: {
       type: Boolean,
@@ -24,15 +34,25 @@ const schoolTypeSchema = Schema(
     },
     created_by: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.usernameRequired],
+      required: [true, usernameRequired],
       ref: "user",
-      // validate: isActiveUserValidator(),
+      validate: {
+        validator: async function (value) {
+          return await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
     updated_by: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.usernameRequired],
+      required: [true, usernameRequired],
       ref: "user",
-      // validate: isActiveUserValidator(),
+      validate: {
+        validator: async function (value) {
+          return await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }

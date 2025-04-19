@@ -7,11 +7,11 @@ const {
   academicGradeMaxChar,
 } = require("@MEHelpers/validationConst/validationConst");
 const {
+  usernameInvalid,
+  usernameRequired,
   academicGradeRequired,
   academicGradeMaxLength,
   academicGradeMinLength,
-  usernameRequired,
-  usernameInvalid,
 } = require("@MEHelpers/validationMessage/validationMessage");
 
 const { Schema } = mongoose;
@@ -38,7 +38,7 @@ const academicGradeSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },
@@ -49,7 +49,7 @@ const academicGradeSchema = Schema(
       ref: "user",
       validate: {
         validator: async function (value) {
-          await isActiveUserValidator(value);
+          return await isActiveUserValidator(value);
         },
         message: usernameInvalid,
       },

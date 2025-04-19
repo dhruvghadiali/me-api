@@ -16,6 +16,7 @@ const organizationValidationMessage = {
   organizationNameRequired: `Organization name is required`,
   organizationNameEmpty: `Organization name cannot be empty`,
   organizationNameInvalidFormate: `Organization name must be string formate`,
+  organizationNameInvalid: `Invalid organization. No matching organization found`,
   organizationNameMaxLength: `Organization name must be less then ${organizationNameMaxChar} characters`,
   organizationNameMinLength: `Organization name must be greater then ${organizationNameMinChar} characters`,
   organizationShortNameEmpty: `Organization short name cannot be empty`,

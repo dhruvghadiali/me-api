@@ -9,7 +9,14 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @route   PATCH /super-admin/school-admin/forgotten-password/:id
  * @access  Super Admin
  */
-exports.schoolAdminForgottenPassword = asyncHandler(async (req, res, next) => {
+exports.updateSchoolAdminProfile = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    data: [],
+    message: "School updated successfully",
+  });
+});
+
+exports.resetSchoolAdminPassword = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     data: [],
     message: "School updated successfully",

@@ -1,175 +1,223 @@
-// const moment = require("moment");
-// const mongoose = require("mongoose");
+const moment = require("moment");
+const mongoose = require("mongoose");
 
-// const validationMessage = require("@MEHelpers/validationMessage");
-// const validationConst = require("@MEHelpers/validationConst");
-// const regex = require("@MEHelpers/regex");
-// const {
-//   isActiveUserValidator,
-//   isStateExistsValidator,
-//   isDistrictExistsValidator,
-//   isCityExistsValidator,
-//   isAreaNameExistsValidator,
-//   isZipcodeExistsValidator,
-// } = require("@MEHelpers/modelValidator");
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
+const {
+  isActiveUserValidator,
+  isActiveCityExistsValidator,
+  isActiveStateExistsValidator,
+  isActiveZipcodeExistsValidator,
+  isActiveDistrictExistsValidator,
+  isActiveAreaNameExistsValidator,
+} = require("@MEHelpers/dbQuery");
+const {
+  emailMaxChar,
+  emailMinChar,
+  addressMaxChar,
+  addressMinChar,
+  phoneNumberChar,
+  organizationNameMaxChar,
+  organizationNameMinChar,
+  organizationShortNameMaxChar,
+  organizationShortNameMinChar,
+  governmentRegistrationNumberMaxChar,
+  governmentRegistrationNumberMinChar,
+} = require("@MEHelpers/validationConst/validationConst");
+const {
+  emailInvalid,
+  emailRequired,
+  emailMaxLength,
+  emailMinLength,
+  zipcodeInvalid,
+  zipcodeRequired,
+  usernameInvalid,
+  cityNameInvalid,
+  addressRequired,
+  areaNameInvalid,
+  usernameRequired,
+  stateNameInvalid,
+  addressMaxLength,
+  cityNameRequired,
+  addressMinLength,
+  areaNameRequired,
+  stateNameRequired,
+  phoneNumberRequired,
+  districtNameInvalid,
+  districtNameRequired,
+  phoneNumberMaxLength,
+  phoneNumberMinLength,
+  organizationNameRequired,
+  organizationNameMaxLength,
+  organizationNameMinLength,
+  organizationShortNameMaxLength,
+  organizationShortNameMinLength,
+  governmentRegistrationNumberRequired,
+  governmentRegistrationNumberMaxLength,
+  governmentRegistrationNumberMinLength,
+} = require("@MEHelpers/validationMessage/validationMessage");
 
-// const { Schema } = mongoose;
+const { Schema } = mongoose;
 
-// const organizationSchema = Schema(
-//   {
-//     name: {
-//       type: String,
-//       trim: true,
-//       index: true,
-//       unique: true,
-//       required: [true, validationMessage.organizationNameRequired],
-//       maxlength: [
-//         validationConst.organizationNameMaxLength,
-//         validationMessage.organizationNameMaxLength,
-//       ],
-//       minlength: [
-//         validationConst.organizationNameMinLength,
-//         validationMessage.organizationNameMinLength,
-//       ],
-//     },
-//     short_name: {
-//       type: String,
-//       trim: true,
-//       maxlength: [
-//         validationConst.organizationShortNameMaxLength,
-//         validationMessage.organizationShortNameMaxLength,
-//       ],
-//       minlength: [
-//         validationConst.organizationShortNameMinLength,
-//         validationMessage.organizationShortNameMinLength,
-//       ],
-//     },
-//     email: {
-//       type: String,
-//       trim: true,
-//       required: [true, validationMessage.emailRequired],
-//       maxlength: [
-//         validationConst.emailMaxLength,
-//         validationMessage.emailMaxLength,
-//       ],
-//       minlength: [
-//         validationConst.emailMinLength,
-//         validationMessage.emailMinLength,
-//       ],
-//       match: [regex.emailRegex, validationMessage.emailInvalid],
-//     },
-//     phone_number: {
-//       type: String,
-//       trim: true,
-//       required: [true, validationMessage.phoneNumberRequired],
-//       maxlength: [
-//         validationConst.phoneNumberLength,
-//         validationMessage.phoneNumberMaxLength,
-//       ],
-//       minlength: [
-//         validationConst.phoneNumberLength,
-//         validationMessage.phoneNumberMinLength,
-//       ],
-//       match: [regex.phoneRegex, validationMessage.phoneNumberInvalid],
-//     },
-//     government_registration_number: {
-//       type: String,
-//       trim: true,
-//       required: [true, validationMessage.governmentRegistrationNumberRequired],
-//       maxlength: [
-//         validationConst.governmentRegistrationNumberMaxLength,
-//         validationMessage.governmentRegistrationNumberMaxLength,
-//       ],
-//       minlength: [
-//         validationConst.governmentRegistrationNumberMinLength,
-//         validationMessage.governmentRegistrationNumberMinLength,
-//       ],
-//     },
-//     address: {
-//       type: String,
-//       trim: true,
-//       lowercase: true,
-//       required: [true, validationMessage.addressRequired],
-//       maxlength: [
-//         validationConst.addressMaxLength,
-//         validationMessage.addressMaxLength,
-//       ],
-//       minlength: [
-//         validationConst.addressMinLength,
-//         validationMessage.addressMinLength,
-//       ],
-//     },
-//     state: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.stateNameRequired],
-//       ref: "state",
-//       validate: isStateExistsValidator,
-//     },
-//     district: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.districtNameRequired],
-//       ref: "district",
-//       validate: isDistrictExistsValidator,
-//     },
-//     city: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.cityNameRequired],
-//       ref: "city",
-//       validate: isCityExistsValidator,
-//     },
-//     area_name: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.areaNameRequired],
-//       ref: "area_name",
-//       validate: isAreaNameExistsValidator,
-//     },
-//     zipcode: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.zipcodeRequired],
-//       ref: "zipcode",
-//       validate: isZipcodeExistsValidator,
-//     },
-//     is_active: {
-//       type: Boolean,
-//       default: true,
-//     },
-//     created_by: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.usernameRequired],
-//       ref: "user",
-//       validate: isActiveUserValidator,
-//     },
-//     updated_by: {
-//       type: Schema.Types.ObjectId,
-//       required: [true, validationMessage.usernameRequired],
-//       ref: "user",
-//       validate: isActiveUserValidator,
-//     },
-//   },
-//   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
-// );
+const organizationSchema = Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      index: true,
+      unique: true,
+      required: [true, organizationNameRequired],
+      maxlength: [organizationNameMaxChar, organizationNameMaxLength],
+      minlength: [organizationNameMinChar, organizationNameMinLength],
+    },
+    short_name: {
+      type: String,
+      trim: true,
+      maxlength: [organizationShortNameMaxChar, organizationShortNameMaxLength],
+      minlength: [organizationShortNameMinChar, organizationShortNameMinLength],
+    },
+    email: {
+      type: String,
+      trim: true,
+      required: [true, emailRequired],
+      maxlength: [emailMaxChar, emailMaxLength],
+      minlength: [emailMinChar, emailMinLength],
+      match: [emailRegex, emailInvalid],
+    },
+    phone_number: {
+      type: String,
+      trim: true,
+      required: [true, phoneNumberRequired],
+      maxlength: [phoneNumberChar, phoneNumberMaxLength],
+      minlength: [phoneNumberChar, phoneNumberMinLength],
+      match: [phoneRegex, phoneNumberInvalid],
+    },
+    government_registration_number: {
+      type: String,
+      trim: true,
+      required: [true, governmentRegistrationNumberRequired],
+      maxlength: [
+        governmentRegistrationNumberMaxChar,
+        governmentRegistrationNumberMaxLength,
+      ],
+      minlength: [
+        governmentRegistrationNumberMinChar,
+        governmentRegistrationNumberMinLength,
+      ],
+    },
+    address: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: [true, addressRequired],
+      maxlength: [addressMaxChar, addressMaxLength],
+      minlength: [addressMinChar, addressMinLength],
+    },
+    state: {
+      type: Schema.Types.ObjectId,
+      required: [true, stateNameRequired],
+      ref: "state",
+      validate: {
+        validator: async function (value) {
+          return await isActiveStateExistsValidator(value);
+        },
+        message: stateNameInvalid,
+      },
+    },
+    district: {
+      type: Schema.Types.ObjectId,
+      required: [true, districtNameRequired],
+      ref: "district",
+      validate: {
+        validator: async function (value) {
+          return await isActiveDistrictExistsValidator(value);
+        },
+        message: districtNameInvalid,
+      },
+    },
+    city: {
+      type: Schema.Types.ObjectId,
+      required: [true, cityNameRequired],
+      ref: "city",
+      validate: {
+        validator: async function (value) {
+          return await isActiveCityExistsValidator(value);
+        },
+        message: cityNameInvalid,
+      },
+    },
+    area_name: {
+      type: Schema.Types.ObjectId,
+      required: [true, areaNameRequired],
+      ref: "area_name",
+      validate: {
+        validator: async function (value) {
+          return await isActiveAreaNameExistsValidator(value);
+        },
+        message: areaNameInvalid,
+      },
+    },
+    zipcode: {
+      type: Schema.Types.ObjectId,
+      required: [true, zipcodeRequired],
+      ref: "zipcode",
+      validate: {
+        validator: async function (value) {
+          return await isActiveZipcodeExistsValidator(value);
+        },
+        message: zipcodeInvalid,
+      },
+    },
+    is_active: {
+      type: Boolean,
+      default: true,
+    },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: async function (value) {
+          return await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
+    },
+    updated_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: async function (value) {
+          return await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
+    },
+  },
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
+);
 
-// organizationSchema.pre("save", async function (next) {
-//   let now = moment.utc(moment());
+organizationSchema.pre("save", async function (next) {
+  let now = moment.utc(moment());
 
-//   this.updated_at = now;
-//   this.created_at = now;
-//   this.is_active = true;
-//   next();
-// });
+  this.updated_at = now;
+  this.created_at = now;
+  this.is_active = true;
+  next();
+});
 
-// organizationSchema.set("toJSON", {
-//   virtuals: true,
-//   transform: function (doc, response) {
-//     response.created_by = response?.created_by?.username
-//       ? response.created_by.username
-//       : null;
-//     response.updated_by = response?.updated_by?.username
-//       ? response.updated_by.username
-//       : null;
-//     return response;
-//   },
-// });
-// organizationSchema.set("toObject", { virtuals: true });
+organizationSchema.set("toJSON", {
+  virtuals: true,
+  transform: function (doc, response) {
+    response.created_by = response?.created_by?.username
+      ? response.created_by.username
+      : null;
+    response.updated_by = response?.updated_by?.username
+      ? response.updated_by.username
+      : null;
+    return response;
+  },
+});
+organizationSchema.set("toObject", { virtuals: true });
 
-// module.exports = mongoose.model("organization", organizationSchema);
+module.exports = mongoose.model("organization", organizationSchema);
