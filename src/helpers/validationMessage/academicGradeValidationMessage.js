@@ -1,7 +1,7 @@
 const {
   academicGradeMaxChar,
   academicGradeMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const academicGradeValidationMessage = {
   academicGradeRequired: "Academic grade is required",

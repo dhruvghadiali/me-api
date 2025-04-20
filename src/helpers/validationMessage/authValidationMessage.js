@@ -2,7 +2,7 @@ const {
   otpLength,
   verificationTokenMinChar,
   verificationTokenMaxChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const authValidationMessage = {
   verificationTokenRequired: "Verification token is required",

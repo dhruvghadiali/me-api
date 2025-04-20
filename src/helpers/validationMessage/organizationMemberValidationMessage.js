@@ -2,7 +2,7 @@ const {
   organizationMemberArrayLength,
   organizationMemberPositionMinChar,
   organizationMemberPositionMaxChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const organizationMemberValidationMessage = {
   organizationMemberPositionRequired: "Member position is required",

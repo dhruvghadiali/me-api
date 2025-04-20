@@ -5,7 +5,7 @@ const {
   organizationShortNameMinChar,
   governmentRegistrationNumberMaxChar,
   governmentRegistrationNumberMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const organizationValidationMessage = {
   invalidOrganization: `Invalid organization details`,

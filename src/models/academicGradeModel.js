@@ -1,18 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const { isActiveUserValidator } = require("@MEHelpers/dbQuery");
+const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const {
   academicGradeMinChar,
   academicGradeMaxChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
   academicGradeRequired,
   academicGradeMaxLength,
   academicGradeMinLength,
-} = require("@MEHelpers/validationMessage/validationMessage");
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -37,9 +37,7 @@ const academicGradeSchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -48,9 +46,7 @@ const academicGradeSchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },

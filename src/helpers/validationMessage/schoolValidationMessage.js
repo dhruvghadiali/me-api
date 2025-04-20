@@ -7,7 +7,7 @@ const {
   schoolAffiliateNumberMinChar,
   schoolEducationBoardsMaxLimit,
   schoolEstablishedYearMinNumber,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const schoolValidationMessage = {
   schoolDetailsEmpty: "School details cannot be empty",

@@ -1,7 +1,7 @@
 const {
   educationBoardMaxChar,
   educationBoardMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const educationBoardValidationMessage = {
   educationBoardRequired: "Education board is required",

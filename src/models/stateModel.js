@@ -1,18 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const { isActiveUserValidator } = require("@MEHelpers/dbQuery");
+const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const {
   stateNameMaxChar,
   stateNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
   stateNameRequired,
   stateNameMaxLength,
   stateNameMinLength,
-} = require("@MEHelpers/validationMessage/validationMessage");
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -67,19 +67,19 @@ stateSchema.pre("save", async function (next) {
   next();
 });
 
-// stateSchema.virtual("district_count", {
-//   ref: "district",
-//   localField: "_id",
-//   foreignField: "state",
-//   count: true,
-//   options: { match: { is_active: true } },
-// });
+stateSchema.virtual("district_count", {
+  ref: "district",
+  localField: "_id",
+  foreignField: "state",
+  count: true,
+  options: { match: { is_active: true } },
+});
 
-// stateSchema.virtual("districts", {
-//   ref: "district",
-//   localField: "_id",
-//   foreignField: "state",
-// });
+stateSchema.virtual("districts", {
+  ref: "district",
+  localField: "_id",
+  foreignField: "state",
+});
 
 stateSchema.set("toJSON", {
   virtuals: true,

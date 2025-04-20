@@ -1,32 +1,32 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const { isActiveUserValidator } = require("@MEHelpers/dbQuery");
+const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const {
-  educationBoardMinChar,
-  educationBoardMaxChar,
-} = require("@MEHelpers/validationConst/validationConst");
+  admissionDocumentMaxChar,
+  admissionDocumentMinChar,
+} = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
-  educationBoardRequired,
-  educationBoardMaxLength,
-  educationBoardMinLength,
-} = require("@MEHelpers/validationMessage/validationMessage");
+  admissionDocumentRequired,
+  admissionDocumentMaxLength,
+  admissionDocumentMinLength,
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
-const educationBoardSchema = Schema(
+const admissionDocumentSchema = Schema(
   {
-    education_board: {
+    admission_document: {
       type: String,
       trim: true,
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, educationBoardRequired],
-      maxlength: [educationBoardMaxChar, educationBoardMaxLength],
-      minlength: [educationBoardMinChar, educationBoardMinLength],
+      required: [true, admissionDocumentRequired],
+      maxlength: [admissionDocumentMaxChar, admissionDocumentMaxLength],
+      minlength: [admissionDocumentMinChar, admissionDocumentMinLength],
     },
     is_active: {
       type: Boolean,
@@ -37,9 +37,7 @@ const educationBoardSchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -48,9 +46,7 @@ const educationBoardSchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -58,7 +54,7 @@ const educationBoardSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-educationBoardSchema.pre("save", async function (next) {
+admissionDocumentSchema.pre("save", async function (next) {
   let now = moment.utc(moment());
 
   this.updated_at = now;
@@ -67,9 +63,9 @@ educationBoardSchema.pre("save", async function (next) {
   next();
 });
 
-educationBoardSchema.set("toJSON", {
+admissionDocumentSchema.set("toJSON", {
   virtuals: true,
-  transform: function (doc, response) {
+  transform: function (_, response) {
     response.created_by = response?.created_by?.username
       ? response.created_by.username
       : null;
@@ -79,6 +75,6 @@ educationBoardSchema.set("toJSON", {
     return response;
   },
 });
-educationBoardSchema.set("toObject", { virtuals: true });
+admissionDocumentSchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("education_board", educationBoardSchema);
+module.exports = mongoose.model("admission_document", admissionDocumentSchema);

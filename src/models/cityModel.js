@@ -4,11 +4,11 @@ const mongoose = require("mongoose");
 const {
   isActiveUserValidator,
   isActiveDistrictExistsValidator,
-} = require("@MEHelpers/dbQuery");
+} = require("@MEUtils/dbQuery");
 const {
   cityNameMaxChar,
   cityNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
@@ -17,7 +17,7 @@ const {
   cityNameMinLength,
   districtNameRequired,
   districtNameInvalid,
-} = require("@MEHelpers/validationMessage/validationMessage");
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -28,9 +28,7 @@ const citySchema = Schema(
       required: [true, districtNameRequired],
       ref: "district",
       validate: {
-        validator: async function (value) {
-          return await isActiveDistrictExistsValidator(value);
-        },
+        validator: isActiveDistrictExistsValidator,
         message: districtNameInvalid,
       },
     },
@@ -51,9 +49,7 @@ const citySchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -62,9 +58,7 @@ const citySchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -82,13 +76,6 @@ citySchema.pre("save", async function (next) {
   this.is_active = true;
   next();
 });
-
-// citySchema.virtual("districts", {
-//   ref: "district",
-//   foreignField: "_id",
-//   localField: "district",
-//   justOne: true,
-// });
 
 // citySchema.virtual("area_count", {
 //   ref: "area_name",

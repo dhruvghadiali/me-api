@@ -1,9 +1,9 @@
-const express = require("express");
+// const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+// const { protect } = require("@MEMiddleware/auth");
 
-const router = express.Router();
+// const router = express.Router();
 
-router.route("/organizations/:id").put(protect);
+// router.route("/organizations/:id").put(protect);
 
-module.exports = router;
+// module.exports = router;

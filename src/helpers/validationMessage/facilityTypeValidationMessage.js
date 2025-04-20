@@ -1,7 +1,7 @@
 const {
   facilityTypeMaxChar,
   facilityTypeMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const facilityTypeValidationMessage = {
   facilityTypeRequired: "Facility type is required",

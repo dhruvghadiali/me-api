@@ -1,7 +1,7 @@
 const {
   districtNameMaxChar,
   districtNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const districtValidationMessage = {
   districtNameRequired: "District name is required",

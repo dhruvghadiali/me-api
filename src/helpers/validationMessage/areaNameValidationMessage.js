@@ -1,7 +1,7 @@
 const {
   areaNameMaxChar,
   areaNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const areaNameValidationMessage = {
   areaNameRequired: "Area name is required",

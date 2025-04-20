@@ -4,11 +4,11 @@ const mongoose = require("mongoose");
 const {
   isActiveUserValidator,
   isActiveStateExistsValidator,
-} = require("@MEHelpers/dbQuery");
+} = require("@MEUtils/dbQuery");
 const {
   districtNameMinChar,
   districtNameMaxChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
@@ -17,7 +17,7 @@ const {
   districtNameRequired,
   districtNameMaxLength,
   districtNameMinLength,
-} = require("@MEHelpers/validationMessage/validationMessage");
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -28,9 +28,7 @@ const districtSchema = Schema(
       required: [true, stateNameRequired],
       ref: "state",
       validate: {
-        validator: async function (value) {
-          return await isActiveStateExistsValidator(value);
-        },
+        validator: isActiveStateExistsValidator,
         message: stateNameInvalid,
       },
     },
@@ -51,9 +49,7 @@ const districtSchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -62,9 +58,7 @@ const districtSchema = Schema(
       required: [true, usernameRequired],
       ref: "user",
       validate: {
-        validator: async function (value) {
-          return await isActiveUserValidator(value);
-        },
+        validator: isActiveUserValidator,
         message: usernameInvalid,
       },
     },
@@ -83,26 +77,19 @@ districtSchema.pre("save", async function (next) {
   next();
 });
 
-// districtSchema.virtual("states", {
-//   ref: "state",
-//   foreignField: "_id",
-//   localField: "state",
-//   justOne: true,
-// });
+districtSchema.virtual("city_count", {
+  ref: "city",
+  localField: "_id",
+  foreignField: "district",
+  count: true,
+  options: { match: { is_active: true } },
+});
 
-// districtSchema.virtual("city_count", {
-//   ref: "city",
-//   localField: "_id",
-//   foreignField: "district",
-//   count: true,
-//   options: { match: { is_active: true } },
-// });
-
-// districtSchema.virtual("cities", {
-//   ref: "city",
-//   localField: "_id",
-//   foreignField: "district",
-// });
+districtSchema.virtual("cities", {
+  ref: "city",
+  localField: "_id",
+  foreignField: "district",
+});
 
 districtSchema.set("toJSON", {
   virtuals: true,

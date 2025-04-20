@@ -1,7 +1,7 @@
 const {
   stateNameMaxChar,
   stateNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const stateValidationMessage = {
   stateNameRequired: "State name is required",

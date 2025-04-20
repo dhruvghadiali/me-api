@@ -1,13 +1,13 @@
-const express = require("express");
+// const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+// const { protect } = require("@MEMiddleware/auth");
 
-const router = express.Router();
+// const router = express.Router();
 
-router
-  .route("/school-addresses/:id")
-  .put(protect)
-  .delete(protect)
-  .patch(protect);
+// router
+//   .route("/school-addresses/:id")
+//   .put(protect)
+//   .delete(protect)
+//   .patch(protect);
 
-module.exports = router;
+// module.exports = router;

@@ -9,7 +9,7 @@ const {
   firstNameMaxChar,
   firstNameMinChar,
   aadhaarNumberChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const commonValidationMessage = {
   firstNameRequired: "First name is required",

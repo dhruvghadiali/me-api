@@ -10,10 +10,7 @@ const {
 
 const router = express.Router();
 
-router
-  .route("/states")
-  .get(protect, getStates)
-  .post(protect, addState);
+router.route("/states").get(protect, getStates).post(protect, addState);
 router
   .route("/states/:id")
   .put(protect, updateState)

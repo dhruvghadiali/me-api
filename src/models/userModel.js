@@ -16,9 +16,10 @@ const {
   firstNameMaxChar,
   firstNameMinChar,
   passwordMaxCharWithEncryption,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const {
+  emailInvalid,
   emailRequired,
   emailMaxLength,
   emailMinLength,
@@ -33,11 +34,12 @@ const {
   firstNameRequired,
   firstNameMaxLength,
   firstNameMinLength,
+  phoneNumberInvalid,
   phoneNumberRequired,
   phoneNumberMaxLength,
   phoneNumberMinLength,
   passwordMaxLengthWithEncryption,
-} = require("@MEHelpers/validationMessage/validationMessage");
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 

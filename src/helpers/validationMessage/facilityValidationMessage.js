@@ -1,7 +1,7 @@
 const {
   facilityNameMaxChar,
   facilityNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const facilityValidationMessage = {
   facilityNameRequired: "Facility name is required",

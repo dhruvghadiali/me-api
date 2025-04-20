@@ -1,7 +1,7 @@
 const {
   feeTypeMaxChar,
   feeTypeMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const feeTypeValidationMessage = {
   feeTypeRequired: "Fee type is required",

@@ -1,7 +1,7 @@
 const {
   schoolTypeMaxChar,
   schoolTypeMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const schoolTypeValidationMessage = {
   schoolTypeRequired: "School type is required",

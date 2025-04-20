@@ -1,5 +1,5 @@
-const ErrorResponse = require("../utils/errorResponse");
-const responseMessage = require("../helpers/responseMessage");
+const ErrorResponse = require("@MEUtils/errorResponse");
+const responseMessage = require("@MEHelpers/responseMessage");
 
 const errorHandler = (error, req, res, next) => {
   console.log("error.value".bgRed, error.value);

@@ -1,7 +1,7 @@
 const {
   cityNameMaxChar,
   cityNameMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 
 const cityValidationMessage = {
   cityNameRequired: "City name is required",

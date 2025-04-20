@@ -7,7 +7,7 @@ const {
   otpMinNumber,
   verificationTokenMaxChar,
   verificationTokenMinChar,
-} = require("@MEHelpers/validationConst/validationConst");
+} = require("@MEHelpers/validationConst");
 const {
   userIdRequired,
   emailOTPRequired,
@@ -20,7 +20,7 @@ const {
   verificationMinLength,
   verificationTokenRequired,
   otpExpiryDateTimeRequired,
-} = require("@MEHelpers/validationMessage/validationMessage");
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
