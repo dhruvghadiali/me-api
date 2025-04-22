@@ -1,10 +1,5 @@
-// const City = require("@MEModels/cityModel");
-
 // const School = require("@MEModels/schoolModel");
-// const Zipcode = require("@MEModels/zipcodeModel");
 // const FeeType = require("@MEModels/feeTypeModel");
-// const AreaName = require("@MEModels/areaNameModel");
-
 // const Facility = require("@MEModels/facilityModel");
 // const Organization = require("@MEModels/organizationModel");
 // const FacilityType = require("@MEModels/facilityTypeModel");
@@ -29,20 +24,23 @@ const isActiveDistrictExistsValidator = async (value) => {
   return !!(districtExists && districtExists.is_active);
 };
 
-// const isActiveCityExistsValidator = async (value) => {
-//   const cityExists = await City.findById(value);
-//   return !!(cityExists && cityExists.is_active);
-// };
+const isActiveCityExistsValidator = async (value) => {
+  const City = require("@MEModels/cityModel");
+  const cityExists = await City.findById(value);
+  return !!(cityExists && cityExists.is_active);
+};
 
-// const isActiveAreaNameExistsValidator = async (value) => {
-//   const areaNameExists = await AreaName.findById(value);
-//   return !!(areaNameExists && areaNameExists.is_active);
-// };
+const isActiveAreaNameExistsValidator = async (value) => {
+  const AreaName = require("@MEModels/areaNameModel");
+  const areaNameExists = await AreaName.findById(value);
+  return !!(areaNameExists && areaNameExists.is_active);
+};
 
-// const isActiveZipcodeExistsValidator = async (value) => {
-//   const zipcodeExists = await Zipcode.findById(value);
-//   return !!(zipcodeExists && zipcodeExists.is_active);
-// };
+const isActiveZipcodeExistsValidator = async (value) => {
+  const Zipcode = require("@MEModels/zipcodeModel");
+  const zipcodeExists = await Zipcode.findById(value);
+  return !!(zipcodeExists && zipcodeExists.is_active);
+};
 
 // const isActiveFacilityTypeExistsValidator = async (value) => {
 //   const facilityTypeExists = await FacilityType.findById(value);
@@ -81,13 +79,13 @@ const isActiveDistrictExistsValidator = async (value) => {
 
 module.exports = {
   isActiveUserValidator,
-  // isActiveCityExistsValidator,
+  isActiveCityExistsValidator,
   isActiveStateExistsValidator,
   // isActiveSchoolExistsValidator,
-  // isActiveZipcodeExistsValidator,
+  isActiveZipcodeExistsValidator,
   // isActiveFeeTypeExistsValidator,
   isActiveDistrictExistsValidator,
-  // isActiveAreaNameExistsValidator,
+  isActiveAreaNameExistsValidator,
   // isActiveFacilityExistsValidator,
   // isActiveFacilityTypeExistsValidator,
   // isActiveOrganizationExistsValidator,

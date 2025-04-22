@@ -24,33 +24,71 @@ const getStates = asyncHandler(async (req, res, next) => {
     is_active: true,
   })
     .select(["name", "created_at", "updated_at", "created_by", "updated_by"])
-    .populate("created_by updated_by")
-    .populate({
-      path: "district_count",
-    })
-    .populate({
-      path: "districts",
-      select: ["name", "created_at", "updated_at", "created_by", "updated_by"],
-      populate: [
-        {
-          path: "created_by updated_by",
-        },
-        {
-          path: "city_count",
-        },
-        {
-          path: "cities",
-          select: [
-            "name",
-            "created_at",
-            "updated_at",
-            "created_by",
-            "updated_by",
-          ],
-          populate: "created_by updated_by",
-        },
-      ],
-    })
+    .populate([
+      {
+        path: "created_by updated_by",
+      },
+      {
+        path: "district_count",
+      },
+      {
+        path: "districts",
+        select: [
+          "name",
+          "created_at",
+          "updated_at",
+          "created_by",
+          "updated_by",
+        ],
+        populate: [
+          {
+            path: "created_by updated_by",
+          },
+          {
+            path: "city_count",
+          },
+          {
+            path: "cities",
+            select: [
+              "name",
+              "created_at",
+              "updated_at",
+              "created_by",
+              "updated_by",
+            ],
+            populate: [
+              { path: "created_by updated_by" },
+              { path: "area_count" },
+              {
+                path: "area_names",
+                select: [
+                  "name",
+                  "created_at",
+                  "updated_at",
+                  "created_by",
+                  "updated_by",
+                ],
+                populate: [
+                  { path: "created_by updated_by" },
+                  { path: "zipcode_count" },
+                  {
+                    path: "zipcodes",
+                    select: [
+                      "zipcode",
+                      "created_at",
+                      "updated_at",
+                      "created_by",
+                      "updated_by",
+                    ],
+                    populate: "created_by updated_by",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ])
     .sort({ name: 1 });
 
   // Send response
@@ -129,8 +167,8 @@ const updateState = asyncHandler(async (req, res, next) => {
       runValidators: true,
     }
   )
-    .populate("created_by updated_by")
-    .select(["name", "created_at", "updated_at", "created_by", "updated_by"]);
+    .select(["name", "created_at", "updated_at", "created_by", "updated_by"])
+    .populate("created_by updated_by");
 
   if (state) {
     // Send response

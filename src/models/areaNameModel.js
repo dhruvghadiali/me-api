@@ -3,42 +3,42 @@ const mongoose = require("mongoose");
 
 const {
   isActiveUserValidator,
-  isActiveDistrictExistsValidator,
+  isActiveCityExistsValidator,
 } = require("@MEUtils/dbQuery");
 const {
-  cityNameMaxChar,
-  cityNameMinChar,
+  areaNameMaxChar,
+  areaNameMinChar,
 } = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
-  usernameRequired,
+  cityNameInvalid,
   cityNameRequired,
-  cityNameMaxLength,
-  cityNameMinLength,
-  districtNameRequired,
-  districtNameInvalid,
+  usernameRequired,
+  areaNameRequired,
+  areaNameMaxLength,
+  areaNameMinLength,
 } = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
-const citySchema = Schema(
+const areaNameSchema = Schema(
   {
-    district: {
+    city: {
       type: Schema.Types.ObjectId,
-      required: [true, districtNameRequired],
-      ref: "district",
+      required: [true, cityNameRequired],
+      ref: "city",
       validate: {
-        validator: isActiveDistrictExistsValidator,
-        message: districtNameInvalid,
+        validator: isActiveCityExistsValidator,
+        message: cityNameInvalid,
       },
     },
     name: {
       type: String,
       trim: true,
       lowercase: true,
-      required: [true, cityNameRequired],
-      maxlength: [cityNameMaxChar, cityNameMaxLength],
-      minlength: [cityNameMinChar, cityNameMinLength],
+      required: [true, areaNameRequired],
+      maxlength: [areaNameMaxChar, areaNameMaxLength],
+      minlength: [areaNameMinChar, areaNameMinLength],
     },
     is_active: {
       type: Boolean,
@@ -66,9 +66,9 @@ const citySchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-citySchema.index({ district: 1, name: 1 }, { unique: true, index: true });
+areaNameSchema.index({ city: 1, name: 1 }, { unique: true, index: true });
 
-citySchema.pre("save", async function (next) {
+areaNameSchema.pre("save", async function (next) {
   let now = moment.utc(moment());
 
   this.updated_at = now;
@@ -77,21 +77,21 @@ citySchema.pre("save", async function (next) {
   next();
 });
 
-citySchema.virtual("area_count", {
-  ref: "area_name",
+areaNameSchema.virtual("zipcode_count", {
+  ref: "zipcode",
   localField: "_id",
-  foreignField: "city",
+  foreignField: "area_name",
   count: true,
   options: { match: { is_active: true } },
 });
 
-citySchema.virtual("area_names", {
-  ref: "area_name",
+areaNameSchema.virtual("zipcodes", {
+  ref: "zipcode",
   localField: "_id",
-  foreignField: "city",
+  foreignField: "area_name",
 });
 
-citySchema.set("toJSON", {
+areaNameSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
     response.created_by = response?.created_by?.username
@@ -103,6 +103,6 @@ citySchema.set("toJSON", {
     return response;
   },
 });
-citySchema.set("toObject", { virtuals: true });
+areaNameSchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("city", citySchema);
+module.exports = mongoose.model("area_name", areaNameSchema);
