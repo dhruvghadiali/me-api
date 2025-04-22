@@ -5,14 +5,18 @@ const State = require("@MEModels/stateModel");
 const Zipcode = require("@MEModels/zipcodeModel");
 const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
+const AcademicGrade = require("@MEModels/academicGradeModel");
+
 // const SchoolType = require("@MEModels/schoolTypeModel");
 // const EducationBoard = require("@MEModels/educationBoardModel");
+
 const {
   zipcodeNotFound,
   cityNameNotFound,
   areaNameNotFound,
   stateNameNotFound,
   districtNameNotFound,
+  academicGradeNotFound,
 } = require("@MEHelpers/validationMessage");
 
 const checkValidObjectId = (value, helpers) => {
@@ -58,6 +62,14 @@ const isActiveZipcodeExists = async (value) => {
   const response = await Zipcode.exists({ _id: value, is_active: true });
   if (!response) {
     throw new Error(zipcodeNotFound);
+  }
+  return value;
+};
+
+const isActiveAcademicGradeExists = async (value) => {
+  const response = await AcademicGrade.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error(academicGradeNotFound);
   }
   return value;
 };
@@ -144,4 +156,5 @@ module.exports = {
   isActiveZipcodeExists,
   isActiveDistrictExists,
   isActiveAreaNameExists,
+  isActiveAcademicGradeExists,
 };
