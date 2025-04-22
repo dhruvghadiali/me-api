@@ -7,13 +7,21 @@ const {
   updateCity,
   deleteCity,
 } = require("@MEControllers/cityController/cityController");
+const {
+  validateCitiesPutReqBody,
+  validateCitiesPostReqBody,
+  validateCitiesQueryParams,
+} = require("@MEControllers/cityController/cityValidation");
 
 const router = express.Router();
 
-router.route("/cities").get(protect, getCities).post(protect, addCity);
+router
+  .route("/cities")
+  .get(protect, getCities)
+  .post(protect, validateCitiesPostReqBody, addCity);
 router
   .route("/cities/:id")
-  .put(protect, updateCity)
-  .delete(protect, deleteCity);
+  .put(protect, validateCitiesQueryParams, validateCitiesPutReqBody, updateCity)
+  .delete(protect, validateCitiesQueryParams, deleteCity);
 
 module.exports = router;

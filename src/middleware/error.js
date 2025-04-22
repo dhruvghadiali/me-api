@@ -1,5 +1,13 @@
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEHelpers/responseMessage");
+const {
+  serverError,
+  duplicateField,
+  jwtTokenExpire,
+  invalidObjectId,
+  resourceNotFound,
+  resourceNotFoundWithId,
+  invalidRequestBodyFormat,
+} = require("@MEHelpers/responseMessage");
 
 const errorHandler = (error, req, res, next) => {
   console.log("error.value".bgRed, error.value);
@@ -11,15 +19,15 @@ const errorHandler = (error, req, res, next) => {
       switch (typeof error.value) {
         case "string":
           error = new ErrorResponse(
-            `${responseMessage.resourceNotFoundWithId} ${error.value}`,
+            `${resourceNotFoundWithId} ${error.value}`,
             404
           );
           break;
         case "object":
           error = new ErrorResponse(
             error.value._id
-              ? `${responseMessage.resourceNotFoundWithId} ${error.value._id}`
-              : responseMessage.resourceNotFound,
+              ? `${resourceNotFoundWithId} ${error.value._id}`
+              : resourceNotFound,
             404
           );
           break;
@@ -27,16 +35,16 @@ const errorHandler = (error, req, res, next) => {
           break;
       }
       break;
+    case "SyntaxError":
+      error = new ErrorResponse(invalidRequestBodyFormat, 400);
+      break;
     case "TokenExpiredError":
-      error = new ErrorResponse(responseMessage.jwtTokenExpire, 401);
+      error = new ErrorResponse(jwtTokenExpire, 401);
       break;
     case "ValidationError":
       let message = Object.values(error.errors)[0];
       if (message.name === "CastError" && message.kind === "ObjectId") {
-        error = new ErrorResponse(
-          `${responseMessage.invalidObjectId} ${message.path}`,
-          400
-        );
+        error = new ErrorResponse(`${invalidObjectId} ${message.path}`, 400);
       } else {
         error = new ErrorResponse(message, 400);
       }
@@ -46,14 +54,14 @@ const errorHandler = (error, req, res, next) => {
 
   switch (error.code) {
     case 11000:
-      error = new ErrorResponse(responseMessage.duplicateField, 400);
+      error = new ErrorResponse(duplicateField, 400);
       break;
     default:
   }
 
   return res.status(error.statusCode || 500).json({
     data: [],
-    message: error.message || responseMessage.serverError,
+    message: error.message || serverError,
     status: error.statusCode || 500,
   });
 };

@@ -7,16 +7,26 @@ const {
   updateAreaName,
   deleteAreaName,
 } = require("@MEControllers/areaNameController/areaNameController");
+const {
+  validateAreaNamesPutReqBody,
+  validateAreaNamesPostReqBody,
+  validateAreaNamesQueryParams,
+} = require("@MEControllers/areaNameController/areaNameValidation");
 
 const router = express.Router();
 
 router
   .route("/area-names")
   .get(protect, getAreaNames)
-  .post(protect, addAreaName);
+  .post(protect, validateAreaNamesPostReqBody, addAreaName);
 router
   .route("/area-names/:id")
-  .put(protect, updateAreaName)
-  .delete(protect, deleteAreaName);
+  .put(
+    protect,
+    validateAreaNamesQueryParams,
+    validateAreaNamesPutReqBody,
+    updateAreaName
+  )
+  .delete(protect, validateAreaNamesQueryParams, deleteAreaName);
 
 module.exports = router;

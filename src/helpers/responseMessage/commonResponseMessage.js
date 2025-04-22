@@ -6,6 +6,7 @@ const commonResponseMessage = {
   resourceNotFound: "Resource not found with id of",
   serverError: "Something went wrong please try again",
   resourceNotFoundWithId: "Resource not found with id of",
+  invalidRequestBodyFormat: "Request body must be a JSON formate",
   validationErrorMessage: `Validation failed, but no detailed error was provided`,
 };
 

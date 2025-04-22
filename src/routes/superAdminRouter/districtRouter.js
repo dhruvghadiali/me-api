@@ -7,16 +7,26 @@ const {
   updateDistrict,
   deleteDistrict,
 } = require("@MEControllers/districtController/districtController");
+const {
+  validateDistrictsPutReqBody,
+  validateDistrictsPostReqBody,
+  validateDistrictsQueryParams,
+} = require("@MEControllers/districtController/districtValidation");
 
 const router = express.Router();
 
 router
   .route("/districts")
   .get(protect, getDistricts)
-  .post(protect, addDistrict);
+  .post(protect, validateDistrictsPostReqBody, addDistrict);
 router
   .route("/districts/:id")
-  .put(protect, updateDistrict)
-  .delete(protect, deleteDistrict);
+  .put(
+    protect,
+    validateDistrictsQueryParams,
+    validateDistrictsPutReqBody,
+    updateDistrict
+  )
+  .delete(protect, validateDistrictsQueryParams, deleteDistrict);
 
 module.exports = router;

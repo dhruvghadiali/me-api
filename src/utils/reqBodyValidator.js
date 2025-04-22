@@ -1,28 +1,66 @@
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-// const City = require("@MEModels/cityModel");
-// const State = require("@MEModels/stateModel");
-// const Zipcode = require("@MEModels/zipcodeModel");
-// const District = require("@MEModels/districtModel");
-// const AreaName = require("@MEModels/areaNameModel");
+const City = require("@MEModels/cityModel");
+const State = require("@MEModels/stateModel");
+const Zipcode = require("@MEModels/zipcodeModel");
+const District = require("@MEModels/districtModel");
+const AreaName = require("@MEModels/areaNameModel");
 // const SchoolType = require("@MEModels/schoolTypeModel");
 // const EducationBoard = require("@MEModels/educationBoardModel");
-// const validationMessage = require("@MEHelpers/validationMessage");
+const {
+  zipcodeNotFound,
+  cityNameNotFound,
+  areaNameNotFound,
+  stateNameNotFound,
+  districtNameNotFound,
+} = require("@MEHelpers/validationMessage");
 
-// exports.checkValidObjectId = (value, helpers) => {
-//   if (!mongoose.Types.ObjectId.isValid(value)) {
-//     return helpers.error("any.invalid");
-//   }
-//   return value;
-// };
+const checkValidObjectId = (value, helpers) => {
+  if (!mongoose.Types.ObjectId.isValid(value)) {
+    return helpers.error("any.invalid");
+  }
+  return value;
+};
 
-// exports.isStateExists = async (value) => {
-//   const response = await State.exists({ _id: value, is_active: true });
-//   if (!response) {
-//     throw new Error(validationMessage.stateNameNotFound);
-//   }
-//   return value;
-// };
+const isActiveStateExists = async (value) => {
+  const response = await State.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error(stateNameNotFound);
+  }
+  return value;
+};
+
+const isActiveDistrictExists = async (value) => {
+  const response = await District.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error(districtNameNotFound);
+  }
+  return value;
+};
+
+const isActiveCityExists = async (value) => {
+  const response = await City.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error(cityNameNotFound);
+  }
+  return value;
+};
+
+const isActiveAreaNameExists = async (value) => {
+  const response = await AreaName.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error(areaNameNotFound);
+  }
+  return value;
+};
+
+const isActiveZipcodeExists = async (value) => {
+  const response = await Zipcode.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error(zipcodeNotFound);
+  }
+  return value;
+};
 
 // exports.isDistrictExists = async (value, helpers) => {
 //   const response = await District.exists({
@@ -98,3 +136,12 @@
 //     throw new Error(validationMessage.educationBoardNotFound);
 //   }
 // };
+
+module.exports = {
+  isActiveCityExists,
+  checkValidObjectId,
+  isActiveStateExists,
+  isActiveZipcodeExists,
+  isActiveDistrictExists,
+  isActiveAreaNameExists,
+};
