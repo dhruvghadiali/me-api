@@ -184,10 +184,12 @@ const updateZipcode = asyncHandler(async (req, res, next) => {
  * @access  Super Admin
  */
 const deleteZipcode = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Find zipcode id and update is_active status to false
   const zipcode = await Zipcode.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,

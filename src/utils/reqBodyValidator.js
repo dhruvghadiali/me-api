@@ -6,6 +6,8 @@ const Zipcode = require("@MEModels/zipcodeModel");
 const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
 const AcademicGrade = require("@MEModels/academicGradeModel");
+const AdmissionDocument = require("@MEModels/admissionDocument");
+const EducationBoard = require("@MEModels/educationBoardModel");
 
 // const SchoolType = require("@MEModels/schoolTypeModel");
 // const EducationBoard = require("@MEModels/educationBoardModel");
@@ -17,6 +19,8 @@ const {
   stateNameNotFound,
   districtNameNotFound,
   academicGradeNotFound,
+  educationBoardNotFound,
+  admissionDocumentNotFound,
 } = require("@MEHelpers/validationMessage");
 
 const checkValidObjectId = (value, helpers) => {
@@ -70,6 +74,28 @@ const isActiveAcademicGradeExists = async (value) => {
   const response = await AcademicGrade.exists({ _id: value, is_active: true });
   if (!response) {
     throw new Error(academicGradeNotFound);
+  }
+  return value;
+};
+
+const isActiveAdmissionDocumentExists = async (value) => {
+  const response = await AdmissionDocument.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(admissionDocumentNotFound);
+  }
+  return value;
+};
+
+const isActiveEducationBoardExists = async (value) => {
+  const response = await EducationBoard.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(educationBoardNotFound);
   }
   return value;
 };
@@ -157,4 +183,6 @@ module.exports = {
   isActiveDistrictExists,
   isActiveAreaNameExists,
   isActiveAcademicGradeExists,
+  isActiveEducationBoardExists,
+  isActiveAdmissionDocumentExists,
 };

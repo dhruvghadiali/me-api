@@ -184,10 +184,12 @@ const updateCity = asyncHandler(async (req, res, next) => {
  * @access  Super Admin
  */
 const deleteCity = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Find city id and update is_active status to false
   const city = await City.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,

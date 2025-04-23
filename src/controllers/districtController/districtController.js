@@ -189,10 +189,12 @@ const updateDistrict = asyncHandler(async (req, res, next) => {
  * @access  Super Admin
  */
 const deleteDistrict = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Find district id and update is_active status to false
   const district = await District.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,

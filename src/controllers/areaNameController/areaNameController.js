@@ -183,10 +183,12 @@ const updateAreaName = asyncHandler(async (req, res, next) => {
  * @access  Super Admin
  */
 const deleteAreaName = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Find area name id and update is_active status to false
   const areaName = await AreaName.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,

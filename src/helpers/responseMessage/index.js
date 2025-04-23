@@ -5,6 +5,7 @@ const zipcodeResponseMessage = require("@MEHelpers/responseMessage/zipcodeRespon
 const areaNameResponseMessage = require("@MEHelpers/responseMessage/areaNameResponseMessage");
 const districtResponseMessage = require("@MEHelpers/responseMessage/districtResponseMessage");
 const academicGradeResponseMessage = require("@MEHelpers/responseMessage/academicGradeResponseMessage");
+const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educationBoardResponseMessage");
 const admissionDocumentResponseMessage = require("@MEHelpers/responseMessage/admissionDocumentResponseMessage");
 
 const responseMessage = {
@@ -15,6 +16,7 @@ const responseMessage = {
   ...districtResponseMessage,
   ...areaNameResponseMessage,
   ...academicGradeResponseMessage,
+  ...educationBoardResponseMessage,
   ...admissionDocumentResponseMessage,
 
   studentSignUpSuccess: "Student Signup process successfully completed",
@@ -29,18 +31,6 @@ const responseMessage = {
   schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
   schoolTypeDeleteRequestFail:
     "Facing issue while deleting school type details",
-  educationBoardGetRequestSuccess: "Education board details found successfully",
-  educationBoardPostRequestSuccess: "New education board added successfully",
-  educationBoardPostRequestFail:
-    "Facing issue while adding new education board details",
-  educationBoardPutRequestSuccess:
-    "Education board details updated successfully",
-  educationBoardPutRequestFail:
-    "Facing issue while updating education board details",
-  educationBoardDeleteRequestSuccess:
-    "Education board details deleted successfully",
-  educationBoardDeleteRequestFail:
-    "Facing issue while deleting education board details",
 
   feeTypesGetRequestSuccess: "Fee types details found successfully",
   feeTypePostRequestSuccess: "New fee type added successfully",

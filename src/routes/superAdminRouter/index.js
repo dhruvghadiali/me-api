@@ -12,7 +12,7 @@ const areaNameRouter = require("@MERoutes/superAdminRouter/areaNameRouter");
 // const organizationRouter = require("@MERoutes/superAdminRouter/organizationRouter");
 // const schoolAddressRouter = require("@MERoutes/superAdminRouter/schoolAddressRouter");
 const academicGradeRouter = require("@MERoutes/superAdminRouter/academicGradeRouter");
-// const educationBoardRouter = require("@MERoutes/superAdminRouter/educationBoardRouter");
+const educationBoardRouter = require("@MERoutes/superAdminRouter/educationBoardRouter");
 const admissionDocumentRouter = require("@MERoutes/superAdminRouter/admissionDocumentRouter");
 // const organizationMemberRouter = require("@MERoutes/superAdminRouter/organizationMemberRouter");
 
@@ -30,7 +30,7 @@ router.use("/", areaNameRouter);
 // router.use("/", organizationRouter);
 // router.use("/", schoolAddressRouter);
 router.use("/", academicGradeRouter);
-// router.use("/", educationBoardRouter);
+router.use("/", educationBoardRouter);
 router.use("/", admissionDocumentRouter);
 // router.use("/", organizationMemberRouter);
 
