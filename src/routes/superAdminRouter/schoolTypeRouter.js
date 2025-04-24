@@ -7,6 +7,11 @@ const {
   updateSchoolType,
   deleteSchoolType,
 } = require("@MEControllers/schoolTypeController/schoolTypeController");
+const {
+  validateSchoolTypesPutReqBody,
+  validateSchoolTypesPostReqBody,
+  validateSchoolTypesQueryParams,
+} = require("@MEControllers/schoolTypeController/schoolTypeValidation");
 
 const router = express.Router();
 
@@ -104,10 +109,15 @@ const router = express.Router();
 router
   .route("/school-types")
   .get(protect, getSchoolTypes)
-  .post(protect, addSchoolType);
+  .post(protect, validateSchoolTypesPostReqBody, addSchoolType);
 router
   .route("/school-types/:id")
-  .put(protect, updateSchoolType)
-  .delete(protect, deleteSchoolType);
+  .put(
+    protect,
+    validateSchoolTypesQueryParams,
+    validateSchoolTypesPutReqBody,
+    updateSchoolType
+  )
+  .delete(protect, validateSchoolTypesQueryParams, deleteSchoolType);
 
 module.exports = router;

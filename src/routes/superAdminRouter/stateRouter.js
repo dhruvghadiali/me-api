@@ -7,16 +7,26 @@ const {
   updateState,
   deleteState,
 } = require("@MEControllers/stateController/stateController");
+const {
+  validateStatesPutReqBody,
+  validateStatesPostReqBody,
+  validateStatesQueryParams,
+} = require("@MEControllers/stateController/stateValidation");
 
 const router = express.Router();
 
 router
   .route("/states")
   .get(protect, getStates)
-  .post(protect, addState);
+  .post(protect, validateStatesPostReqBody, addState);
 router
   .route("/states/:id")
-  .put(protect, updateState)
-  .delete(protect, deleteState);
+  .put(
+    protect,
+    validateStatesQueryParams,
+    validateStatesPutReqBody,
+    updateState
+  )
+  .delete(protect, validateStatesQueryParams, deleteState);
 
 module.exports = router;

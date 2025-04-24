@@ -1,13 +1,101 @@
 const City = require("@MEModels/cityModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const {
+  cityPutRequestFail,
+  cityPostRequestFail,
+  cityDeleteRequestFail,
+  cityPutRequestSuccess,
+  cityPostRequestSuccess,
+  citiesGetRequestSuccess,
+  cityDeleteRequestSuccess,
+} = require("@MEHelpers/responseMessage");
 
-exports.addCity = asyncHandler(async (req, res, next) => {
+/**
+ * @desc    Get cities
+ * @route   POST /super-admin/cities
+ * @access  Super Admin
+ */
+const getCities = asyncHandler(async (req, res, next) => {
+  // Find cities that are is_active status value is true and sort them by city name
+  const cities = await City.find({
+    is_active: true,
+  })
+    .select(["name", "created_at", "updated_at", "created_by", "updated_by"])
+    .populate([
+      { path: "created_by updated_by" },
+      {
+        path: "district",
+        select: [
+          "name",
+          "created_at",
+          "updated_at",
+          "created_by",
+          "updated_by",
+        ],
+        populate: [
+          { path: "created_by updated_by" },
+          {
+            path: "state",
+            select: [
+              "name",
+              "created_at",
+              "updated_at",
+              "created_by",
+              "updated_by",
+            ],
+            populate: "created_by updated_by",
+          },
+        ],
+      },
+      { path: "area_count" },
+      {
+        path: "area_names",
+        select: [
+          "name",
+          "created_at",
+          "updated_at",
+          "created_by",
+          "updated_by",
+        ],
+        populate: [
+          { path: "created_by updated_by" },
+          { path: "zipcode_count" },
+          {
+            path: "zipcodes",
+            select: [
+              "zipcode",
+              "created_at",
+              "updated_at",
+              "created_by",
+              "updated_by",
+            ],
+            populate: "created_by updated_by",
+          },
+        ],
+      },
+    ])
+    .sort({ name: 1 });
+
+  // Send response
+  res.status(200).json({
+    data: cities,
+    message: citiesGetRequestSuccess,
+  });
+});
+
+/**
+ * @desc    Add city
+ * @route   POST /super-admin/cities
+ * @access  Super Admin
+ */
+const addCity = asyncHandler(async (req, res, next) => {
   let response;
   const { name, district } = req.body;
+  const { id } = req.user;
 
+  // Find city that has is_active status value is false
   const cityInfo = await City.findOne({
     name: name ? name : "",
     district: district ? district : "",
@@ -15,115 +103,93 @@ exports.addCity = asyncHandler(async (req, res, next) => {
   });
 
   if (cityInfo) {
+    // If city is already present, update the is_active status value to true with the user who signin
     response = await City.findByIdAndUpdate(
       cityInfo.id,
-      { is_active: true },
+      { is_active: true, updated_by: id },
       {
         new: true,
         runValidators: true,
       }
     );
   } else {
-    response = await City.create(req.body);
+    // If city is not present, create a new city with the user who signin
+    response = await City.create({
+      name,
+      district,
+      created_by: id,
+      updated_by: id,
+    });
   }
 
   if (response) {
     delete response._doc.is_active;
-    delete response._doc.created_at;
-    delete response._doc.updated_at;
     delete response._doc.__v;
+
+    // Populate the created_by and updated_by username
+    await response.populate("created_by updated_by");
 
     res.status(201).json({
       data: [response],
-      message: responseMessage.cityPostRequestSuccess,
+      message: cityPostRequestSuccess,
     });
   } else {
-    next(new ErrorResponse(responseMessage.cityPostRequestFail, 400));
+    next(new ErrorResponse(cityPostRequestFail, 400));
   }
 });
 
-exports.getCities = asyncHandler(async (req, res, next) => {
-  const cities = await City.find({
-    is_active: true,
-  })
-    .select(["-created_at", "-updated_at", "-__v", "-is_active"])
-    .populate("state_detail", [
-      "-created_at",
-      "-updated_at",
-      "-__v",
-      "-is_active",
-    ]);
+/**
+ * @desc    Update city
+ * @route   POST /super-admin/cities
+ * @access  Super Admin
+ */
+const updateCity = asyncHandler(async (req, res, next) => {
+  const { name, district } = req.body;
+  const { id } = req.user;
 
-  res.status(200).json({
-    data: [cities],
-    message: responseMessage.citiesGetRequestSuccess,
-  });
-});
-
-exports.getCitiesWithAreaNamesCount = asyncHandler(async (req, res, next) => {
-  let cities = await City.find({
-    is_active: true,
-  })
-    .select(["-created_at", "-updated_at", "-__v", "-is_active"])
-    .populate({
-      path: "area_name_count",
-    })
-    .populate({
-      path: "state_detail",
-      select: ["-created_at", "-updated_at", "-__v", "-is_active"],
-    });
-
-  res.status(200).json({
-    data: cities,
-    message: responseMessage.citiesGetRequestSuccess,
-  });
-});
-
-exports.getCitiesByState = asyncHandler(async (req, res, next) => {
-  const cities = await City.find({
-    is_active: true,
-    state: req.params.id,
-  })
-    .select(["-created_at", "-updated_at", "-__v", "-is_active"])
-    .populate({
-      path: "area_names_count",
-    })
-    .populate({
-      path: "state_detail",
-      select: ["-created_at", "-updated_at", "-__v", "-is_active"],
-    });
-
-  res.status(200).json({
-    data: [cities],
-    message: responseMessage.citiesGetRequestSuccess,
-  });
-});
-
-exports.updateCity = asyncHandler(async (req, res, next) => {
-  const city = await City.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (city) {
-    delete city._doc.is_active;
-    delete city._doc.created_at;
-    delete city._doc.updated_at;
-    delete city._doc.__v;
-
-    res.status(200).json({
-      data: [city],
-      message: responseMessage.cityPutRequestSuccess,
-    });
-  } else {
-    next(new ErrorResponse(responseMessage.cityPutRequestFail, 400));
-  }
-});
-
-exports.deleteCity = asyncHandler(async (req, res, next) => {
+  // Find city id and update city info with user who signin
   const city = await City.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { name, district, updated_by: id },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .select([
+      "name",
+      "district",
+      "created_at",
+      "updated_at",
+      "created_by",
+      "updated_by",
+    ])
+    .populate("created_by updated_by");
+
+  if (city) {
+    // Send response
+    res.status(200).json({
+      data: [city],
+      message: cityPutRequestSuccess,
+    });
+  } else {
+    // Send error response
+    next(new ErrorResponse(cityPutRequestFail, 400));
+  }
+});
+
+/**
+ * @desc    Delete city
+ * @route   DELETE /super-admin/cities
+ * @access  Super Admin
+ */
+const deleteCity = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
+  // Find city id and update is_active status to false
+  const city = await City.findByIdAndUpdate(
+    req.params.id,
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,
@@ -131,11 +197,20 @@ exports.deleteCity = asyncHandler(async (req, res, next) => {
   );
 
   if (city) {
+    // Send response
     res.status(200).json({
       data: [],
-      message: responseMessage.cityDeleteRequestSuccess,
+      message: cityDeleteRequestSuccess,
     });
   } else {
-    next(new ErrorResponse(responseMessage.cityDeleteRequestFail, 400));
+    // Send error response
+    next(new ErrorResponse(cityDeleteRequestFail, 400));
   }
 });
+
+module.exports = {
+  addCity,
+  getCities,
+  updateCity,
+  deleteCity,
+};

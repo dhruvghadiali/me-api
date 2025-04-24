@@ -1,10 +1,16 @@
-const User = require("@MEModels/userModel");
-const validationMessage = require("@MEHelpers/validationMessage");
+const _ = require("lodash");
 
-exports.isActiveUserValidator = {
-    validator: async function (value) {
-      const user = await User.findById(value);
-      return !!(user && user.is_active);
-    },
-    message: validationMessage.usernameInvalid,
-  };
+const responseMessage = require("@MEHelpers/responseMessage");
+
+exports.setValidationMessage = (err) => {
+  if (err && err.details && err.details.length > 0) {
+    return err.details[0].message;
+  } else if (err && err.message) {
+    let message;
+    message = _.split(err.message, "(");
+    message = message && message.length > 1 ? message[0] : err.message;
+    return message;
+  } else {
+    return responseMessage.validationErrorMessage;
+  }
+};

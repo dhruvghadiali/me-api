@@ -1,6 +1,18 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
-const validationMessage = require("@MEHelpers/validationMessage");
+
+const { isActiveUserValidator } = require("@MEUtils/dbQuery");
+const {
+  stateNameMaxChar,
+  stateNameMinChar,
+} = require("@MEHelpers/validationConst");
+const {
+  usernameInvalid,
+  usernameRequired,
+  stateNameRequired,
+  stateNameMaxLength,
+  stateNameMinLength,
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -12,13 +24,35 @@ const stateSchema = Schema(
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, validationMessage.stateNameRequired],
-      maxlength: [100, validationMessage.stateNameMaxLength],
-      minlength: [2, validationMessage.stateNameMinLength],
+      required: [true, stateNameRequired],
+      maxlength: [stateNameMaxChar, stateNameMaxLength],
+      minlength: [stateNameMinChar, stateNameMinLength],
     },
     is_active: {
       type: Boolean,
       default: true,
+    },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: async function (value) {
+          return await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
+    },
+    updated_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: async function (value) {
+          return await isActiveUserValidator(value);
+        },
+        message: usernameInvalid,
+      },
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
@@ -47,7 +81,18 @@ stateSchema.virtual("districts", {
   foreignField: "state",
 });
 
-stateSchema.set("toJSON", { virtuals: true });
+stateSchema.set("toJSON", {
+  virtuals: true,
+  transform: function (doc, response) {
+    response.created_by = response?.created_by?.username
+      ? response.created_by.username
+      : null;
+    response.updated_by = response?.updated_by?.username
+      ? response.updated_by.username
+      : null;
+    return response;
+  },
+});
 stateSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("state", stateSchema);

@@ -1,8 +1,20 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const AreaName = require("@MEModels/areaNameModel");
-const validationMessage = require("@MEHelpers/validationMessage");
+const { zipcode } = require("@MEHelpers/regex");
+
+const {
+  isActiveUserValidator,
+  isActiveAreaNameExistsValidator,
+} = require("@MEUtils/dbQuery");
+const {
+  usernameInvalid,
+  zipcodeRequired,
+  invalidZipcode,
+  usernameRequired,
+  areaNameRequired,
+  areaNameInvalid,
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -10,31 +22,49 @@ const zipcodeSchema = Schema(
   {
     area_name: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.areaNameRequired],
-      ref: 'area_name',
+      required: [true, areaNameRequired],
+      ref: "area_name",
       validate: {
-        validator: async function (value) {
-          const areaNameExists = await AreaName.findById(value);
-          return !!areaNameExists; 
-        },
-        message: validationMessage.areaNameInvalid,
+        validator: isActiveAreaNameExistsValidator,
+        message: areaNameInvalid,
       },
     },
     zipcode: {
       type: String,
       trim: true,
-      required: [true, validationMessage.zipcodeRequired],
-      match: [/^[1-9][0-9]{5}$/, validationMessage.invalidZipcode],
+      required: [true, zipcodeRequired],
+      match: [zipcode, invalidZipcode],
     },
     is_active: {
       type: Boolean,
       default: true,
     },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
+    updated_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-zipcodeSchema.index({ area_name: 1, zipcode: 1,  }, { unique: true, index: true, });
+zipcodeSchema.index(
+  { area_name: 1, zipcode: 1 },
+  { unique: true, index: true }
+);
 
 zipcodeSchema.pre("save", async function (next) {
   let now = moment.utc(moment());
@@ -45,6 +75,18 @@ zipcodeSchema.pre("save", async function (next) {
   next();
 });
 
-zipcodeSchema.set("toJSON", { virtuals: true });
+zipcodeSchema.set("toJSON", {
+  virtuals: true,
+  transform: function (_, response) {
+    response.created_by = response?.created_by?.username
+      ? response.created_by.username
+      : null;
+    response.updated_by = response?.updated_by?.username
+      ? response.updated_by.username
+      : null;
+    return response;
+  },
+});
+zipcodeSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("zipcode", zipcodeSchema);

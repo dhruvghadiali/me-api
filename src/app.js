@@ -9,8 +9,8 @@ var cors = require("cors");
 
 const setupSwagger = require("@MEConfig/swagger");
 const errorHandler = require("@MEMiddleware/error");
-const studentRouter = require("@MERoutes/studentRouter");
-const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
+// const studentRouter = require("@MERoutes/studentRouter");
+// const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
 const superAdminRouter = require("@MERoutes/superAdminRouter");
 
 const app = express();
@@ -23,16 +23,16 @@ setupSwagger(app);
 
 (async () => {
   try {
-    mongoose.set('strictQuery', false);
+    mongoose.set("strictQuery", false);
     await mongoose.connect(process.env.DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     app.listen(3000);
 
-    app.use("/", studentRouter);
+    // app.use("/", studentRouter);
     app.use("/super-admin/", superAdminRouter);
-    app.use("/school-admin/", schoolAdminRouter);
+    // app.use("/school-admin/", schoolAdminRouter);
     app.use((req, res) => {
       res.status(404);
       res.sendFile(path.join(__dirname, "errorPage", "invalidEndpoint.html"));

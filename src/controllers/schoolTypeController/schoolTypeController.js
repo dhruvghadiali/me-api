@@ -1,15 +1,15 @@
 const SchoolType = require("@MEModels/schoolTypeModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const responseMessage = require("@MEHelpers/responseMessage");
 
 /**
  * @desc    Get all school types
  * @route   GET /super-admin/school-types
  * @access  Super Admin
  */
-exports.getSchoolTypes = asyncHandler(async (req, res, next) => {
+const getSchoolTypes = asyncHandler(async (req, res, next) => {
   // Find school types that are active status and sort them by school_type
   const schoolTypes = await SchoolType.find({
     is_active: true,
@@ -21,20 +21,13 @@ exports.getSchoolTypes = asyncHandler(async (req, res, next) => {
       "created_by",
       "updated_by",
     ])
-    .populate({
-      path: "created_by_user_info",
-      select: ["username"],
-    })
-    .populate({
-      path: "updated_by_user_info",
-      select: ["username"],
-    })
+    .populate("created_by updated_by")
     .sort({ school_type: 1 });
 
   // Send response
   res.status(200).json({
     data: schoolTypes,
-    message: responseMessage.schoolTypeGetRequestSuccess,
+    message: schoolTypeGetRequestSuccess,
   });
 });
 
@@ -43,7 +36,7 @@ exports.getSchoolTypes = asyncHandler(async (req, res, next) => {
  * @route   POST /super-admin/school-types
  * @access  Super Admin
  */
-exports.addSchoolType = asyncHandler(async (req, res, next) => {
+const addSchoolType = asyncHandler(async (req, res, next) => {
   let response;
   const { school_type } = req.body;
   const { id } = req.user;
@@ -79,25 +72,16 @@ exports.addSchoolType = asyncHandler(async (req, res, next) => {
     delete response._doc.__v;
 
     // Populate the created_by and updated_by username
-    await response.populate([
-      {
-        path: "created_by_user_info",
-        select: ["username"],
-      },
-      {
-        path: "updated_by_user_info",
-        select: ["username"],
-      },
-    ]);
+    await response.populate("created_by updated_by");
 
     // Send response
     res.status(201).json({
       data: [response],
-      message: responseMessage.schoolTypePostRequestSuccess,
+      message: schoolTypePostRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.schoolTypePostRequestFail, 400));
+    next(new ErrorResponse(schoolTypePostRequestFail, 400));
   }
 });
 
@@ -106,7 +90,7 @@ exports.addSchoolType = asyncHandler(async (req, res, next) => {
  * @route   PUT /super-admin/school-types/:id
  * @access  Super Admin
  */
-exports.updateSchoolType = asyncHandler(async (req, res, next) => {
+const updateSchoolType = asyncHandler(async (req, res, next) => {
   const { school_type } = req.body;
   const { id } = req.user;
 
@@ -119,14 +103,7 @@ exports.updateSchoolType = asyncHandler(async (req, res, next) => {
       runValidators: true,
     }
   )
-    .populate({
-      path: "created_by_user_info",
-      select: ["username"],
-    })
-    .populate({
-      path: "updated_by_user_info",
-      select: ["username"],
-    })
+    .populate("created_by updated_by")
     .select([
       "school_type",
       "created_at",
@@ -139,11 +116,11 @@ exports.updateSchoolType = asyncHandler(async (req, res, next) => {
   if (schoolTypeInfo) {
     res.status(200).json({
       data: [schoolTypeInfo],
-      message: responseMessage.schoolTypePutRequestSuccess,
+      message: schoolTypePutRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.schoolTypePutRequestFail, 400));
+    next(new ErrorResponse(schoolTypePutRequestFail, 400));
   }
 });
 
@@ -152,11 +129,13 @@ exports.updateSchoolType = asyncHandler(async (req, res, next) => {
  * @route   DELETE /super-admin/school-types/:id
  * @access  Super Admin
  */
-exports.deleteSchoolType = asyncHandler(async (req, res, next) => {
+const deleteSchoolType = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Find school type id and update is active status to false
   const schoolTypeInfo = await SchoolType.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,
@@ -167,10 +146,17 @@ exports.deleteSchoolType = asyncHandler(async (req, res, next) => {
   if (schoolTypeInfo) {
     res.status(200).json({
       data: [],
-      message: responseMessage.schoolTypeDeleteRequestSuccess,
+      message: schoolTypeDeleteRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.schoolTypeDeleteRequestFail, 400));
+    next(new ErrorResponse(schoolTypeDeleteRequestFail, 400));
   }
 });
+
+module.exports = {
+  addSchoolType,
+  getSchoolTypes,
+  updateSchoolType,
+  deleteSchoolType,
+};

@@ -1,13 +1,106 @@
 const District = require("@MEModels/districtModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const {
+  districtPutRequestFail,
+  districtPostRequestFail,
+  districtDeleteRequestFail,
+  districtPutRequestSuccess,
+  districtPostRequestSuccess,
+  districtsGetRequestSuccess,
+  districtDeleteRequestSuccess,
+} = require("@MEHelpers/responseMessage");
 
-exports.addDistrict = asyncHandler(async (req, res, next) => {
+/**
+ * @desc    Get districts
+ * @route   POST /super-admin/districts
+ * @access  Super Admin
+ */
+const getDistricts = asyncHandler(async (req, res, next) => {
+  // Find districts that are is_active status value is true and sort them by district name
+  const districts = await District.find({
+    is_active: true,
+  })
+    .select(["name", "created_at", "updated_at", "created_by", "updated_by"])
+    .populate([
+      { path: "created_by updated_by" },
+      {
+        path: "state",
+        select: [
+          "name",
+          "created_at",
+          "updated_at",
+          "created_by",
+          "updated_by",
+        ],
+        populate: "created_by updated_by",
+      },
+      {
+        path: "city_count",
+      },
+      {
+        path: "cities",
+        select: [
+          "name",
+          "created_at",
+          "updated_at",
+          "created_by",
+          "updated_by",
+        ],
+        populate: [
+          {
+            path: "created_by updated_by",
+          },
+          { path: "area_count" },
+          {
+            path: "area_names",
+            select: [
+              "name",
+              "created_at",
+              "updated_at",
+              "created_by",
+              "updated_by",
+            ],
+            populate: [
+              { path: "created_by updated_by" },
+              { path: "zipcode_count" },
+              {
+                path: "zipcodes",
+                select: [
+                  "zipcode",
+                  "created_at",
+                  "updated_at",
+                  "created_by",
+                  "updated_by",
+                ],
+                populate: "created_by updated_by",
+              },
+            ],
+          },
+        ],
+      },
+    ])
+    .sort({ name: 1 });
+
+  // Send response
+  res.status(200).json({
+    data: districts,
+    message: districtsGetRequestSuccess,
+  });
+});
+
+/**
+ * @desc    Add district
+ * @route   POST /super-admin/districts
+ * @access  Super Admin
+ */
+const addDistrict = asyncHandler(async (req, res, next) => {
   let response;
   const { name, state } = req.body;
+  const { id } = req.user;
 
+  // Find district that has is_active status value is false
   const districtInfo = await District.findOne({
     name: name ? name : "",
     state: state ? state : "",
@@ -15,79 +108,114 @@ exports.addDistrict = asyncHandler(async (req, res, next) => {
   });
 
   if (districtInfo) {
+    // If district is already present, update the is_active status value to true with the user who signin
     response = await District.findByIdAndUpdate(
       districtInfo.id,
-      { is_active: true },
+      { is_active: true, updated_by: id },
       {
         new: true,
         runValidators: true,
       }
     );
   } else {
-    response = await District.create(req.body);
+    // If district is not present, create a new district with the user who signin
+    response = await District.create({
+      name,
+      state,
+      created_by: id,
+      updated_by: id,
+    });
   }
 
   if (response) {
     delete response._doc.is_active;
-    delete response._doc.created_at;
-    delete response._doc.updated_at;
     delete response._doc.__v;
+
+    // Populate the created_by and updated_by username
+    await response.populate("created_by updated_by");
 
     res.status(201).json({
       data: [response],
-      message: responseMessage.districtPostRequestSuccess,
+      message: districtPostRequestSuccess,
     });
   } else {
-    next(new ErrorResponse(responseMessage.districtPostRequestFail, 400));
+    next(new ErrorResponse(districtPostRequestFail, 400));
   }
 });
 
-exports.getDistricts = asyncHandler(async (req, res, next) => {
-  let queryObj = {
-    is_active: true,
-  };
+/**
+ * @desc    Update district
+ * @route   POST /super-admin/districts
+ * @access  Super Admin
+ */
+const updateDistrict = asyncHandler(async (req, res, next) => {
+  const { name, state } = req.body;
+  const { id } = req.user;
 
-  if (req && req.params && req.params.id) {
-    queryObj = {
-      ...queryObj,
-      state: req.params.id,
-    };
-  }
+  // Find district id and update district info with user who signin
+  const district = await District.findByIdAndUpdate(
+    req.params.id,
+    { name, state, updated_by: id },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .select([
+      "name",
+      "state",
+      "created_at",
+      "updated_at",
+      "created_by",
+      "updated_by",
+    ])
+    .populate("created_by updated_by");
 
-  const response = await District.find(queryObj)
-    .select(["name", "state"])
-    .populate({
-      path: "city_count",
-    })
-    .populate({
-      path: "cities",
-      select: ["name"],
-      populate: [
-        {
-          path: "area_count",
-        },
-        {
-          path: "areaNames",
-          select: ["name"],
-          populate: [
-            {
-              path: "zipcode_count",
-            },
-            {
-              path: "zipcodes",
-              select: ["zipcode"],
-            },
-          ],
-        },
-      ],
-    })
-    .populate({
-      path: "states",
-      select: ["name"],
+  if (district) {
+    // Send response
+    res.status(200).json({
+      data: [district],
+      message: districtPutRequestSuccess,
     });
-
-  res.status(200).json({
-    data: response,
-    message: responseMessage.citiesGetRequestSuccess,
-  });
+  } else {
+    // Send error response
+    next(new ErrorResponse(districtPutRequestFail, 400));
+  }
 });
+
+/**
+ * @desc    Delete district
+ * @route   DELETE /super-admin/districts
+ * @access  Super Admin
+ */
+const deleteDistrict = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
+  // Find district id and update is_active status to false
+  const district = await District.findByIdAndUpdate(
+    req.params.id,
+    { is_active: false, updated_by: id },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (district) {
+    // Send response
+    res.status(200).json({
+      data: [],
+      message: districtDeleteRequestSuccess,
+    });
+  } else {
+    // Send error response
+    next(new ErrorResponse(districtDeleteRequestFail, 400));
+  }
+});
+
+module.exports = {
+  addDistrict,
+  getDistricts,
+  updateDistrict,
+  deleteDistrict,
+};

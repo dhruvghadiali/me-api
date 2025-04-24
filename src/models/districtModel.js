@@ -1,8 +1,23 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
-const State = require("@MEModels/stateModel");
-const validationMessage = require("@MEHelpers/validationMessage");
+const {
+  isActiveUserValidator,
+  isActiveStateExistsValidator,
+} = require("@MEUtils/dbQuery");
+const {
+  districtNameMinChar,
+  districtNameMaxChar,
+} = require("@MEHelpers/validationConst");
+const {
+  usernameInvalid,
+  usernameRequired,
+  stateNameInvalid,
+  stateNameRequired,
+  districtNameRequired,
+  districtNameMaxLength,
+  districtNameMinLength,
+} = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
@@ -10,27 +25,42 @@ const districtSchema = Schema(
   {
     state: {
       type: Schema.Types.ObjectId,
-      required: [true, validationMessage.stateNameRequired],
+      required: [true, stateNameRequired],
       ref: "state",
       validate: {
-        validator: async function (value) {
-          const stateExists = await State.findById(value);
-          return !!stateExists;
-        },
-        message: validationMessage.stateNameInvalid,
+        validator: isActiveStateExistsValidator,
+        message: stateNameInvalid,
       },
     },
     name: {
       type: String,
       trim: true,
       lowercase: true,
-      required: [true, validationMessage.districtNameRequired],
-      maxlength: [100, validationMessage.districtNameMaxLength],
-      minlength: [2, validationMessage.districtNameMinLength],
+      required: [true, districtNameRequired],
+      maxlength: [districtNameMaxChar, districtNameMaxLength],
+      minlength: [districtNameMinChar, districtNameMinLength],
     },
     is_active: {
       type: Boolean,
       default: true,
+    },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
+    updated_by: {
+      type: Schema.Types.ObjectId,
+      required: [true, usernameRequired],
+      ref: "user",
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
@@ -47,13 +77,6 @@ districtSchema.pre("save", async function (next) {
   next();
 });
 
-districtSchema.virtual("states", {
-  ref: "state",
-  foreignField: "_id",
-  localField: "state",
-  justOne: true,
-});
-
 districtSchema.virtual("city_count", {
   ref: "city",
   localField: "_id",
@@ -68,7 +91,18 @@ districtSchema.virtual("cities", {
   foreignField: "district",
 });
 
-districtSchema.set("toJSON", { virtuals: true });
+districtSchema.set("toJSON", {
+  virtuals: true,
+  transform: function (_, response) {
+    response.created_by = response?.created_by?.username
+      ? response.created_by.username
+      : null;
+    response.updated_by = response?.updated_by?.username
+      ? response.updated_by.username
+      : null;
+    return response;
+  },
+});
 districtSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("district", districtSchema);

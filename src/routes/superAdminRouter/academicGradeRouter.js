@@ -7,16 +7,26 @@ const {
   updateAcademicGrade,
   deleteAcademicGrade,
 } = require("@MEControllers/academicGradeController/academicGradeController");
+const {
+  validateAcademicGradesPutReqBody,
+  validateAcademicGradesPostReqBody,
+  validateAcademicGradesQueryParams,
+} = require("@MEControllers/academicGradeController/academicGradeValidation");
 
 const router = express.Router();
 
 router
   .route("/academic-grades")
   .get(protect, getAcademicGrades)
-  .post(protect, addAcademicGrade);
+  .post(protect, validateAcademicGradesPostReqBody, addAcademicGrade);
 router
   .route("/academic-grades/:id")
-  .put(protect, updateAcademicGrade)
-  .delete(protect, deleteAcademicGrade);
+  .put(
+    protect,
+    validateAcademicGradesQueryParams,
+    validateAcademicGradesPutReqBody,
+    updateAcademicGrade
+  )
+  .delete(protect, validateAcademicGradesQueryParams, deleteAcademicGrade);
 
 module.exports = router;

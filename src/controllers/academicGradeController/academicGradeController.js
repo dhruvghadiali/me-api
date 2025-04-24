@@ -1,16 +1,25 @@
 const AcademicGrade = require("@MEModels/academicGradeModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEUtils/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+
+const {
+  academicGradePutRequestFail,
+  academicGradePostRequestFail,
+  academicGradePutRequestSuccess,
+  academicGradeDeleteRequestFail,
+  academicGradePostRequestSuccess,
+  academicGradesGetRequestSuccess,
+  academicGradeDeleteRequestSuccess,
+} = require("@MEHelpers/responseMessage");
 
 /**
  * @desc    Get all academic grades
  * @route   GET /super-admin/academic-grades
  * @access  Super Admin
  */
-exports.getAcademicGrades = asyncHandler(async (req, res, next) => {
-  // Find academic grades that are active status and sort them by academic_grade
+const getAcademicGrades = asyncHandler(async (req, res, next) => {
+  // Find academic grades that are is_active status value is true and sort them by academic_grade
   const academicGrades = await AcademicGrade.find({
     is_active: true,
   })
@@ -21,20 +30,13 @@ exports.getAcademicGrades = asyncHandler(async (req, res, next) => {
       "created_by",
       "updated_by",
     ])
-    .populate({
-      path: "created_by_user_info",
-      select: ["username"],
-    })
-    .populate({
-      path: "updated_by_user_info",
-      select: ["username"],
-    })
+    .populate("created_by updated_by")
     .sort({ academic_grade: 1 });
 
   // Send response
   res.status(200).json({
     data: academicGrades,
-    message: responseMessage.academicGradesGetRequestSuccess,
+    message: academicGradesGetRequestSuccess,
   });
 });
 
@@ -43,19 +45,19 @@ exports.getAcademicGrades = asyncHandler(async (req, res, next) => {
  * @route   POST /super-admin/academic-grades
  * @access  Super Admin
  */
-exports.addAcademicGrade = asyncHandler(async (req, res, next) => {
+const addAcademicGrade = asyncHandler(async (req, res, next) => {
   let response;
   const { academic_grade } = req.body;
   const { id } = req.user;
 
-  // Find academic_grade that is_active status false
+  // Find academic_grade that has is_active status value is false
   const academicGradeInfo = await AcademicGrade.findOne({
     academic_grade: academic_grade ? academic_grade : "",
     is_active: false,
   });
 
   if (academicGradeInfo) {
-    // If academic_grade is already present, update the is_active status to true with the user who signin
+    // If academic_grade is already present, update the is_active status value to true with the user who signin
     response = await AcademicGrade.findByIdAndUpdate(
       academicGradeInfo.id,
       { is_active: true, updated_by: id },
@@ -65,7 +67,7 @@ exports.addAcademicGrade = asyncHandler(async (req, res, next) => {
       }
     );
   } else {
-    // If academic_grade is not present, create a new academic grade with the user who signin
+    // If academic_grade is not present, create a new academic_grade with the user who signin
     response = await AcademicGrade.create({
       academic_grade,
       created_by: id,
@@ -79,25 +81,16 @@ exports.addAcademicGrade = asyncHandler(async (req, res, next) => {
     delete response._doc.__v;
 
     // Populate the created_by and updated_by username
-    await response.populate([
-      {
-        path: "created_by_user_info",
-        select: ["username"],
-      },
-      {
-        path: "updated_by_user_info",
-        select: ["username"],
-      },
-    ]);
+    await response.populate("created_by updated_by");
 
     // Send response
     res.status(201).json({
       data: [response],
-      message: responseMessage.academicGradePostRequestSuccess,
+      message: academicGradePostRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.academicGradePostRequestFail, 400));
+    next(new ErrorResponse(academicGradePostRequestFail, 400));
   }
 });
 
@@ -106,7 +99,7 @@ exports.addAcademicGrade = asyncHandler(async (req, res, next) => {
  * @route   PUT /super-admin/academic-grades/:id
  * @access  Super Admin
  */
-exports.updateAcademicGrade = asyncHandler(async (req, res, next) => {
+const updateAcademicGrade = asyncHandler(async (req, res, next) => {
   const { academic_grade } = req.body;
   const { id } = req.user;
 
@@ -119,14 +112,7 @@ exports.updateAcademicGrade = asyncHandler(async (req, res, next) => {
       runValidators: true,
     }
   )
-    .populate({
-      path: "created_by_user_info",
-      select: ["username"],
-    })
-    .populate({
-      path: "updated_by_user_info",
-      select: ["username"],
-    })
+    .populate("created_by updated_by")
     .select([
       "academic_grade",
       "created_at",
@@ -135,15 +121,15 @@ exports.updateAcademicGrade = asyncHandler(async (req, res, next) => {
       "updated_by",
     ]);
 
-  // Send response
   if (academicGradeInfo) {
+    // Send response
     res.status(200).json({
       data: [academicGradeInfo],
-      message: responseMessage.academicGradePutRequestSuccess,
+      message: academicGradePutRequestSuccess,
     });
   } else {
     // Send error response
-    next(new ErrorResponse(responseMessage.academicGradePutRequestFail, 400));
+    next(new ErrorResponse(academicGradePutRequestFail, 400));
   }
 });
 
@@ -152,27 +138,34 @@ exports.updateAcademicGrade = asyncHandler(async (req, res, next) => {
  * @route   DELETE /super-admin/academic-grades/:id
  * @access  Super Admin
  */
-exports.deleteAcademicGrade = asyncHandler(async (req, res, next) => {
+const deleteAcademicGrade = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Find academic grade id and update is active status to false
   const academicGradeInfo = await AcademicGrade.findByIdAndUpdate(
     req.params.id,
-    { is_active: false },
+    { is_active: false, updated_by: id },
     {
       new: true,
       runValidators: true,
     }
   );
 
-  // Send response
   if (academicGradeInfo) {
+    // Send response
     res.status(200).json({
       data: [],
-      message: responseMessage.academicGradeDeleteRequestSuccess,
+      message: academicGradeDeleteRequestSuccess,
     });
   } else {
     // Send error response
-    next(
-      new ErrorResponse(responseMessage.academicGradeDeleteRequestFail, 400)
-    );
+    next(new ErrorResponse(academicGradeDeleteRequestFail, 400));
   }
 });
+
+module.exports = {
+  addAcademicGrade,
+  getAcademicGrades,
+  updateAcademicGrade,
+  deleteAcademicGrade,
+};
