@@ -19,7 +19,7 @@ const {
  */
 const getFeeTypes = asyncHandler(async (req, res, next) => {
   // Find fee types that are active status and sort them by fee_type
-  const FeeTypes = await FeeType.find({
+  const feeTypes = await FeeType.find({
     is_active: true,
   })
     .select([
@@ -34,7 +34,7 @@ const getFeeTypes = asyncHandler(async (req, res, next) => {
 
   // Send response
   res.status(200).json({
-    data: FeeTypes,
+    data: feeTypes,
     message: feeTypesGetRequestSuccess,
   });
 });

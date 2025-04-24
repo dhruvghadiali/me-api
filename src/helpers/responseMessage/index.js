@@ -5,6 +5,7 @@ const feeTypeResponseMessage = require("@MEHelpers/responseMessage/feeTypeRespon
 const zipcodeResponseMessage = require("@MEHelpers/responseMessage/zipcodeResponseMessage");
 const areaNameResponseMessage = require("@MEHelpers/responseMessage/areaNameResponseMessage");
 const districtResponseMessage = require("@MEHelpers/responseMessage/districtResponseMessage");
+const facilityTypeResponseMessage = require("@MEHelpers/responseMessage/facilityTypeResponseMessage");
 const academicGradeResponseMessage = require("@MEHelpers/responseMessage/academicGradeResponseMessage");
 const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educationBoardResponseMessage");
 const admissionDocumentResponseMessage = require("@MEHelpers/responseMessage/admissionDocumentResponseMessage");
@@ -17,6 +18,7 @@ const responseMessage = {
   ...zipcodeResponseMessage,
   ...districtResponseMessage,
   ...areaNameResponseMessage,
+  ...facilityTypeResponseMessage,
   ...academicGradeResponseMessage,
   ...educationBoardResponseMessage,
   ...admissionDocumentResponseMessage,

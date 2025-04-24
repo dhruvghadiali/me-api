@@ -6,6 +6,7 @@ const FeeType = require("@MEModels/feeTypeModel");
 const Zipcode = require("@MEModels/zipcodeModel");
 const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
+const FacilityType = require("@MEModels/facilityTypeModel");
 const AcademicGrade = require("@MEModels/academicGradeModel");
 const EducationBoard = require("@MEModels/educationBoardModel");
 const AdmissionDocument = require("@MEModels/admissionDocument");
@@ -113,6 +114,17 @@ const isActiveFeeTypeExists = async (value) => {
   return value;
 };
 
+const isActiveFacilityTypeExists = async (value) => {
+  const response = await FeeType.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(feeTypeNotFound);
+  }
+  return value;
+};
+
 // exports.isDistrictExists = async (value, helpers) => {
 //   const response = await District.exists({
 //     _id: value,
@@ -196,6 +208,7 @@ module.exports = {
   isActiveZipcodeExists,
   isActiveDistrictExists,
   isActiveAreaNameExists,
+  isActiveFacilityTypeExists,
   isActiveAcademicGradeExists,
   isActiveEducationBoardExists,
   isActiveAdmissionDocumentExists,

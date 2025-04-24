@@ -1,5 +1,4 @@
 // const School = require("@MEModels/schoolModel");
-// const FeeType = require("@MEModels/feeTypeModel");
 // const Facility = require("@MEModels/facilityModel");
 // const Organization = require("@MEModels/organizationModel");
 // const FacilityType = require("@MEModels/facilityTypeModel");
@@ -42,10 +41,11 @@ const isActiveZipcodeExistsValidator = async (value) => {
   return !!(zipcodeExists && zipcodeExists.is_active);
 };
 
-// const isActiveFacilityTypeExistsValidator = async (value) => {
-//   const facilityTypeExists = await FacilityType.findById(value);
-//   return !!(facilityTypeExists && facilityTypeExists.is_active);
-// };
+const isActiveFacilityTypeExistsValidator = async (value) => {
+  const FacilityType = require("@MEModels/facilityTypeModel");
+  const facilityTypeExists = await FacilityType.findById(value);
+  return !!(facilityTypeExists && facilityTypeExists.is_active);
+};
 
 // const isActiveOrganizationExistsValidator = async (value) => {
 //   const organizationExists = await Organization.findById(value);
@@ -87,7 +87,7 @@ module.exports = {
   isActiveDistrictExistsValidator,
   isActiveAreaNameExistsValidator,
   // isActiveFacilityExistsValidator,
-  // isActiveFacilityTypeExistsValidator,
+  isActiveFacilityTypeExistsValidator,
   // isActiveOrganizationExistsValidator,
   // isActiveAcademicGradeExistsValidator,
   // isActiveAdmissionDocumentExistsValidator,
