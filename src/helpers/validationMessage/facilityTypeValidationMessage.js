@@ -5,11 +5,11 @@ const {
 
 const facilityTypeValidationMessage = {
   facilityTypeRequired: "Facility type is required",
+  facilityTypeEmpty: "Facility type can't be empty",
   facilityTypeIdRequired: "Facility type id is required",
-  facilityTypeEmpty: "Facility type name can't be empty",
+  facilityTypeBase: "Facility type must be string formate",
+  facilityTypeNotFound: "Facility type not found in database",
   facilityTypeIdBase: "Facility type id must be string formate",
-  facilityTypeBase: "Facility type name must be string formate",
-  facilityTypeNotFound: "Facility type name not found in database",
   facilityTypeReqBodyRequired: "Facility type request body is required",
   facilityTypeReqBodyEmpty: "Facility type request body can't be  empty",
   facilityTypeReqBodyBase: "Facility type request body has invalid formate",
