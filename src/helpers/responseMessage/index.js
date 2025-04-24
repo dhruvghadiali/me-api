@@ -1,6 +1,7 @@
 const authResponseMessage = require("@MEHelpers/responseMessage/authResponseMessage");
 const stateResponseMessage = require("@MEHelpers/responseMessage/stateResponseMessage");
 const commonResponseMessage = require("@MEHelpers/responseMessage/commonResponseMessage");
+const feeTypeResponseMessage = require("@MEHelpers/responseMessage/feeTypeResponseMessage");
 const zipcodeResponseMessage = require("@MEHelpers/responseMessage/zipcodeResponseMessage");
 const areaNameResponseMessage = require("@MEHelpers/responseMessage/areaNameResponseMessage");
 const districtResponseMessage = require("@MEHelpers/responseMessage/districtResponseMessage");
@@ -12,6 +13,7 @@ const responseMessage = {
   ...authResponseMessage,
   ...stateResponseMessage,
   ...commonResponseMessage,
+  ...feeTypeResponseMessage,
   ...zipcodeResponseMessage,
   ...districtResponseMessage,
   ...areaNameResponseMessage,
@@ -31,14 +33,6 @@ const responseMessage = {
   schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
   schoolTypeDeleteRequestFail:
     "Facing issue while deleting school type details",
-
-  feeTypesGetRequestSuccess: "Fee types details found successfully",
-  feeTypePostRequestSuccess: "New fee type added successfully",
-  feeTypePostRequestFail: "Facing issue while adding new fee type details",
-  feeTypePutRequestSuccess: "Fee type details updated successfully",
-  feeTypePutRequestFail: "Facing issue while updating fee type details",
-  feeTypeDeleteRequestSuccess: "Fee type details deleted successfully",
-  feeTypeDeleteRequestFail: "Facing issue while deleting fee type details",
 };
 
 module.exports = responseMessage;

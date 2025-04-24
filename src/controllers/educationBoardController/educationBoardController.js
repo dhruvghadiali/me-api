@@ -17,7 +17,7 @@ const {
  * @route   GET /super-admin/education-boards
  * @access  Super Admin
  */
-exports.getEducationBoards = asyncHandler(async (req, res, next) => {
+const getEducationBoards = asyncHandler(async (req, res, next) => {
   // Find education boards that are active status and sort them by education_board
   const educationBoards = await EducationBoard.find({
     is_active: true,
@@ -44,7 +44,7 @@ exports.getEducationBoards = asyncHandler(async (req, res, next) => {
  * @route   POST /super-admin/education-boards
  * @access  Super Admin
  */
-exports.addEducationBoard = asyncHandler(async (req, res, next) => {
+const addEducationBoard = asyncHandler(async (req, res, next) => {
   let response;
   const { education_board } = req.body;
   const { id } = req.user;
@@ -98,7 +98,7 @@ exports.addEducationBoard = asyncHandler(async (req, res, next) => {
  * @route   PUT /super-admin/education-boards/:id
  * @access  Super Admin
  */
-exports.updateEducationBoard = asyncHandler(async (req, res, next) => {
+const updateEducationBoard = asyncHandler(async (req, res, next) => {
   const { education_board } = req.body;
   const { id } = req.user;
 
@@ -137,7 +137,7 @@ exports.updateEducationBoard = asyncHandler(async (req, res, next) => {
  * @route   DELETE /super-admin/education-boards/:id
  * @access  Super Admin
  */
-exports.deleteEducationBoard = asyncHandler(async (req, res, next) => {
+const deleteEducationBoard = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
 
   // Find education board id and update is active status to false
@@ -161,3 +161,10 @@ exports.deleteEducationBoard = asyncHandler(async (req, res, next) => {
     next(new ErrorResponse(educationBoardDeleteRequestFail, 400));
   }
 });
+
+module.exports = {
+  addEducationBoard,
+  getEducationBoards,
+  updateEducationBoard,
+  deleteEducationBoard,
+};
