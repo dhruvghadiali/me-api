@@ -5,6 +5,7 @@ const feeTypeResponseMessage = require("@MEHelpers/responseMessage/feeTypeRespon
 const zipcodeResponseMessage = require("@MEHelpers/responseMessage/zipcodeResponseMessage");
 const areaNameResponseMessage = require("@MEHelpers/responseMessage/areaNameResponseMessage");
 const districtResponseMessage = require("@MEHelpers/responseMessage/districtResponseMessage");
+const schoolTypeResponseMessage = require("@MEHelpers/responseMessage/schoolTypeResponseMessage");
 const facilityTypeResponseMessage = require("@MEHelpers/responseMessage/facilityTypeResponseMessage");
 const academicGradeResponseMessage = require("@MEHelpers/responseMessage/academicGradeResponseMessage");
 const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educationBoardResponseMessage");
@@ -18,23 +19,13 @@ const responseMessage = {
   ...zipcodeResponseMessage,
   ...districtResponseMessage,
   ...areaNameResponseMessage,
+  ...schoolTypeResponseMessage,
   ...facilityTypeResponseMessage,
   ...academicGradeResponseMessage,
   ...educationBoardResponseMessage,
   ...admissionDocumentResponseMessage,
-
   studentSignUpSuccess: "Student Signup process successfully completed",
   studentSignInSuccess: "Students signin process successfully completed",
-
-  schoolTypeGetRequestSuccess: "School type details found successfully",
-  schoolTypePostRequestSuccess: "New school type added successfully",
-  schoolTypePostRequestFail:
-    "Facing issue while adding new school type details",
-  schoolTypePutRequestSuccess: "School type details updated successfully",
-  schoolTypePutRequestFail: "Facing issue while updating school type details",
-  schoolTypeDeleteRequestSuccess: "School type details deleted successfully",
-  schoolTypeDeleteRequestFail:
-    "Facing issue while deleting school type details",
 };
 
 module.exports = responseMessage;
