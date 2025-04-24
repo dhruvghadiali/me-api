@@ -2,17 +2,19 @@ const mongoose = require("mongoose");
 
 const City = require("@MEModels/cityModel");
 const State = require("@MEModels/stateModel");
+const FeeType = require("@MEModels/feeTypeModel");
 const Zipcode = require("@MEModels/zipcodeModel");
 const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
 const AcademicGrade = require("@MEModels/academicGradeModel");
-const AdmissionDocument = require("@MEModels/admissionDocument");
 const EducationBoard = require("@MEModels/educationBoardModel");
+const AdmissionDocument = require("@MEModels/admissionDocument");
 
 // const SchoolType = require("@MEModels/schoolTypeModel");
 // const EducationBoard = require("@MEModels/educationBoardModel");
 
 const {
+  feeTypeNotFound,
   zipcodeNotFound,
   cityNameNotFound,
   areaNameNotFound,
@@ -100,6 +102,17 @@ const isActiveEducationBoardExists = async (value) => {
   return value;
 };
 
+const isActiveFeeTypeExists = async (value) => {
+  const response = await FeeType.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(feeTypeNotFound);
+  }
+  return value;
+};
+
 // exports.isDistrictExists = async (value, helpers) => {
 //   const response = await District.exists({
 //     _id: value,
@@ -179,6 +192,7 @@ module.exports = {
   isActiveCityExists,
   checkValidObjectId,
   isActiveStateExists,
+  isActiveFeeTypeExists,
   isActiveZipcodeExists,
   isActiveDistrictExists,
   isActiveAreaNameExists,
