@@ -11,6 +11,7 @@
     "start:loc": "nodemon --env-file ./config/.env.local src/app.js",
     "start:test": "nodemon --env-file ./config/.env.test.local src/app.js",
     "start:prod": "nodemon --env-file ./config/.env.production.local src/app.js",
+    "init:replica": "node scripts/mongo-init.js",
     "test": "jest --coverage"
   },
   "dependencies": {

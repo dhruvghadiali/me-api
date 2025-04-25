@@ -7,6 +7,8 @@ const schoolValidationConst = {
   schoolAffiliateNumberMinChar: 5,
   schoolEducationBoardsMaxLimit: 10,
   schoolEstablishedYearMinNumber: 1700,
+  schoolLogoMinChar: 10,
+  schoolLogoMaxChar: 500,
 };
 
 module.exports = schoolValidationConst;

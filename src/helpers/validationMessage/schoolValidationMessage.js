@@ -1,6 +1,8 @@
 const {
   schoolNameMaxChar,
   schoolNameMinChar,
+  schoolLogoMaxChar,
+  schoolLogoMinChar,
   schoolShortNameMaxChar,
   schoolShortNameMinChar,
   schoolAffiliateNumberMaxChar,
@@ -43,6 +45,8 @@ const schoolValidationMessage = {
   schoolEducationBoardsMinLength: `At least one school board selection is required`,
   schoolEducationBoardsUnique: `School education board selection have duplicate record.`,
   schoolEducationBoardsMaxLength: `Cannot select more then ${schoolEducationBoardsMaxLimit} school boards`,
+  schoolLogoMaxLength: `School logo must be less then ${schoolLogoMaxChar} characters`,
+  schoolLogoMinLength: `School logo must be greater then ${schoolLogoMinChar} characters`,
 };
 
 module.exports = schoolValidationMessage;

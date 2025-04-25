@@ -42,7 +42,7 @@ const postValidationSchema = Joi.object({
       "any.required": areaNameIdRequired,
       "any.notFound": areaNameNotFound,
     }),
-  name: Joi.string().trim().pattern(zipcode).required().messages({
+  zipcode: Joi.string().trim().pattern(zipcode).required().messages({
     "string.base": zipcodeBase,
     "string.empty": zipcodeEmpty,
     "string.pattern.base": invalidZipcode,
@@ -64,15 +64,18 @@ const putValidationSchema = Joi.object({
     .trim()
     .custom(checkValidObjectId)
     .external(isActiveAreaNameExists)
+    .required()
     .messages({
       "string.base": areaNameIdBase,
       "any.invalid": areaNameIdInvalid,
+      "any.required": areaNameIdRequired,
       "any.notFound": areaNameNotFound,
     }),
-  name: Joi.string().trim().pattern(zipcode).messages({
+  zipcode: Joi.string().trim().pattern(zipcode).required().messages({
     "string.base": zipcodeBase,
     "string.empty": zipcodeEmpty,
     "string.pattern.base": invalidZipcode,
+    "any.required": zipcodeRequired,
   }),
 })
   .empty({})
