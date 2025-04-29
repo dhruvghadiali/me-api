@@ -24,7 +24,6 @@ const {
   addressMinLength,
   usernameRequired,
   stateNameRequired,
-  schoolNameInvalid,
   schoolNameRequired,
   districtNameInvalid,
   districtNameRequired,

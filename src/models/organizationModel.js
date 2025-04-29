@@ -193,6 +193,20 @@ organizationSchema.pre("save", async function (next) {
   next();
 });
 
+organizationSchema.virtual("organization_member_count", {
+  ref: "organization_member",
+  localField: "_id",
+  foreignField: "organization",
+  count: true,
+  options: { match: { is_active: true } },
+});
+
+organizationSchema.virtual("organization_members", {
+  ref: "organization_member",
+  localField: "_id",
+  foreignField: "organization",
+});
+
 organizationSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {

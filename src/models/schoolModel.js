@@ -13,7 +13,6 @@ const {
 const {
   isActiveUserValidator,
   isActiveSchoolTypeExistsValidator,
-  isActiveOrganizationExistsValidator,
   isActiveEducationBoardExistsValidator,
 } = require("@MEUtils/dbQuery");
 const {
@@ -92,8 +91,6 @@ const schoolSchema = Schema(
       type: String,
       trim: true,
       lowercase: true,
-      index: true,
-      unique: true,
       required: [true, schoolNameRequired],
       maxlength: [schoolNameMaxChar, schoolNameMaxLength],
       minlength: [schoolNameMinChar, schoolNameMinLength],
@@ -230,6 +227,20 @@ schoolSchema.pre("save", async function (next) {
   this.created_at = now;
   this.is_active = true;
   next();
+});
+
+schoolSchema.virtual("school_address_count", {
+  ref: "school_address",
+  localField: "_id",
+  foreignField: "school",
+  count: true,
+  options: { match: { is_active: true } },
+});
+
+schoolSchema.virtual("school_address", {
+  ref: "school_address",
+  localField: "_id",
+  foreignField: "school",
 });
 
 schoolSchema.set("toJSON", {

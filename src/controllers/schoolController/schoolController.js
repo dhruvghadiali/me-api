@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const _ = require("lodash");
 
 const User = require("@MEModels/userModel");
 const School = require("@MEModels/schoolModel");
@@ -7,9 +8,86 @@ const SchoolAddress = require("@MEModels/schoolAddressModel");
 const OrganizationMember = require("@MEModels/organizationMemberModel");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
-const responseMessage = require("@MEHelpers/responseMessage");
+const {
+  schoolDetailsRequired,
+  schoolsGetRequestSuccess,
+  schoolPostRequestSuccess,
+  schoolAdminDetailsRequired,
+  organizationDetailsRequired,
+  schoolAddressDetailsRequired,
+  organizationMemberDetailsRequired,
+} = require("@MEHelpers/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+
+/**
+ * @desc    Get all schools
+ * @route   GET /super-admin/schools
+ * @access  Super Admin
+ */
+const getSchools = asyncHandler(async (req, res, next) => {
+  // Find schools that are is_active status value is true and sort them by name
+  const schools = await School.find({
+    is_active: true,
+  })
+    .select(["-__v"])
+    .populate([
+      { path: "created_by updated_by" },
+      {
+        path: "education_boards",
+        select: ["education_board"],
+      },
+      {
+        path: "school_type",
+        select: ["school_type"],
+      },
+      {
+        path: "organization",
+        populate: [
+          { path: "created_by updated_by" },
+          { path: "state", select: ["name"] },
+          { path: "district", select: ["name"] },
+          { path: "city", select: ["name"] },
+          { path: "area_name", select: ["name"] },
+          { path: "zipcode", select: ["zipcode"] },
+          { path: "organization_member_count" },
+          {
+            path: "organization_members",
+            populate: [
+              { path: "created_by updated_by" },
+              { path: "state", select: ["name"] },
+              { path: "district", select: ["name"] },
+              { path: "city", select: ["name"] },
+              { path: "area_name", select: ["name"] },
+              { path: "zipcode", select: ["zipcode"] },
+            ],
+          },
+        ],
+      },
+    ])
+    .populate([
+      { path: "school_address_count" },
+      {
+        path: "school_address",
+        populate: [
+          { path: "created_by updated_by" },
+          { path: "state", select: ["name"] },
+          { path: "district", select: ["name"] },
+          { path: "city", select: ["name"] },
+          { path: "area_name", select: ["name"] },
+          { path: "zipcode", select: ["zipcode"] },
+          { path: "user" },
+        ],
+      },
+    ])
+    .sort({ name: 1 });
+
+  // Send response
+  res.status(200).json({
+    data: schools,
+    message: schoolsGetRequestSuccess,
+  });
+});
 
 /**
  * @desc    Add school
@@ -17,68 +95,129 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @access  Super Admin
  */
 const addSchool = asyncHandler(async (req, res, next) => {
+  const hashedPassword = await User.setSchoolAdminDefaultPassword();
   const session = await mongoose.startSession();
   session.startTransaction();
 
   const { id } = req.user;
-  let { organization, organization_members } = req.body;
+  let {
+    organization,
+    organization_members,
+    school,
+    school_admins,
+    school_addresses,
+  } = req.body;
 
-  console.log("organization req.body", organization);
-  console.log("organization_members req.body", organization_members);
+  if (!organization) {
+    return next(new ErrorResponse(organizationDetailsRequired, 400));
+  } else if (!school) {
+    return next(new ErrorResponse(schoolDetailsRequired, 400));
+  } else if (!organization_members || organization_members.length <= 0) {
+    return next(new ErrorResponse(organizationMemberDetailsRequired, 400));
+  } else if (!school_admins || school_admins.length <= 0) {
+    return next(new ErrorResponse(schoolAdminDetailsRequired, 400));
+  } else if (!school_addresses || school_addresses.length <= 0) {
+    return next(new ErrorResponse(schoolAddressDetailsRequired, 400));
+  } else {
+    try {
+      // Create new organization with the user who signin.
+      let organizationResponse = await Organization.create(
+        [
+          {
+            ...organization,
+            created_by: id,
+            updated_by: id,
+          },
+        ],
+        { session }
+      );
 
-  try {
-    let organizationResponse = await Organization.create(
-      [
+      // Create new organization member with the user who signin.
+      let organizationMembersResponse = await OrganizationMember.insertMany(
+        organization_members.map((member) => {
+          return {
+            ...member,
+            organization: organizationResponse[0].id,
+            created_by: id,
+            updated_by: id,
+          };
+        }),
         {
-          ...organization,
-          created_by: id,
-          updated_by: id,
-        },
-      ],
-      { session }
-    );
+          session,
+        }
+      );
 
-    console.log("organizationResponse", organizationResponse);
+      // Create new school with the user who signin.
+      let schoolResponse = await School.create(
+        [
+          {
+            ...school,
+            organization: organizationResponse[0].id,
+            created_by: id,
+            updated_by: id,
+          },
+        ],
+        { session }
+      );
 
-    organization_members = organization_members.map((member) => {
-      return {
-        ...member,
-        organization: organizationResponse[0].id,
-        created_by: id,
-        updated_by: id,
-      };
-    });
+      // Create new school admin.
+      let usersResponse = await User.insertMany(
+        school_admins.map((schoolAdmin) => {
+          return {
+            ...schoolAdmin,
+            username: schoolAdmin.phone_number,
+            password: hashedPassword,
+            user_type: "SCHOOL_ADMIN",
+            is_active: true,
+            is_account_verified: true,
+          };
+        }),
+        {
+          session,
+        }
+      );
 
-    console.log("organization_members req.body", organization_members);
+      // Create new school address with the user who signin.
+      let schoolAddressesResponse = await SchoolAddress.insertMany(
+        school_addresses.map((schoolAddress) => {
+          return {
+            ...schoolAddress,
+            school: schoolResponse[0].id,
+            user: _.find(
+              usersResponse,
+              (user) => user.phone_number === schoolAddress.user_phone_number
+            )?.id,
+            created_by: id,
+            updated_by: id,
+          };
+        }),
+        {
+          session,
+        }
+      );
 
-    let organizationMembersResponse = await OrganizationMember.insertMany(
-      [...organization_members],
-      {
-        session,
-      }
-    );
+      await session.commitTransaction();
+      session.endSession();
 
-    console.log("organizationMembersResponse", organizationMembersResponse);
+      res.status(200).json({
+        data: [
+          {
+            organization: organizationResponse[0],
+            organization_members: organizationMembersResponse,
+            school: schoolResponse[0],
+            school_admins: usersResponse,
+            school_addresses: schoolAddressesResponse,
+          },
+        ],
+        message: schoolPostRequestSuccess,
+      });
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
 
-    // Create school
-    // Create school admin
-    // create school address
-
-    let response = await session.commitTransaction();
-    session.endSession();
-
-    console.log("response", response);
-
-    res.status(200).json({
-      data: [],
-      message: "School detail insert successfully",
-    });
-  } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-
-    // Send error response
-    throw error;
+      // Send error response
+      throw error;
+    }
   }
 });
 
@@ -126,4 +265,5 @@ const addSchool = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   addSchool,
+  getSchools,
 };

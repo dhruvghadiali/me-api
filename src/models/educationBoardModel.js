@@ -66,12 +66,18 @@ educationBoardSchema.pre("save", async function (next) {
 educationBoardSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
-    response.created_by = response?.created_by?.username
-      ? response.created_by.username
-      : null;
-    response.updated_by = response?.updated_by?.username
-      ? response.updated_by.username
-      : null;
+    if (response?.created_by?.username) {
+      response.created_by = response.created_by.username;
+    } else {
+      delete response.created_by;
+    }
+
+    if (response?.updated_by?.username) {
+      response.updated_by = response.updated_by.username;
+    } else {
+      delete response.updated_by;
+    }
+
     return response;
   },
 });
