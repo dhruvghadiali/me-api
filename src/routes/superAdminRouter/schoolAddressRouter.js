@@ -1,13 +1,17 @@
-// const express = require("express");
+const express = require("express");
 
-// const { protect } = require("@MEMiddleware/auth");
+const { protect } = require("@MEMiddleware/auth");
+const {
+  updateSchoolAddress,
+  changeSchoolAddressStatus,
+} = require("@MEControllers/schoolAddressController/schoolAddressController");
 
-// const router = express.Router();
+const router = express.Router();
 
-// router
-//   .route("/school-addresses/:id")
-//   .put(protect)
-//   .delete(protect)
-//   .patch(protect);
+router
+  .route("/school-addresses/:id")
+  .put(protect, updateSchoolAddress)
+  .delete(protect, changeSchoolAddressStatus)
+  .patch(protect, changeSchoolAddressStatus);
 
-// module.exports = router;
+module.exports = router;

@@ -10,13 +10,14 @@ const facilityRouter = require("@MERoutes/superAdminRouter/facilityRouter");
 const districtRouter = require("@MERoutes/superAdminRouter/districtRouter");
 const areaNameRouter = require("@MERoutes/superAdminRouter/areaNameRouter");
 const schoolTypeRouter = require("@MERoutes/superAdminRouter/schoolTypeRouter");
-// const organizationRouter = require("@MERoutes/superAdminRouter/organizationRouter");
-// const schoolAddressRouter = require("@MERoutes/superAdminRouter/schoolAddressRouter");
+const schoolAdminRouter = require("@MERoutes/superAdminRouter/schoolAdminRouter");
+const organizationRouter = require("@MERoutes/superAdminRouter/organizationRouter");
+const schoolAddressRouter = require("@MERoutes/superAdminRouter/schoolAddressRouter");
 const facilityTypeRouter = require("@MERoutes/superAdminRouter/facilityTypeRouter");
 const academicGradeRouter = require("@MERoutes/superAdminRouter/academicGradeRouter");
 const educationBoardRouter = require("@MERoutes/superAdminRouter/educationBoardRouter");
 const admissionDocumentRouter = require("@MERoutes/superAdminRouter/admissionDocumentRouter");
-// const organizationMemberRouter = require("@MERoutes/superAdminRouter/organizationMemberRouter");
+const organizationMemberRouter = require("@MERoutes/superAdminRouter/organizationMemberRouter");
 
 const router = express.Router();
 
@@ -30,12 +31,13 @@ router.use("/", facilityRouter);
 router.use("/", districtRouter);
 router.use("/", areaNameRouter);
 router.use("/", schoolTypeRouter);
-// router.use("/", organizationRouter);
-// router.use("/", schoolAddressRouter);
+router.use("/", schoolAdminRouter);
+router.use("/", organizationRouter);
+router.use("/", schoolAddressRouter);
 router.use("/", facilityTypeRouter);
 router.use("/", academicGradeRouter);
 router.use("/", educationBoardRouter);
 router.use("/", admissionDocumentRouter);
-// router.use("/", organizationMemberRouter);
+router.use("/", organizationMemberRouter);
 
 module.exports = router;

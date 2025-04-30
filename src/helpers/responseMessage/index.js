@@ -1,5 +1,4 @@
 const authResponseMessage = require("@MEHelpers/responseMessage/authResponseMessage");
-const userResponseMessage = require("@MEHelpers/responseMessage/userResponseMessage");
 const stateResponseMessage = require("@MEHelpers/responseMessage/stateResponseMessage");
 const schoolResponseMessage = require("@MEHelpers/responseMessage/schoolResponseMessage");
 const commonResponseMessage = require("@MEHelpers/responseMessage/commonResponseMessage");
@@ -18,7 +17,6 @@ const organizationMemberResponseMessage = require("@MEHelpers/responseMessage/or
 
 const responseMessage = {
   ...authResponseMessage,
-  ...userResponseMessage,
   ...stateResponseMessage,
   ...schoolResponseMessage,
   ...commonResponseMessage,

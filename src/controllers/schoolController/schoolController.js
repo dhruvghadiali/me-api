@@ -28,7 +28,7 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const getSchools = asyncHandler(async (req, res, next) => {
   // Find schools that are is_active status value is true and sort them by name
   const schools = await School.find({
-    is_active: true,
+    is_active: req.body.is_active,
   })
     .select(["-__v"])
     .populate([
@@ -221,28 +221,38 @@ const addSchool = asyncHandler(async (req, res, next) => {
   }
 });
 
-// exports.getActiveSchoolAddressSchools = asyncHandler(async (req, res, next) => {
-//   res.status(200).json({
-//     data: [],
-//     message: "School detail get successfully",
-//   });
-// });
+/**
+ * @desc    Update school
+ * @route   PATCH /super-admin/schools/:id
+ * @access  Super Admin
+ */
+const updateSchool = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
 
-// exports.getSchools = asyncHandler(async (req, res, next) => {
-//   res.status(200).json({
-//     data: [],
-//     message: "School detail get successfully",
-//   });
-// });
+  // Find school id and update school details with user who signin
+  const schoolInfo = await School.findByIdAndUpdate(
+    req.params.id,
+    { ...req.body, updated_by: id },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).populate("created_by updated_by");
 
-// exports.getSchool = asyncHandler(async (req, res, next) => {
-//   res.status(200).json({
-//     data: [],
-//     message: "School detail get successfully",
-//   });
-// });
+  if (schoolInfo) {
+    // Send response
+    res.status(200).json({
+      data: [schoolInfo],
+      message: "",
+    });
+  } else {
+    // Send error response
+    next(new ErrorResponse("", 400));
+  }
+});
 
-// exports.updateSchool = asyncHandler(async (req, res, next) => {
+// exports.deleteSchool = asyncHandler(async (req, res, next) => {
+//  change is_active status for all school address and school admin.
 //   res.status(200).json({
 //     data: [],
 //     message: "School detail get successfully",
@@ -250,13 +260,7 @@ const addSchool = asyncHandler(async (req, res, next) => {
 // });
 
 // exports.restoreSchool = asyncHandler(async (req, res, next) => {
-//   res.status(200).json({
-//     data: [],
-//     message: "School detail get successfully",
-//   });
-// });
-
-// exports.deleteSchool = asyncHandler(async (req, res, next) => {
+//  change is_active status for selected school address and school admin.
 //   res.status(200).json({
 //     data: [],
 //     message: "School detail get successfully",
@@ -266,4 +270,5 @@ const addSchool = asyncHandler(async (req, res, next) => {
 module.exports = {
   addSchool,
   getSchools,
+  updateSchool,
 };
