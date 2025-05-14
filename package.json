@@ -7,10 +7,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node --env-file ./config/.env src/app.js",
-    "start:dev": "nodemon --watch src --ext js --env-file ./config/.env.development.local src/app.js",
+    "start:dev": "nodemon --watch src --ext js --env-file ./config/.env.dev src/app.js",
     "start:loc": "nodemon --watch src --ext js --env-file ./config/.env.local src/app.js",
-    "start:test": "nodemon --env-file ./config/.env.test.local src/app.js",
-    "start:prod": "nodemon --env-file ./config/.env.production.local src/app.js",
+    "start:sit": "nodemon --watch src --ext js --env-file ./config/.env.sit src/app.js",
+    "start:uat": "nodemon --watch src --ext js --env-file ./config/.env.uat src/app.js",
     "init:replica": "node scripts/mongo-init.js",
     "test": "jest --coverage"
   },
@@ -36,7 +36,8 @@
     "nodemon": "^3.1.9",
     "proxyquire": "^2.1.3",
     "sinon": "^15.0.4",
-    "supertest": "^6.3.4"
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.3.3"
   },
   "_moduleAliases": {
     "@MEUtils": "./src/utils",

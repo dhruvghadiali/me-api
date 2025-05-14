@@ -8,7 +8,7 @@
       "@MEConfig/*": ["src/config/*"],
       "@MEHelpers/*": ["src/helpers/*"],
       "@MEMiddleware/*": ["src/middleware/*"],
-      "@MEControllers/*": ["src/controllers/*"],
+      "@MEControllers/*": ["src/controllers/*"]
     }
   }
 }
