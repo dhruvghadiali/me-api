@@ -204,30 +204,29 @@ const organizationMemberSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-organizationMemberSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-
-  if (insertManyOperation) {
-    this.schema.paths.organization.validators = [];
-    this.schema.paths.organization.required = false;
-    this.schema.paths.organization.validate = false;
-  }
-  next();
-});
-
 organizationMemberSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
-    response.created_by = response?.created_by?.username
-      ? response.created_by.username
-      : null;
-    response.updated_by = response?.updated_by?.username
-      ? response.updated_by.username
-      : null;
+    if (response?.created_by?.username) {
+      response.created_by = response.created_by.username;
+    } else {
+      delete response.created_by;
+    }
+
+    if (response?.updated_by?.username) {
+      response.updated_by = response.updated_by.username;
+    } else {
+      delete response.updated_by;
+    }
+
+    if (response?.created_at) {
+      response.created_at = getISTDateTime(response.created_at);
+    }
+
+    if (response?.updated_at) {
+      response.updated_at = getISTDateTime(response.updated_at);
+    }
+
     return response;
   },
 });

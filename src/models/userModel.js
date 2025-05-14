@@ -115,11 +115,8 @@ const userSchema = Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
   const salt = await bcrypt.genSalt(10);
 
-  this.updated_at = now;
-  this.created_at = now;
   this.is_active = false;
   this.is_account_verified = false;
   this.password = await bcrypt.hash(this.password, salt);

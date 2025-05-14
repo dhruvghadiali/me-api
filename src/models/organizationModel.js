@@ -64,8 +64,6 @@ const organizationSchema = Schema(
     name: {
       type: String,
       trim: true,
-      index: true,
-      unique: true,
       required: [true, organizationNameRequired],
       maxlength: [organizationNameMaxChar, organizationNameMaxLength],
       minlength: [organizationNameMinChar, organizationNameMinLength],
@@ -184,14 +182,10 @@ const organizationSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-organizationSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
+organizationSchema.index(
+  { name: 1, government_registration_number: 1 },
+  { unique: true, index: true }
+);
 
 organizationSchema.virtual("organization_member_count", {
   ref: "organization_member",
@@ -210,12 +204,26 @@ organizationSchema.virtual("organization_members", {
 organizationSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
-    response.created_by = response?.created_by?.username
-      ? response.created_by.username
-      : null;
-    response.updated_by = response?.updated_by?.username
-      ? response.updated_by.username
-      : null;
+    if (response?.created_by?.username) {
+      response.created_by = response.created_by.username;
+    } else {
+      delete response.created_by;
+    }
+
+    if (response?.updated_by?.username) {
+      response.updated_by = response.updated_by.username;
+    } else {
+      delete response.updated_by;
+    }
+
+    if (response?.created_at) {
+      response.created_at = getISTDateTime(response.created_at);
+    }
+
+    if (response?.updated_at) {
+      response.updated_at = getISTDateTime(response.updated_at);
+    }
+
     return response;
   },
 });

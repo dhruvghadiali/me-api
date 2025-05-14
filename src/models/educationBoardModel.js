@@ -2,6 +2,8 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
+const { getISTDateTime } = require("@MEUtils/utility");
+
 const {
   educationBoardMinChar,
   educationBoardMaxChar,
@@ -76,6 +78,14 @@ educationBoardSchema.set("toJSON", {
       response.updated_by = response.updated_by.username;
     } else {
       delete response.updated_by;
+    }
+
+    if (response?.created_at) {
+      response.created_at = getISTDateTime(response.created_at);
+    }
+
+    if (response?.updated_at) {
+      response.updated_at = getISTDateTime(response.updated_at);
     }
 
     return response;

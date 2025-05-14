@@ -10,9 +10,12 @@ const {
 } = require("@MEHelpers/responseMessage");
 
 /**
- * @desc    Update organization member
+ * @desc    Update organization member details
  * @route   PUT /super-admin/organization-members/:id
  * @access  Super Admin
+ * @param   {Object} req - Express request object containing the organization member details in the body and user ID in the user object.
+ * @param   {Object} res - Express response object used to send the response.
+ * @param   {Function} next - Express middleware function for error handling.
  */
 const updateOrganizationMember = asyncHandler(async (req, res, next) => {
   const { id } = req.user;

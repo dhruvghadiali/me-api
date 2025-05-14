@@ -95,6 +95,7 @@ const getStates = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     data: states,
     message: statesGetRequestSuccess,
+    status: 200,
   });
 });
 
@@ -143,6 +144,7 @@ const addState = asyncHandler(async (req, res, next) => {
     res.status(201).json({
       data: [response],
       message: statePostRequestSuccess,
+      status: 201,
     });
   } else {
     next(new ErrorResponse(statePostRequestFail, 400));
@@ -175,6 +177,7 @@ const updateState = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [state],
       message: statePutRequestSuccess,
+      status: 200,
     });
   } else {
     // Send error response
@@ -205,6 +208,7 @@ const deleteState = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [],
       message: stateDeleteRequestSuccess,
+      status: 200,
     });
   } else {
     // Send error response
