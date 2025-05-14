@@ -1,15 +1,17 @@
-// const express = require("express");
+const express = require("express");
 
-// const { protect } = require("@MEMiddleware/auth");
+const { protect } = require("@MEMiddleware/auth");
+const {
+  addSchool,
+  getSchools,
+  updateSchool,
+} = require("@MEControllers/schoolController/schoolController");
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.route("/schools").get(protect).post(protect);
-// router
-//   .route("/schools/:id")
-//   .get(protect) // provide all the address with is_active front will handle the address
-//   .put(protect)
-//   .patch(protect)
-//   .delete(protect);
+router.route("/schools").get(protect, getSchools).post(protect, addSchool);
+router.route("/schools/:id").put(protect, updateSchool);
+// .patch(protect)
+// .delete(protect);
 
-// module.exports = router;
+module.exports = router;

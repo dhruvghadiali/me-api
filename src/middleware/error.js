@@ -43,10 +43,15 @@ const errorHandler = (error, req, res, next) => {
       break;
     case "ValidationError":
       let message = Object.values(error.errors)[0];
+      let errorHeader = Object.values(error)?.[1];
+
       if (message.name === "CastError" && message.kind === "ObjectId") {
         error = new ErrorResponse(`${invalidObjectId} ${message.path}`, 400);
       } else {
-        error = new ErrorResponse(message, 400);
+        error = new ErrorResponse(
+          `${errorHeader ? `${errorHeader}: ` : ""}${message}`,
+          400
+        );
       }
       break;
     default:

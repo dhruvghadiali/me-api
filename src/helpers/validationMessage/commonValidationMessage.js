@@ -50,9 +50,12 @@ const commonValidationMessage = {
   facebookURLPattern: "Invalid Facebook URL",
   facebookURLEmpty: "Facebook URL cannot be empty",
   facebookURLInvalidFormate: "Facebook URL must be string formate",
-  instagramURLPattern: "Instagram Facebook URL",
+  instagramURLPattern: "Invalid Instagram URL",
   instagramURLEmpty: "Instagram URL cannot be empty",
   instagramURLInvalidFormate: "Instagram URL must be string formate",
+  twitterURLPattern: "Twitter Facebook URL",
+  twitterURLEmpty: "Twitter URL cannot be empty",
+  twitterURLInvalidFormate: "Twitter URL must be string formate",
 };
 
 module.exports = commonValidationMessage;

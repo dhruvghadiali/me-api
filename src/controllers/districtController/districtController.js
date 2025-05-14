@@ -87,6 +87,7 @@ const getDistricts = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     data: districts,
     message: districtsGetRequestSuccess,
+    status: 200,
   });
 });
 
@@ -137,6 +138,7 @@ const addDistrict = asyncHandler(async (req, res, next) => {
     res.status(201).json({
       data: [response],
       message: districtPostRequestSuccess,
+      status: 201,
     });
   } else {
     next(new ErrorResponse(districtPostRequestFail, 400));
@@ -176,6 +178,7 @@ const updateDistrict = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [district],
       message: districtPutRequestSuccess,
+      status: 200,
     });
   } else {
     // Send error response
@@ -206,6 +209,7 @@ const deleteDistrict = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [],
       message: districtDeleteRequestSuccess,
+      status: 200,
     });
   } else {
     // Send error response

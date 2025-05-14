@@ -23,6 +23,11 @@ const authResponseMessage = {
   superAdminSignInSuccess: "Super admin signin process successfully completed",
   superAdminPasswordChangedSuccess: "Super admin password changed successfully",
   superAdminPasswordChangedError: `Super admin password changed failed, Please try after sometime`,
+  schoolAdminDetailsRequired: "School admin details are required",
+  schoolAdminProfilePutSuccess: `School admin profile updated successfully`,
+  schoolAdminProfilePutError: `Facing issue while updating school admin profile details`,
+  schoolAdminChangePasswordSuccess: `School admin password updated successfully`,
+  schoolAdminChangePasswordError: `Facing issue while updating school admin password`,
 };
 
 module.exports = authResponseMessage;

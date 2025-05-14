@@ -1,7 +1,9 @@
 const moment = require("moment");
 const mongoose = require("mongoose");
 
+const { getISTDateTime } = require("@MEUtils/utility");
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
+
 const {
   stateNameMaxChar,
   stateNameMinChar,
@@ -58,15 +60,6 @@ const stateSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-stateSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
-
 stateSchema.virtual("district_count", {
   ref: "district",
   localField: "_id",
@@ -84,12 +77,26 @@ stateSchema.virtual("districts", {
 stateSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
-    response.created_by = response?.created_by?.username
-      ? response.created_by.username
-      : null;
-    response.updated_by = response?.updated_by?.username
-      ? response.updated_by.username
-      : null;
+    if (response?.created_by?.username) {
+      response.created_by = response.created_by.username;
+    } else {
+      delete response.created_by;
+    }
+
+    if (response?.updated_by?.username) {
+      response.updated_by = response.updated_by.username;
+    } else {
+      delete response.updated_by;
+    }
+
+    if (response?.created_at) {
+      response.created_at = getISTDateTime(response.created_at);
+    }
+
+    if (response?.updated_at) {
+      response.updated_at = getISTDateTime(response.updated_at);
+    }
+
     return response;
   },
 });

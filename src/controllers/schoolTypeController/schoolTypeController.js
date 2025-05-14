@@ -2,7 +2,15 @@ const SchoolType = require("@MEModels/schoolTypeModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
-const responseMessage = require("@MEHelpers/responseMessage");
+const {
+  schoolTypePutRequestFail,
+  schoolTypePostRequestFail,
+  schoolTypePutRequestSuccess,
+  schoolTypeDeleteRequestFail,
+  schoolTypeGetRequestSuccess,
+  schoolTypePostRequestSuccess,
+  schoolTypeDeleteRequestSuccess,
+} = require("@MEHelpers/responseMessage");
 
 /**
  * @desc    Get all school types

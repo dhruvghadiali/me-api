@@ -82,6 +82,7 @@ const getCities = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     data: cities,
     message: citiesGetRequestSuccess,
+    status: 200,
   });
 });
 
@@ -132,6 +133,7 @@ const addCity = asyncHandler(async (req, res, next) => {
     res.status(201).json({
       data: [response],
       message: cityPostRequestSuccess,
+      status: 201,
     });
   } else {
     next(new ErrorResponse(cityPostRequestFail, 400));
@@ -171,6 +173,7 @@ const updateCity = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [city],
       message: cityPutRequestSuccess,
+      status: 200,
     });
   } else {
     // Send error response
@@ -201,6 +204,7 @@ const deleteCity = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       data: [],
       message: cityDeleteRequestSuccess,
+      status: 200,
     });
   } else {
     // Send error response

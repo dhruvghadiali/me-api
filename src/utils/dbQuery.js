@@ -1,6 +1,6 @@
-// const School = require("@MEModels/schoolModel");
+//
 // const Facility = require("@MEModels/facilityModel");
-// const Organization = require("@MEModels/organizationModel");
+//
 // const FacilityType = require("@MEModels/facilityTypeModel");
 // const AcademicGrade = require("@MEModels/academicGradeModel");
 // const AdmissionDocument = require("@MEModels/admissionDocument");
@@ -47,15 +47,29 @@ const isActiveFacilityTypeExistsValidator = async (value) => {
   return !!(facilityTypeExists && facilityTypeExists.is_active);
 };
 
-// const isActiveOrganizationExistsValidator = async (value) => {
-//   const organizationExists = await Organization.findById(value);
-//   return !!(organizationExists && organizationExists.is_active);
-// };
+const isActiveOrganizationExistsValidator = async (value) => {
+  const Organization = require("@MEModels/organizationModel");
+  const organizationExists = await Organization.findById(value);
+  return !!(organizationExists && organizationExists.is_active);
+};
 
-// const isActiveSchoolExistsValidator = async (value) => {
-//   const schoolExists = await School.findById(value);
-//   return !!(schoolExists && schoolExists.is_active);
-// };
+const isActiveSchoolExistsValidator = async (value) => {
+  const School = require("@MEModels/schoolModel");
+  const schoolExists = await School.findById(value);
+  return !!(schoolExists && schoolExists.is_active);
+};
+
+const isActiveEducationBoardExistsValidator = async (value) => {
+  const EducationBoard = require("@MEModels/educationBoardModel");
+  const educationBoardExists = await EducationBoard.findById(value);
+  return !!(educationBoardExists && educationBoardExists.is_active);
+};
+
+const isActiveSchoolTypeExistsValidator = async (value) => {
+  const SchoolType = require("@MEModels/schoolTypeModel");
+  const schoolTypeExists = await SchoolType.findById(value);
+  return !!(schoolTypeExists && schoolTypeExists.is_active);
+};
 
 // const isActiveAcademicGradeExistsValidator = async (value) => {
 //   const academicGradeExists = await AcademicGrade.findById(value);
@@ -81,14 +95,16 @@ module.exports = {
   isActiveUserValidator,
   isActiveCityExistsValidator,
   isActiveStateExistsValidator,
-  // isActiveSchoolExistsValidator,
+  isActiveSchoolExistsValidator,
   isActiveZipcodeExistsValidator,
-  // isActiveFeeTypeExistsValidator,
   isActiveDistrictExistsValidator,
   isActiveAreaNameExistsValidator,
-  // isActiveFacilityExistsValidator,
+  isActiveSchoolTypeExistsValidator,
   isActiveFacilityTypeExistsValidator,
-  // isActiveOrganizationExistsValidator,
+  isActiveOrganizationExistsValidator,
+  isActiveEducationBoardExistsValidator,
+  // isActiveFeeTypeExistsValidator,
+  // isActiveFacilityExistsValidator,
   // isActiveAcademicGradeExistsValidator,
   // isActiveAdmissionDocumentExistsValidator,
 };

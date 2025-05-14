@@ -1,0 +1,8 @@
+
+POST http://localhost:3000/super-admin/signin
+Content-Type: application/json
+
+{
+    "username":"me_super_admin",
+    "password": "me@123456"
+}
