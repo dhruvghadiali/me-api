@@ -93,7 +93,7 @@ const currentYear = moment().year();
 const schoolPostReqBodyValidationSchema = Joi.object({
   organization: organizationPostReqBodyValidationSchema,
   organization_members: organizationMembersPostReqBodyValidationSchema,
-  school_address: schoolAddressPostReqBodyValidationSchema,
+  school_addresses: schoolAddressPostReqBodyValidationSchema,
   school_admins: schoolAdminPostReqBodyValidationSchema,
   school: Joi.object({
     affiliate_number: Joi.string()
@@ -213,10 +213,7 @@ const schoolPostReqBodyValidationSchema = Joi.object({
 
 const schoolPostReqBodyValidate = asyncHandler(async (req, res, next) => {
   try {
-    const validated = await schoolPostReqBodyValidationSchema.validateAsync(
-      req.body
-    );
-    console.log("validated", validated);
+    await schoolPostReqBodyValidationSchema.validateAsync(req.body);
     next();
   } catch (err) {
     next(new ErrorResponse(setValidationMessage(err), 400));

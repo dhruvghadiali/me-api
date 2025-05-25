@@ -1,5 +1,6 @@
 const Joi = require("joi");
 
+const { phoneRegex } = require("@MEHelpers/regex");
 const {
   checkValidObjectId,
   isActiveCityExists,
@@ -11,10 +12,17 @@ const {
 const {
   addressMaxChar,
   addressMinChar,
+  phoneNumberChar,
   schoolAddressArrayMinLength,
   schoolAddressArrayMaxLength,
 } = require("@MEHelpers/validationConst");
 const {
+  phoneNumberEmpty,
+  phoneNumberInvalid,
+  phoneNumberRequired,
+  phoneNumberMinLength,
+  phoneNumberMaxLength,
+  phoneNumberInvalidFormate,
   addressEmpty,
   addressRequired,
   addressMinLength,
@@ -49,6 +57,20 @@ const {
 const schoolAddressPostReqBodyValidationSchema = Joi.array()
   .items(
     Joi.object({
+      user_phone_number: Joi.string()
+        .trim()
+        .pattern(phoneRegex)
+        .min(phoneNumberChar)
+        .max(phoneNumberChar)
+        .required()
+        .messages({
+          "string.base": phoneNumberInvalidFormate,
+          "string.empty": phoneNumberEmpty,
+          "string.pattern.base": phoneNumberInvalid,
+          "string.min": phoneNumberMinLength,
+          "string.max": phoneNumberMaxLength,
+          "any.required": phoneNumberRequired,
+        }),
       address: Joi.string()
         .trim()
         .lowercase()
