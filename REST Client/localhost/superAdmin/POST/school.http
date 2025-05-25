@@ -1,0 +1,65 @@
+POST http://localhost:3000/super-admin/schools
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MGJkOTE5MGNkYzJmOTFjOWI0MmIwZSIsImlhdCI6MTc0ODE1NjM2MSwiZXhwIjoxNzQ4MTk5NTYxfQ.ZZ-Pc4vucRCkLgXokU20Rt3aHCIu-olJQr5nIE0ss28
+
+{
+  "organization": {
+    "name": "ABC eduction",
+    "short_name": "ab edu",
+    "email": "info@abcedu.in",
+    "phone_number": "8141466162",
+    "government_registration_number": "abc123456",
+    "address": "7 Poonam raj bhavn",
+    "state": "6813530662fdbdc3386c33e0",
+    "district": "6813678788e13be73bc980c4",
+    "city": "681516b2ab91bf3b84505a8a",
+    "area_name": "680bd9db0cdc2f91c9b42b49",
+    "zipcode": "680bda65f5d2e0843ecd3f18",
+    "abc": "abc"
+  },
+  "organization_members": [
+    {
+      "first_name": "dhruv",
+      "last_name": "ghadiali",
+      "email": "dhruvghadiali@gmail.com",
+      "phone_number": "7405111564",
+      "position": "President",
+      "aadhaar_number": "123456789012",
+      "address": "7, nilkanth villa",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ],
+  "school": {
+    "affiliate_number": "svn123456",
+    "name": "swami viveka nanad",
+    "short_name": "svn",
+    "email": "info@svn.com",
+    "phone_number": "7852014596",
+    "established_year": 2000,
+    "school_type": "68109a0f2194807b7f459bea",
+    "education_boards": ["6810c1900e1a9b6d50b321aa", "68109aa745b04f9db5ffaaf9"]
+  },
+  "school_admins": [
+    {
+      "first_name": "mann",
+      "last_name": "moi",
+      "email": "mannamod@svn.com",
+      "phone_number": "7405111563"
+    }
+  ],
+  "school_addresses": [
+    {
+      "user_phone_number": "7405111563",
+      "address": "jalarama nagar",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "_comment": "Invalid payload: organization name has invalid format",
+  "name": 12345,
+  "short_name": "ValidShort",
+  "email": "valid@email.com",
+  "phone_number": "9876543210",
+  "government_registration_number": "REG1234567",
+  "address": "123 Main Street",
+  "state": "6813530662fdbdc3386c33e0",
+  "district": "6813678788e13be73bc980c4",
+  "city": "681516b2ab91bf3b84505a8a",
+  "area_name": "680bd9db0cdc2f91c9b42b49",
+  "zipcode": "680bda65f5d2e0843ecd3f18"
+}

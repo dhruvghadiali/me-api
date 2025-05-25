@@ -1,0 +1,3 @@
+GET http://localhost:3000/super-admin/schools
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MGJkOTE5MGNkYzJmOTFjOWI0MmIwZSIsImlhdCI6MTc0ODA4MjY4OCwiZXhwIjoxNzQ4MTI1ODg4fQ.weNYGvrnsCfxNRpcBoixZqQUeqZ38K0qbhM3AZL27YQ

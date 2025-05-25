@@ -28,7 +28,7 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const getSchools = asyncHandler(async (req, res, next) => {
   // Find schools that are is_active status value is true and sort them by name
   const schools = await School.find({
-    is_active: req.body.is_active,
+    is_active: req.params.is_active || true,
   })
     .select(["-__v"])
     .populate([
@@ -185,7 +185,9 @@ const addSchool = asyncHandler(async (req, res, next) => {
             school: schoolResponse[0].id,
             user: _.find(
               usersResponse,
-              (user) => user.phone_number === schoolAddress.user_phone_number
+              (user) =>
+                _.toString(user.phone_number) ===
+                _.toString(schoolAddress.user_phone_number)
             )?.id,
             created_by: id,
             updated_by: id,
@@ -196,19 +198,11 @@ const addSchool = asyncHandler(async (req, res, next) => {
         }
       );
 
-      await session.commitTransaction();
+      let x = await session.commitTransaction();
       session.endSession();
 
       res.status(200).json({
-        data: [
-          {
-            organization: organizationResponse[0],
-            organization_members: organizationMembersResponse,
-            school: schoolResponse[0],
-            school_admins: usersResponse,
-            school_addresses: schoolAddressesResponse,
-          },
-        ],
+        data: [],
         message: schoolPostRequestSuccess,
       });
     } catch (error) {

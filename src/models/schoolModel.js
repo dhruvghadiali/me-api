@@ -69,6 +69,8 @@ const {
   schoolEducationBoardsMinLength,
 } = require("@MEHelpers/validationMessage");
 
+const { getISTDateTime } = require("@MEUtils/utility");
+
 const { Schema } = mongoose;
 
 const schoolSchema = Schema(

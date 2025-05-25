@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Bright Future Academy",
+    "short_name": "BrightFuture",
+    "email": "info@brightfuture.edu",
+    "phoneNumber": "+91-9876543210",
+    "governmentRegistrationNumber": "BFA123456789",
+    "address": "123 Knowledge Park, Noida, Uttar Pradesh, 201301"
+  },
+  {
+    "name": "Global Knowledge Institute",
+    "short_name": "GlobalKnowledge",
+    "email": "contact@globalknowledge.edu",
+    "phoneNumber": "+91-9876543211",
+    "governmentRegistrationNumber": "GKI987654321",
+    "address": "456 Education Street, Bengaluru, Karnataka, 560001"
+  },
+  {
+    "name": "NextGen Learning Center",
+    "short_name": "NextGenLearning",
+    "email": "support@nextgenlearning.edu",
+    "phoneNumber": "+91-9876543212",
+    "governmentRegistrationNumber": "NGL654321987",
+    "address": "789 Future Road, Hyderabad, Telangana, 500081"
+  },
+  {
+    "name": "Urban Scholars Academy",
+    "short_name": "UrbanScholars",
+    "email": "admissions@urbanscholars.edu",
+    "phoneNumber": "+91-9876543213",
+    "governmentRegistrationNumber": "USA321654987",
+    "address": "321 Academic Avenue, Pune, Maharashtra, 411001"
+  },
+  {
+    "name": "Health and Science Academy",
+    "short_name": "HealthScience",
+    "email": "info@healthscience.edu",
+    "phoneNumber": "+91-9876543214",
+    "governmentRegistrationNumber": "HSA987321654",
+    "address": "654 Wellness Lane, Chennai, Tamil Nadu, 600001"
+  },
+  {
+    "name": "EduSmart International",
+    "short_name": "EduSmartIntl",
+    "email": "admissions@edusmartintl.edu",
+    "phoneNumber": "+91-9876543215",
+    "governmentRegistrationNumber": "ESI456789123",
+    "address": "987 Knowledge Road, Jaipur, Rajasthan, 302001"
+  },
+  {
+    "name": "Global Trade Academy",
+    "short_name": "GlobalTradeAcad",
+    "email": "info@globaltradeacad.edu",
+    "phoneNumber": "+91-9876543216",
+    "governmentRegistrationNumber": "GTA123789456",
+    "address": "234 Commerce Way, Ahmedabad, Gujarat, 380001"
+  },
+  {
+    "name": "NextGen Robotics Academy",
+    "short_name": "NextGenRobotics",
+    "email": "info@nextgenrobotics.edu",
+    "phoneNumber": "+91-9876543217",
+    "governmentRegistrationNumber": "NGR789123456",
+    "address": "567 Automation Lane, Lucknow, Uttar Pradesh, 226001"
+  },
+  {
+    "name": "AquaPure Environmental School",
+    "short_name": "AquaPureSchool",
+    "email": "support@aquapureschool.edu",
+    "phoneNumber": "+91-9876543218",
+    "governmentRegistrationNumber": "APES456123789",
+    "address": "890 Clean Water Blvd, Bhopal, Madhya Pradesh, 462001"
+  },
+  {
+    "name": "Skyline Technical Institute",
+    "short_name": "SkylineTech",
+    "email": "contact@skylinetech.edu",
+    "phoneNumber": "+91-9876543219",
+    "governmentRegistrationNumber": "STI321987654",
+    "address": "123 Skyline Drive, Kolkata, West Bengal, 700001"
+  }
+]

@@ -1,0 +1,94 @@
+{
+  "cities": [
+    {
+      "name": "Bharuch",
+      "status": "Municipality",
+      "population": 169007
+    },
+    {
+      "name": "Ankleshwar",
+      "status": "Municipality",
+      "population": 89457
+    },
+    {
+      "name": "Jambusar",
+      "status": "Municipality",
+      "population": 43344
+    },
+    {
+      "name": "Amod",
+      "status": "Municipality",
+      "population": 15237
+    },
+    {
+      "name": "Andada",
+      "status": "Census Town",
+      "population": 16730
+    },
+    {
+      "name": "Bholav",
+      "status": "Census Town",
+      "population": 24605
+    },
+    {
+      "name": "Gadkhol",
+      "status": "Census Town",
+      "population": 25332
+    },
+    {
+      "name": "Jhadeshwar",
+      "status": "Census Town",
+      "population": 28148
+    },
+    {
+      "name": "Maktampur",
+      "status": "Census Town",
+      "population": 10704
+    },
+    {
+      "name": "Nandelav",
+      "status": "Census Town",
+      "population": 13583
+    },
+    {
+      "name": "Palej",
+      "status": "Census Town",
+      "population": 12334
+    },
+    {
+      "name": "Sarangpore",
+      "status": "Census Town",
+      "population": 16671
+    },
+    {
+      "name": "Sherpura",
+      "status": "Census Town",
+      "population": 5748
+    },
+    {
+      "name": "Bharuch INA",
+      "status": "Industrial Notified Area",
+      "population": 3332
+    },
+    {
+      "name": "Ankleshwar INA",
+      "status": "Industrial Notified Area",
+      "population": 24789
+    },
+    {
+      "name": "Panoli",
+      "status": "Industrial Notified Area",
+      "population": 836
+    },
+    {
+      "name": "Valia-Jhagadia GNFC",
+      "status": "Industrial Notified Area",
+      "population": 1084
+    },
+    {
+      "name": "Valia-Naldhari",
+      "status": "Industrial Notified Area",
+      "population": 5
+    }
+  ]
+}

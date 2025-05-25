@@ -1,0 +1,45 @@
+{
+  "organization": {
+    "name": "Missing Members School",
+    "short_name": "mms",
+    "email": "missing@school.com",
+    "phone_number": "9000000004",
+    "government_registration_number": "miss123456",
+    "address": "4 Test Lane",
+    "state": "6813530662fdbdc3386c33e0",
+    "district": "6813678788e13be73bc980c4",
+    "city": "681516b2ab91bf3b84505a8a",
+    "area_name": "680bd9db0cdc2f91c9b42b49",
+    "zipcode": "680bda65f5d2e0843ecd3f18"
+  },
+  "organization_members": [],
+  "school": {
+    "affiliate_number": "missaff123",
+    "name": "Missing Members School Name",
+    "short_name": "mmsn",
+    "email": "school@missing.com",
+    "phone_number": "9000000005",
+    "established_year": 2015,
+    "school_type": "68109a0f2194807b7f459bea",
+    "education_boards": ["6810c1900e1a9b6d50b321aa"]
+  },
+  "school_admins": [
+    {
+      "first_name": "admin",
+      "last_name": "two",
+      "email": "admin2@missing.com",
+      "phone_number": "9000000006"
+    }
+  ],
+  "school_addresses": [
+    {
+      "user_phone_number": "9000000006",
+      "address": "5 Test Lane",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ]
+}

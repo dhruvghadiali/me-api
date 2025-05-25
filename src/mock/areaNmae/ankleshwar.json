@@ -1,0 +1,268 @@
+{
+  "areas": [
+    {
+      "name": "Adadara",
+      "pincode": "393001"
+    },
+    {
+      "name": "Adol",
+      "pincode": "392240"
+    },
+    {
+      "name": "Alonj",
+      "pincode": "394115"
+    },
+    {
+      "name": "Amboli",
+      "pincode": "393001"
+    },
+    {
+      "name": "Amrutpura",
+      "pincode": "393001"
+    },
+    {
+      "name": "Andada",
+      "pincode": "393010"
+    },
+    {
+      "name": "Ankleshwar",
+      "pincode": "393001"
+    },
+    {
+      "name": "Ankleshwar GIDC",
+      "pincode": "393002"
+    },
+    {
+      "name": "Ankleshwar ONGC",
+      "pincode": "393003"
+    },
+    {
+      "name": "Avadar",
+      "pincode": "393001"
+    },
+    {
+      "name": "Bakrol",
+      "pincode": "393001"
+    },
+    {
+      "name": "Bhadi",
+      "pincode": "393001"
+    },
+    {
+      "name": "Bhadkodara",
+      "pincode": "393001"
+    },
+    {
+      "name": "Bharan",
+      "pincode": "393001"
+    },
+    {
+      "name": "Boidra",
+      "pincode": "393001"
+    },
+    {
+      "name": "Borbhatha",
+      "pincode": "393001"
+    },
+    {
+      "name": "Borbhatha Bet",
+      "pincode": "393001"
+    },
+    {
+      "name": "Chhapra",
+      "pincode": "393001"
+    },
+    {
+      "name": "Dadhal",
+      "pincode": "393001"
+    },
+    {
+      "name": "Dhanturiya",
+      "pincode": "393001"
+    },
+    {
+      "name": "Diva",
+      "pincode": "393001"
+    },
+    {
+      "name": "Divi",
+      "pincode": "393001"
+    },
+    {
+      "name": "Gadkhol",
+      "pincode": "393001"
+    },
+    {
+      "name": "Govali",
+      "pincode": "393001"
+    },
+    {
+      "name": "Goya Bazar",
+      "pincode": "393001"
+    },
+    {
+      "name": "Hajat",
+      "pincode": "393001"
+    },
+    {
+      "name": "Haripura",
+      "pincode": "393001"
+    },
+    {
+      "name": "Jitali",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kahanva",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kansiya",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kapalsadi",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kapodra",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kararvel",
+      "pincode": "393001"
+    },
+    {
+      "name": "Karmali",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kharchi",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kharod",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kondh",
+      "pincode": "393001"
+    },
+    {
+      "name": "Kosamdi",
+      "pincode": "393001"
+    },
+    {
+      "name": "Mandvabuzarg",
+      "pincode": "393001"
+    },
+    {
+      "name": "Matied",
+      "pincode": "393001"
+    },
+    {
+      "name": "Motali",
+      "pincode": "393001"
+    },
+    {
+      "name": "Motwan",
+      "pincode": "393001"
+    },
+    {
+      "name": "Nangal",
+      "pincode": "393001"
+    },
+    {
+      "name": "Naugama",
+      "pincode": "393001"
+    },
+    {
+      "name": "Panoli",
+      "pincode": "394115"
+    },
+    {
+      "name": "Pardi Idris",
+      "pincode": "393001"
+    },
+    {
+      "name": "Pardi Mokha",
+      "pincode": "393001"
+    },
+    {
+      "name": "Piludra",
+      "pincode": "393001"
+    },
+    {
+      "name": "Piprod",
+      "pincode": "393001"
+    },
+    {
+      "name": "Piraman",
+      "pincode": "393001"
+    },
+    {
+      "name": "Pungam",
+      "pincode": "393001"
+    },
+    {
+      "name": "Ravidra",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sakkarpore",
+      "pincode": "393001"
+    },
+    {
+      "name": "Samor",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sangpor",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sanjali",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sarangpore",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sarfuddin",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sarthan",
+      "pincode": "393001"
+    },
+    {
+      "name": "Sisodara",
+      "pincode": "393001"
+    },
+    {
+      "name": "Surwadi",
+      "pincode": "393001"
+    },
+    {
+      "name": "Taria",
+      "pincode": "393001"
+    },
+    {
+      "name": "Telva",
+      "pincode": "393001"
+    },
+    {
+      "name": "Uchhali",
+      "pincode": "393001"
+    },
+    {
+      "name": "Umarwada",
+      "pincode": "393001"
+    },
+    {
+      "name": "Utiyadara",
+      "pincode": "393001"
+    }
+  ]
+}

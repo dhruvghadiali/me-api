@@ -1,0 +1,140 @@
+{
+  "districts": [
+    {
+      "name": "Ahmedabad",
+      "headquarters": "Ahmedabad"
+    },
+    {
+      "name": "Amreli",
+      "headquarters": "Amreli"
+    },
+    {
+      "name": "Anand",
+      "headquarters": "Anand"
+    },
+    {
+      "name": "Aravalli",
+      "headquarters": "Modasa"
+    },
+    {
+      "name": "Banaskantha",
+      "headquarters": "Palanpur"
+    },
+    {
+      "name": "Bharuch",
+      "headquarters": "Bharuch"
+    },
+    {
+      "name": "Bhavnagar",
+      "headquarters": "Bhavnagar"
+    },
+    {
+      "name": "Botad",
+      "headquarters": "Botad"
+    },
+    {
+      "name": "Chhota Udaipur",
+      "headquarters": "Chhota Udaipur"
+    },
+    {
+      "name": "Dahod",
+      "headquarters": "Dahod"
+    },
+    {
+      "name": "Dang",
+      "headquarters": "Ahwa"
+    },
+    {
+      "name": "Devbhoomi Dwarka",
+      "headquarters": "Khambhalia"
+    },
+    {
+      "name": "Gandhinagar",
+      "headquarters": "Gandhinagar"
+    },
+    {
+      "name": "Gir Somnath",
+      "headquarters": "Veraval"
+    },
+    {
+      "name": "Jamnagar",
+      "headquarters": "Jamnagar"
+    },
+    {
+      "name": "Junagadh",
+      "headquarters": "Junagadh"
+    },
+    {
+      "name": "Kheda",
+      "headquarters": "Nadiad"
+    },
+    {
+      "name": "Kutch",
+      "headquarters": "Bhuj"
+    },
+    {
+      "name": "Mahisagar",
+      "headquarters": "Lunavada"
+    },
+    {
+      "name": "Mehsana",
+      "headquarters": "Mehsana"
+    },
+    {
+      "name": "Morbi",
+      "headquarters": "Morbi"
+    },
+    {
+      "name": "Narmada",
+      "headquarters": "Rajpipla"
+    },
+    {
+      "name": "Navsari",
+      "headquarters": "Navsari"
+    },
+    {
+      "name": "Panchmahal",
+      "headquarters": "Godhra"
+    },
+    {
+      "name": "Patan",
+      "headquarters": "Patan"
+    },
+    {
+      "name": "Porbandar",
+      "headquarters": "Porbandar"
+    },
+    {
+      "name": "Rajkot",
+      "headquarters": "Rajkot"
+    },
+    {
+      "name": "Sabarkantha",
+      "headquarters": "Himatnagar"
+    },
+    {
+      "name": "Surat",
+      "headquarters": "Surat"
+    },
+    {
+      "name": "Surendranagar",
+      "headquarters": "Surendranagar"
+    },
+    {
+      "name": "Tapi",
+      "headquarters": "Vyara"
+    },
+    {
+      "name": "Vadodara",
+      "headquarters": "Vadodara"
+    },
+    {
+      "name": "Valsad",
+      "headquarters": "Valsad"
+    },
+    {
+      "name": "Vav-Tharad",
+      "headquarters": "Tharad"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./config/.env.production
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app-sit:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./config/.env.sit
+    depends_on:
+      - mongo-sit
+
+  mongo-sit:
+    image: mongo:5
+    container_name: mongo-sit
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-sit-data:/data/db
+
+  app-uat:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./config/.env.uat
+    depends_on:
+      - mongo-uat
+
+  mongo-uat:
+    image: mongo:5
+    container_name: mongo-uat
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo-uat-data:/data/db
+
+volumes:
+  mongo-data:
+  mongo-sit-data:
+  mongo-uat-data:

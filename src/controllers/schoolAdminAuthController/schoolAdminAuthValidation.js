@@ -1,94 +1,130 @@
 const Joi = require("joi");
 
-const validationMessage = require("@MEHelpers/validationMessage");
-const validationConst = require("@MEHelpers/validationConst");
+const {
+  firstNameMaxChar,
+  firstNameMinChar,
+  lastNameMaxChar,
+  lastNameMinChar,
+  emailMaxChar,
+  emailMinChar,
+  phoneNumberChar,
+  schoolAdminArrayMaxLength,
+  schoolAdminArrayMinLength,
+} = require("@MEHelpers/validationConst");
+const {
+  firstNameEmpty,
+  firstNameMinLength,
+  firstNameMaxLength,
+  firstNameRequired,
+  firstNameInvalidFormate,
+  lastNameEmpty,
+  lastNameMinLength,
+  lastNameMaxLength,
+  lastNameRequired,
+  lastNameInvalidFormate,
+  emailEmpty,
+  emailInvalid,
+  emailRequired,
+  emailMinLength,
+  emailMaxLength,
+  emailInvalidFormate,
+  phoneNumberEmpty,
+  phoneNumberInvalid,
+  phoneNumberRequired,
+  phoneNumberMinLength,
+  phoneNumberMaxLength,
+  phoneNumberInvalidFormate,
+  schoolAdminDetailsEmpty,
+  schoolAdminDetailsRequired,
+  schoolAdminDetailsMustBeObject,
+  schoolAdminDetailsUnknownProperty,
+  schoolAdminsDetailsEmpty,
+  schoolAdminsDetailsRequired,
+  schoolAdminsDetailsMinLength,
+  schoolAdminsDetailsMaxLength,
+  schoolAdminsDetailsMustBeArray,
+} = require("@MEHelpers/validationMessage");
 
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
-exports.schoolAdminSignUpReqBodyValidationSchema = Joi.object({
-  first_name: Joi.string()
-    .trim()
-    .min(validationConst.firstNameMinLength)
-    .max(validationConst.firstNameMaxLength)
-    .required()
-    .messages({
-      "string.base": validationMessage.firstNameInvalidFormate,
-      "string.empty": validationMessage.firstNameEmpty,
-      "string.min": validationMessage.firstNameMinLength,
-      "string.max": validationMessage.firstNameMaxLength,
-      "any.required": validationMessage.firstNameRequired,
-    }),
-  last_name: Joi.string()
-    .trim()
-    .min(validationConst.lastNameMinLength)
-    .max(validationConst.lastNameMaxLength)
-    .required()
-    .messages({
-      "string.base": validationMessage.lastNameInvalidFormate,
-      "string.empty": validationMessage.lastNameEmpty,
-      "string.min": validationMessage.lastNameMinLength,
-      "string.max": validationMessage.lastNameMaxLength,
-      "any.required": validationMessage.lastNameRequired,
-    }),
-  email: Joi.string()
-    .trim()
-    .pattern(emailRegex)
-    .min(validationConst.emailMinLength)
-    .max(validationConst.emailMaxLength)
-    .required()
-    .messages({
-      "string.base": validationMessage.emailInvalidFormate,
-      "string.empty": validationMessage.emailEmpty,
-      "string.pattern.base": validationMessage.emailInvalid,
-      "string.min": validationMessage.emailMinLength,
-      "string.max": validationMessage.emailMaxLength,
-      "any.required": validationMessage.emailRequired,
-    }),
-  phone_number: Joi.string()
-    .trim()
-    .pattern(phoneRegex)
-    .min(validationConst.phoneNumberLength)
-    .max(validationConst.phoneNumberLength)
-    .required()
-    .messages({
-      "string.base": validationMessage.phoneNumberInvalidFormate,
-      "string.empty": validationMessage.phoneNumberEmpty,
-      "string.pattern.base": validationMessage.phoneNumberInvalid,
-      "string.min": validationMessage.phoneNumberMinLength,
-      "string.max": validationMessage.phoneNumberMaxLength,
-      "any.required": validationMessage.phoneNumberRequired,
-    }),
-  username: Joi.string()
-    .trim()
-    .min(validationConst.usernameMinLength)
-    .max(validationConst.usernameMaxLength)
-    .required()
-    .messages({
-      "string.base": validationMessage.usernameInvalidFormate,
-      "string.empty": validationMessage.usernameEmpty,
-      "string.min": validationMessage.usernameMinLength,
-      "string.max": validationMessage.usernameMaxLength,
-      "any.required": validationMessage.usernameRequired,
-    }),
-  password: Joi.string()
-    .trim()
-    .min(validationConst.passwordMinLength)
-    .max(validationConst.passwordMaxLengthWithoutEncryption)
-    .required()
-    .messages({
-      "string.base": validationMessage.passwordInvalidFormate,
-      "string.empty": validationMessage.passwordEmpty,
-      "string.min": validationMessage.passwordMinLength,
-      "string.max": validationMessage.passwordMaxLengthWithoutEncryption,
-      "any.required": validationMessage.passwordRequired,
-    }),
-})
-  .empty({})
+const schoolAdminPostReqBodyValidationSchema = Joi.array()
+  .items(
+    Joi.object({
+      first_name: Joi.string()
+        .trim()
+        .min(firstNameMinChar)
+        .max(firstNameMaxChar)
+        .required()
+        .messages({
+          "string.base": firstNameInvalidFormate,
+          "string.empty": firstNameEmpty,
+          "string.min": firstNameMinLength,
+          "string.max": firstNameMaxLength,
+          "any.required": firstNameRequired,
+        }),
+      last_name: Joi.string()
+        .trim()
+        .min(lastNameMinChar)
+        .max(lastNameMaxChar)
+        .required()
+        .messages({
+          "string.base": lastNameInvalidFormate,
+          "string.empty": lastNameEmpty,
+          "string.min": lastNameMinLength,
+          "string.max": lastNameMaxLength,
+          "any.required": lastNameRequired,
+        }),
+      email: Joi.string()
+        .trim()
+        .pattern(emailRegex)
+        .min(emailMinChar)
+        .max(emailMaxChar)
+        .required()
+        .messages({
+          "string.base": emailInvalidFormate,
+          "string.empty": emailEmpty,
+          "string.pattern.base": emailInvalid,
+          "string.min": emailMinLength,
+          "string.max": emailMaxLength,
+          "any.required": emailRequired,
+        }),
+      phone_number: Joi.string()
+        .trim()
+        .pattern(phoneRegex)
+        .min(phoneNumberChar)
+        .max(phoneNumberChar)
+        .required()
+        .messages({
+          "string.base": phoneNumberInvalidFormate,
+          "string.empty": phoneNumberEmpty,
+          "string.pattern.base": phoneNumberInvalid,
+          "string.min": phoneNumberMinLength,
+          "string.max": phoneNumberMaxLength,
+          "any.required": phoneNumberRequired,
+        }),
+    })
+      .empty({})
+      .required()
+      .unknown(false)
+      .messages({
+        "any.required": schoolAdminDetailsRequired,
+        "object.base": schoolAdminDetailsMustBeObject,
+        "object.empty": schoolAdminDetailsEmpty,
+        "object.unknown": schoolAdminDetailsUnknownProperty,
+      })
+  )
+  .min(schoolAdminArrayMinLength)
+  .max(schoolAdminArrayMaxLength)
   .required()
-  .unknown(false)
   .messages({
-    "any.required": validationMessage.userDetailsRequired,
-    "object.base": validationMessage.userDetailsMustBeObject,
-    "object.empty": validationMessage.userDetailsEmpty,
-    "object.unknown": validationMessage.userDetailsUnknownProperty,
+    "array.base": schoolAdminsDetailsMustBeArray,
+    "array.empty": schoolAdminsDetailsEmpty,
+    "array.min": schoolAdminsDetailsMinLength,
+    "array.max": schoolAdminsDetailsMaxLength,
+    "array.includesRequiredUnknowns": schoolAdminsDetailsMinLength,
+    "any.required": schoolAdminsDetailsRequired,
   });
+
+module.exports = {
+  schoolAdminPostReqBodyValidationSchema,
+};

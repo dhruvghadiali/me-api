@@ -15,7 +15,6 @@ const educationBoardValidationMessage = {
   educationBoardReqBodyBase: `Eduction board request body has invalid formate`,
   educationBoardReqBodyUnknown: `Eduction board request body has unknown parameters`,
   educationBoardInvalid: `Invalid education board. No matching education board found`,
-  educationBoardInvalid: `Invalid education board. No matching education board  found`,
   educationBoardIdInvalid: `Invalid education board id. No matching education board id`,
   educationBoardMaxLength: `Education board must be less then ${educationBoardMaxChar} characters`,
   educationBoardMinLength: `Education board must be greater then ${educationBoardMinChar} characters`,

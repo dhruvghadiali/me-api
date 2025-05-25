@@ -1,5 +1,5 @@
 const {
-  organizationMemberArrayLength,
+  organizationMemberArrayMaxLength,
   organizationMemberPositionMinChar,
   organizationMemberPositionMaxChar,
 } = require("@MEHelpers/validationConst");
@@ -22,7 +22,7 @@ const organizationMemberValidationMessage = {
   organizationMembersDetailsEmpty: `Organization member's details can not be empty`,
   organizationMembersDetailsMinLength: `Provide at least one organization member details`,
   organizationMembersDetailsMustBeArray: `Organization member's details must be array formate`,
-  organizationMembersDetailsMaxLength: `Can't add more then ${organizationMemberArrayLength} organization member details`,
+  organizationMembersDetailsMaxLength: `Can't add more then ${organizationMemberArrayMaxLength} organization member details`,
 };
 
 module.exports = organizationMemberValidationMessage;

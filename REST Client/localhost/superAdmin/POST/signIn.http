@@ -1,8 +1,49 @@
-
 POST http://localhost:3000/super-admin/signin
 Content-Type: application/json
 
+// Example of a valid payload for signing in
 {
-    "username":"me_super_admin",
+    "username": "me_super_admin",
     "password": "me@123456"
 }
+
+# // Invalid payload: Username is missing
+# {
+#     "password": "me@123456"
+# }
+
+# // Invalid payload: Password is missing
+# {
+#     "username": "me_super_admin"
+# }
+
+# // Invalid payload: Username is empty
+# {
+#     "username": "",
+#     "password": "me@123456"
+# }
+
+# // Invalid payload: Password is empty
+# {
+#     "username": "me_super_admin",
+#     "password": ""
+# }
+
+# // Invalid payload: Username format is invalid
+# {
+#     "username": "invalid_user",
+#     "password": "me@123456"
+# }
+
+# // Invalid payload: Password is incorrect
+# {
+#     "username": "me_super_admin",
+#     "password": "wrongpassword"
+# }
+
+# // Invalid payload: Contains extra fields not allowed
+# {
+#     "username": "me_super_admin",
+#     "password": "me@123456",
+#     "extraField": "notAllowed"
+# }

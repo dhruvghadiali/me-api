@@ -28,7 +28,7 @@ const schoolValidationMessage = {
   schoolShortNameMaxLength: `School short name must be less then ${schoolShortNameMaxChar} characters`,
   schoolShortNameMinLength: `School short name must be greater then ${schoolShortNameMinChar} characters`,
   schoolEstablishedYearMaxYear: `School established year cannot be in the future year`,
-  schoolEstablishedYearRequired: `School established year cannot be in the future year`,
+  schoolEstablishedYearRequired: `School established year is required`,
   schoolEstablishedYearInvalidFormate: `School established year must be number formate`,
   schoolEstablishedYearPositiveNumber: `School established year must be a positive number`,
   schoolEstablishedYearMinYear: `School established year cannot be earlier than ${schoolEstablishedYearMinNumber}`,
