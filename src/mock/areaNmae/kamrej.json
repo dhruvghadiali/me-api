@@ -1,0 +1,139 @@
+{
+  "city": "Kamrej",
+  "district": "Surat",
+  "state": "Gujarat",
+  "areas": [
+    {
+      "name": "Kamrej",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Kamrej Char Rasta",
+      "zipcode": "394185"
+    },
+    {
+      "name": "Vav Kathodara",
+      "zipcode": "394326"
+    },
+    {
+      "name": "Dhatva",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Dungra",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Kholeshwar",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Kolibharthana",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Nansad",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Netrang",
+      "zipcode": "394180"
+    },
+    {
+      "name": "Abrama",
+      "zipcode": "394150"
+    },
+    {
+      "name": "Afva Isroli",
+      "zipcode": "394620"
+    },
+    {
+      "name": "Akoti",
+      "zipcode": "394355"
+    },
+    {
+      "name": "Algat",
+      "zipcode": "394246"
+    },
+    {
+      "name": "Allu",
+      "zipcode": "394620"
+    },
+    {
+      "name": "Amalgundi",
+      "zipcode": "394365"
+    },
+    {
+      "name": "Amalsadi Palsana",
+      "zipcode": "394350"
+    },
+    {
+      "name": "Amalsadi Mandvi",
+      "zipcode": "394163"
+    },
+    {
+      "name": "Amba Mandvi",
+      "zipcode": "394163"
+    },
+    {
+      "name": "Ambach Valod",
+      "zipcode": "394641"
+    },
+    {
+      "name": "Ambheti Palsana",
+      "zipcode": "394352"
+    },
+    {
+      "name": "Ambia Vyara",
+      "zipcode": "394633"
+    },
+    {
+      "name": "Amchak Mahuva",
+      "zipcode": "394250"
+    },
+    {
+      "name": "Amoda Nizar",
+      "zipcode": "394380"
+    },
+    {
+      "name": "Anaval Mahuva",
+      "zipcode": "396510"
+    },
+    {
+      "name": "Andhatri Valod",
+      "zipcode": "394630"
+    },
+    {
+      "name": "Antapur Valod",
+      "zipcode": "394635"
+    },
+    {
+      "name": "Antroli Kamrej",
+      "zipcode": "394150"
+    },
+    {
+      "name": "Antroli Palsana",
+      "zipcode": "394325"
+    },
+    {
+      "name": "Antroli Mandvi",
+      "zipcode": "394170"
+    },
+    {
+      "name": "Areth Mandvi",
+      "zipcode": "394170"
+    },
+    {
+      "name": "Asta Kamrej",
+      "zipcode": "394320"
+    },
+    {
+      "name": "Babarghat Uchchhal",
+      "zipcode": "394375"
+    },
+    {
+      "name": "Bagumara Palsana",
+      "zipcode": "394305"
+    }
+  ]
+}

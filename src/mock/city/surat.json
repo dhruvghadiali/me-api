@@ -1,0 +1,160 @@
+{
+  "district": "Surat",
+  "cities_and_towns": [
+    {
+      "name": "Surat",
+      "status": "City",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Bardoli",
+      "status": "Municipality",
+      "taluka": "Bardoli"
+    },
+    {
+      "name": "Chorasi",
+      "status": "Municipality",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Kamrej",
+      "status": "Municipality",
+      "taluka": "Kamrej"
+    },
+    {
+      "name": "Mandvi",
+      "status": "Municipality",
+      "taluka": "Mandvi"
+    },
+    {
+      "name": "Mahuva",
+      "status": "Municipality",
+      "taluka": "Mahuva"
+    },
+    {
+      "name": "Mangrol",
+      "status": "Municipality",
+      "taluka": "Mangrol"
+    },
+    {
+      "name": "Olpad",
+      "status": "Municipality",
+      "taluka": "Olpad"
+    },
+    {
+      "name": "Palsana",
+      "status": "Municipality",
+      "taluka": "Palsana"
+    },
+    {
+      "name": "Umarpada",
+      "status": "Municipality",
+      "taluka": "Umarpada"
+    },
+    {
+      "name": "Bhesan",
+      "status": "Town",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Kosad",
+      "status": "Town",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Kosamba",
+      "status": "Town",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Limbayat",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Udhna",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Katargam",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Majura",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Puna",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Rander",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Adajan",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Mota Varachha",
+      "status": "Town",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Ichchhpur",
+      "status": "Town",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Vesu",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Gopi",
+      "status": "Town",
+      "taluka": "Surat City"
+    },
+    {
+      "name": "Ichhpur",
+      "status": "Town",
+      "taluka": "Chorasi"
+    },
+    {
+      "name": "Palsana",
+      "status": "Town",
+      "taluka": "Palsana"
+    },
+    {
+      "name": "Mahuva",
+      "status": "Town",
+      "taluka": "Mahuva"
+    },
+    {
+      "name": "Mandvi",
+      "status": "Town",
+      "taluka": "Mandvi"
+    },
+    {
+      "name": "Mangrol",
+      "status": "Town",
+      "taluka": "Mangrol"
+    },
+    {
+      "name": "Olpad",
+      "status": "Town",
+      "taluka": "Olpad"
+    },
+    {
+      "name": "Umarpada",
+      "status": "Town",
+      "taluka": "Umarpada"
+    }
+  ]
+}

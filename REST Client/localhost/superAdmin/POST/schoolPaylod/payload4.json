@@ -1,0 +1,53 @@
+{
+  "organization": {
+    "name": "No Admin School",
+    "short_name": "nas",
+    "email": "noadmin@school.com",
+    "phone_number": "9000000007",
+    "government_registration_number": "noadmin123",
+    "address": "6 Test Lane",
+    "state": "6813530662fdbdc3386c33e0",
+    "district": "6813678788e13be73bc980c4",
+    "city": "681516b2ab91bf3b84505a8a",
+    "area_name": "680bd9db0cdc2f91c9b42b49",
+    "zipcode": "680bda65f5d2e0843ecd3f18"
+  },
+  "organization_members": [
+    {
+      "first_name": "noadmin",
+      "last_name": "member",
+      "email": "noadminmember@school.com",
+      "phone_number": "9000000008",
+      "position": "Treasurer",
+      "aadhaar_number": "112233445566",
+      "address": "7 Test Lane",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ],
+  "school": {
+    "affiliate_number": "noadminaff123",
+    "name": "No Admin School Name",
+    "short_name": "nasn",
+    "email": "school@noadmin.com",
+    "phone_number": "9000000009",
+    "established_year": 2018,
+    "school_type": "68109a0f2194807b7f459bea",
+    "education_boards": ["6810c1900e1a9b6d50b321aa"]
+  },
+  "school_admins": [],
+  "school_addresses": [
+    {
+      "user_phone_number": "9000000009",
+      "address": "8 Test Lane",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ]
+}

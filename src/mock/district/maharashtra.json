@@ -1,0 +1,149 @@
+{
+  "state": "Maharashtra",
+  "districts": [
+    {
+      "name": "Ahmednagar",
+      "headquarters": "Ahmednagar"
+    },
+    {
+      "name": "Akola",
+      "headquarters": "Akola"
+    },
+    {
+      "name": "Amravati",
+      "headquarters": "Amravati"
+    },
+    {
+      "name": "Aurangabad",
+      "headquarters": "Aurangabad"
+    },
+    {
+      "name": "Beed",
+      "headquarters": "Beed"
+    },
+    {
+      "name": "Bhandara",
+      "headquarters": "Bhandara"
+    },
+    {
+      "name": "Buldhana",
+      "headquarters": "Buldhana"
+    },
+    {
+      "name": "Chandrapur",
+      "headquarters": "Chandrapur"
+    },
+    {
+      "name": "Dhule",
+      "headquarters": "Dhule"
+    },
+    {
+      "name": "Gadchiroli",
+      "headquarters": "Gadchiroli"
+    },
+    {
+      "name": "Gondia",
+      "headquarters": "Gondia"
+    },
+    {
+      "name": "Hingoli",
+      "headquarters": "Hingoli"
+    },
+    {
+      "name": "Jalgaon",
+      "headquarters": "Jalgaon"
+    },
+    {
+      "name": "Jalna",
+      "headquarters": "Jalna"
+    },
+    {
+      "name": "Kolhapur",
+      "headquarters": "Kolhapur"
+    },
+    {
+      "name": "Latur",
+      "headquarters": "Latur"
+    },
+    {
+      "name": "Mumbai City",
+      "headquarters": "Mumbai"
+    },
+    {
+      "name": "Mumbai Suburban",
+      "headquarters": "Bandra (East)"
+    },
+    {
+      "name": "Nagpur",
+      "headquarters": "Nagpur"
+    },
+    {
+      "name": "Nanded",
+      "headquarters": "Nanded"
+    },
+    {
+      "name": "Nandurbar",
+      "headquarters": "Nandurbar"
+    },
+    {
+      "name": "Nashik",
+      "headquarters": "Nashik"
+    },
+    {
+      "name": "Osmanabad",
+      "headquarters": "Osmanabad"
+    },
+    {
+      "name": "Palghar",
+      "headquarters": "Palghar"
+    },
+    {
+      "name": "Parbhani",
+      "headquarters": "Parbhani"
+    },
+    {
+      "name": "Pune",
+      "headquarters": "Pune"
+    },
+    {
+      "name": "Raigad",
+      "headquarters": "Alibag"
+    },
+    {
+      "name": "Ratnagiri",
+      "headquarters": "Ratnagiri"
+    },
+    {
+      "name": "Sangli",
+      "headquarters": "Sangli"
+    },
+    {
+      "name": "Satara",
+      "headquarters": "Satara"
+    },
+    {
+      "name": "Sindhudurg",
+      "headquarters": "Oros"
+    },
+    {
+      "name": "Solapur",
+      "headquarters": "Solapur"
+    },
+    {
+      "name": "Thane",
+      "headquarters": "Thane"
+    },
+    {
+      "name": "Wardha",
+      "headquarters": "Wardha"
+    },
+    {
+      "name": "Washim",
+      "headquarters": "Washim"
+    },
+    {
+      "name": "Yavatmal",
+      "headquarters": "Yavatmal"
+    }
+  ]
+}

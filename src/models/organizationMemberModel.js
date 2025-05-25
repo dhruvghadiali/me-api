@@ -64,6 +64,8 @@ const {
   organizationMemberPositionMaxLength,
 } = require("@MEHelpers/validationMessage");
 
+const { getISTDateTime } = require("@MEUtils/utility");
+
 const { Schema } = mongoose;
 
 const organizationMemberSchema = Schema(

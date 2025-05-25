@@ -1,0 +1,60 @@
+{
+  "organization": {
+    "name": "Test School",
+    "short_name": "ts",
+    "email": "test@school.com",
+    "phone_number": "9000000000",
+    "government_registration_number": "test123456",
+    "address": "1 Test Lane",
+    "state": "6813530662fdbdc3386c33e0",
+    "district": "6813678788e13be73bc980c4",
+    "city": "681516b2ab91bf3b84505a8a",
+    "area_name": "680bd9db0cdc2f91c9b42b49",
+    "zipcode": "680bda65f5d2e0843ecd3f18"
+  },
+  "organization_members": [
+    {
+      "first_name": "test",
+      "last_name": "member",
+      "email": "testmember@school.com",
+      "phone_number": "9000000001",
+      "position": "Secretary",
+      "aadhaar_number": "987654321098",
+      "address": "2 Test Lane",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ],
+  "school": {
+    "affiliate_number": "testaff123",
+    "name": "Test School Name",
+    "short_name": "tsn",
+    "email": "school@test.com",
+    "phone_number": "9000000002",
+    "established_year": 2010,
+    "school_type": "68109a0f2194807b7f459bea",
+    "education_boards": ["6810c1900e1a9b6d50b321aa"]
+  },
+  "school_admins": [
+    {
+      "first_name": "admin",
+      "last_name": "one",
+      "email": "admin1@test.com",
+      "phone_number": "9000000003"
+    }
+  ],
+  "school_addresses": [
+    {
+      "user_phone_number": "9000000003",
+      "address": "3 Test Lane",
+      "state": "6813530662fdbdc3386c33e0",
+      "district": "6813678788e13be73bc980c4",
+      "city": "681516b2ab91bf3b84505a8a",
+      "area_name": "680bd9db0cdc2f91c9b42b49",
+      "zipcode": "680bda65f5d2e0843ecd3f18"
+    }
+  ]
+}

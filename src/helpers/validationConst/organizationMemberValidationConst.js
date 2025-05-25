@@ -1,5 +1,6 @@
 const organizationMemberValidationConst = {
-  organizationMemberArrayLength: 5,
+  organizationMemberArrayMinLength: 1,
+  organizationMemberArrayMaxLength: 5,
   organizationMemberPositionMinChar: 2,
   organizationMemberPositionMaxChar: 50,
 };

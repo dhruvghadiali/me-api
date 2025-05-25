@@ -5,6 +5,7 @@ const schoolValidationConst = {
   schoolShortNameMinChar: 2,
   schoolAffiliateNumberMaxChar: 50,
   schoolAffiliateNumberMinChar: 5,
+  schoolEducationBoardsMinLimit: 1,
   schoolEducationBoardsMaxLimit: 10,
   schoolEstablishedYearMinNumber: 1700,
   schoolLogoMinChar: 10,
