@@ -132,9 +132,11 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 });
 
 userSchema.methods.getSignedJwtToken = function () {
-  let expiresIn = "60000";
+  let expiresIn = "1m";
   if (this.user_type === "SUPER_ADMIN") {
-    expiresIn = process.env.SUPER_ADMIN_JWT_EXPIRE_TIME || "1h";
+    expiresIn = process.env.SUPER_ADMIN_JWT_EXPIRE_TIME || expiresIn;
+  } else if (this.user_type === "SCHOOL_ADMIN") {
+    expiresIn = process.env.SCHOOL_ADMIN_JWT_EXPIRE_TIME || expiresIn;
   }
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn,

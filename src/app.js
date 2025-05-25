@@ -10,7 +10,7 @@ var cors = require("cors");
 const setupSwagger = require("@MEConfig/swagger");
 const errorHandler = require("@MEMiddleware/error");
 // const studentRouter = require("@MERoutes/studentRouter");
-// const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
+const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
 const superAdminRouter = require("@MERoutes/superAdminRouter");
 
 const app = express();
@@ -32,7 +32,7 @@ setupSwagger(app);
 
     // app.use("/", studentRouter);
     app.use("/super-admin/", superAdminRouter);
-    // app.use("/school-admin/", schoolAdminRouter);
+    app.use("/school-admin/", schoolAdminRouter);
     app.use((req, res) => {
       res.status(404);
       res.sendFile(path.join(__dirname, "errorPage", "invalidEndpoint.html"));
