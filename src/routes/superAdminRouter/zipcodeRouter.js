@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addZipcode,
   getZipcodes,
@@ -17,16 +17,16 @@ const router = express.Router();
 
 router
   .route("/zipcodes")
-  .get(protect, getZipcodes)
-  .post(protect, validateZipcodesPostReqBody, addZipcode);
+  .get(superAdminProtect, getZipcodes)
+  .post(superAdminProtect, validateZipcodesPostReqBody, addZipcode);
 router
   .route("/zipcodes/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateZipcodesQueryParams,
     validateZipcodesPutReqBody,
     updateZipcode
   )
-  .delete(protect, validateZipcodesQueryParams, deleteZipcode);
+  .delete(superAdminProtect, validateZipcodesQueryParams, deleteZipcode);
 
 module.exports = router;

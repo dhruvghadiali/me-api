@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   getEducationBoards,
   addEducationBoard,
@@ -17,16 +17,24 @@ const router = express.Router();
 
 router
   .route("/education-boards")
-  .get(protect, getEducationBoards)
-  .post(protect, validateEducationBoardsPostReqBody, addEducationBoard);
+  .get(superAdminProtect, getEducationBoards)
+  .post(
+    superAdminProtect,
+    validateEducationBoardsPostReqBody,
+    addEducationBoard
+  );
 router
   .route("/education-boards/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateEducationBoardsQueryParams,
     validateEducationBoardsPutReqBody,
     updateEducationBoard
   )
-  .delete(protect, validateEducationBoardsQueryParams, deleteEducationBoard);
+  .delete(
+    superAdminProtect,
+    validateEducationBoardsQueryParams,
+    deleteEducationBoard
+  );
 
 module.exports = router;

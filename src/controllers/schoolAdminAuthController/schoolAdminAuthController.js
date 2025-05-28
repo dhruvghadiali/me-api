@@ -82,6 +82,7 @@ const populateSchoolDetails = async (user) => {
 const setUserInformation = (user) => {
   try {
     return {
+      id: user._id ? user._id : "",
       first_name: user.first_name ? user.first_name : "",
       last_name: user.last_name ? user.last_name : "",
       username: user.username ? user.username : "",
@@ -113,6 +114,8 @@ const setSchoolInformation = (user) => {
   try {
     return {
       school: {
+        id: school._id ? school._id : "",
+        school_address_id: schoolAddress._id ? schoolAddress._id : "",
         affiliate_number: school.affiliate_number
           ? school.affiliate_number
           : "",
@@ -165,6 +168,7 @@ const setOrganizationInformation = (user) => {
   try {
     return {
       organization: {
+        id: organization._id ? organization._id : "",
         name: organization.name ? organization.name : "",
         short_name: organization.short_name ? organization.short_name : "",
         email: organization.email ? organization.email : "",
@@ -189,6 +193,7 @@ const setOrganizationInformation = (user) => {
           organizationMembers.length > 0
             ? organizationMembers.map((member) => {
                 return {
+                  id: member._id ? member._id : "",
                   first_name: member.first_name ? member.first_name : "",
                   last_name: member.last_name ? member.last_name : "",
                   email: member.email ? member.email : "",

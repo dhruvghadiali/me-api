@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   updateOrganizationMember,
   deleteOrganizationMember,
@@ -10,7 +10,7 @@ const router = express.Router();
 
 router
   .route("/organization-members/:id")
-  .put(protect, updateOrganizationMember)
-  .delete(protect, deleteOrganizationMember);
+  .put(superAdminProtect, updateOrganizationMember)
+  .delete(superAdminProtect, deleteOrganizationMember);
 
 module.exports = router;

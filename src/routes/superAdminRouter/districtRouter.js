@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addDistrict,
   getDistricts,
@@ -17,16 +17,16 @@ const router = express.Router();
 
 router
   .route("/districts")
-  .get(protect, getDistricts)
-  .post(protect, validateDistrictsPostReqBody, addDistrict);
+  .get(superAdminProtect, getDistricts)
+  .post(superAdminProtect, validateDistrictsPostReqBody, addDistrict);
 router
   .route("/districts/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateDistrictsQueryParams,
     validateDistrictsPutReqBody,
     updateDistrict
   )
-  .delete(protect, validateDistrictsQueryParams, deleteDistrict);
+  .delete(superAdminProtect, validateDistrictsQueryParams, deleteDistrict);
 
 module.exports = router;

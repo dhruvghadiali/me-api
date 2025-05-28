@@ -1,0 +1,3 @@
+GET http://localhost:3000/school-admin/school-academic-classes/6831af4198e3d43a8d05f29d/68109aa745b04f9db5ffaaf9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzFhZjQxOThlM2Q0M2E4ZDA1ZjJhNCIsImlhdCI6MTc0ODQ1Mzg0NywiZXhwIjoxNzQ4NDU3NDQ3fQ.jPg5VuyCXngMw6zIEQrBdbQElLJ1lPDcrB0x8C5TP7o

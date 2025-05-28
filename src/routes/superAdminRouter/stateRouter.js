@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addState,
   getStates,
@@ -17,16 +17,16 @@ const router = express.Router();
 
 router
   .route("/states")
-  .get(protect, getStates)
-  .post(protect, validateStatesPostReqBody, addState);
+  .get(superAdminProtect, getStates)
+  .post(superAdminProtect, validateStatesPostReqBody, addState);
 router
   .route("/states/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateStatesQueryParams,
     validateStatesPutReqBody,
     updateState
   )
-  .delete(protect, validateStatesQueryParams, deleteState);
+  .delete(superAdminProtect, validateStatesQueryParams, deleteState);
 
 module.exports = router;

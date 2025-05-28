@@ -1,10 +1,3 @@
-//
-// const Facility = require("@MEModels/facilityModel");
-//
-// const FacilityType = require("@MEModels/facilityTypeModel");
-// const AcademicGrade = require("@MEModels/academicGradeModel");
-// const AdmissionDocument = require("@MEModels/admissionDocument");
-
 const isActiveUserValidator = async (value) => {
   const User = require("@MEModels/userModel");
   const user = await User.findById(value);
@@ -71,25 +64,11 @@ const isActiveSchoolTypeExistsValidator = async (value) => {
   return !!(schoolTypeExists && schoolTypeExists.is_active);
 };
 
-// const isActiveAcademicGradeExistsValidator = async (value) => {
-//   const academicGradeExists = await AcademicGrade.findById(value);
-//   return !!(academicGradeExists && academicGradeExists.is_active);
-// };
-
-// const isActiveAdmissionDocumentExistsValidator = async (value) => {
-//   const admissionDocumentExists = await AdmissionDocument.findById(value);
-//   return !!(admissionDocumentExists && admissionDocumentExists.is_active);
-// };
-
-// const isActiveFacilityExistsValidator = async (value) => {
-//   const facilityExists = await Facility.findById(value);
-//   return !!(facilityExists && facilityExists.is_active);
-// };
-
-// const isActiveFeeTypeExistsValidator = async (value) => {
-//   const feeTypeExists = await FeeType.findById(value);
-//   return !!(feeTypeExists && feeTypeExists.is_active);
-// };
+const isActiveAcademicClassExistsValidator = async (value) => {
+  const academicClass = require("@MEModels/academicClassModel");
+  const academicClassExists = await academicClass.findById(value);
+  return !!(academicClassExists && academicClassExists.is_active);
+};
 
 module.exports = {
   isActiveUserValidator,
@@ -102,9 +81,6 @@ module.exports = {
   isActiveSchoolTypeExistsValidator,
   isActiveFacilityTypeExistsValidator,
   isActiveOrganizationExistsValidator,
+  isActiveAcademicClassExistsValidator,
   isActiveEducationBoardExistsValidator,
-  // isActiveFeeTypeExistsValidator,
-  // isActiveFacilityExistsValidator,
-  // isActiveAcademicGradeExistsValidator,
-  // isActiveAdmissionDocumentExistsValidator,
 };

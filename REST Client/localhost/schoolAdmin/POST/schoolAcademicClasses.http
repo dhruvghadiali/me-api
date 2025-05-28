@@ -1,0 +1,9 @@
+POST http://localhost:3000/school-admin/school-academic-classes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzFhZjQxOThlM2Q0M2E4ZDA1ZjJhNCIsImlhdCI6MTc0ODQ0NzkwMywiZXhwIjoxNzQ4NDUxNTAzfQ.ZfnSCvUlC4cIuGKArTm-9DzOxbMwFlbqMY94OsGi2mc
+
+{ 
+  "school":"6831af4198e3d43a8d05f29d",
+  "education_board":"68109aa745b04f9db5ffaaf9",
+  "academic_class":"6835ccceac967abcb357e509"
+}

@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addAreaName,
   getAreaNames,
@@ -17,16 +17,16 @@ const router = express.Router();
 
 router
   .route("/area-names")
-  .get(protect, getAreaNames)
-  .post(protect, validateAreaNamesPostReqBody, addAreaName);
+  .get(superAdminProtect, getAreaNames)
+  .post(superAdminProtect, validateAreaNamesPostReqBody, addAreaName);
 router
   .route("/area-names/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateAreaNamesQueryParams,
     validateAreaNamesPutReqBody,
     updateAreaName
   )
-  .delete(protect, validateAreaNamesQueryParams, deleteAreaName);
+  .delete(superAdminProtect, validateAreaNamesQueryParams, deleteAreaName);
 
 module.exports = router;

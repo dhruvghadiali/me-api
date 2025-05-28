@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   updateSchoolAddress,
   changeSchoolAddressStatus,
@@ -10,8 +10,8 @@ const router = express.Router();
 
 router
   .route("/school-addresses/:id")
-  .put(protect, updateSchoolAddress)
-  .delete(protect, changeSchoolAddressStatus)
-  .patch(protect, changeSchoolAddressStatus);
+  .put(superAdminProtect, updateSchoolAddress)
+  .delete(superAdminProtect, changeSchoolAddressStatus)
+  .patch(superAdminProtect, changeSchoolAddressStatus);
 
 module.exports = router;

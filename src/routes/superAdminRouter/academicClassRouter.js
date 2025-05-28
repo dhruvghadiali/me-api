@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addAcademicClass,
   getAcademicClasses,
@@ -17,16 +17,20 @@ const router = express.Router();
 
 router
   .route("/academic-classes")
-  .get(protect, getAcademicClasses)
-  .post(protect, validateAcademicClassPostReqBody, addAcademicClass);
+  .get(superAdminProtect, getAcademicClasses)
+  .post(superAdminProtect, validateAcademicClassPostReqBody, addAcademicClass);
 router
   .route("/academic-classes/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateAcademicClassQueryParams,
     validateAcademicClassPutReqBody,
     updateAcademicClass
   )
-  .delete(protect, validateAcademicClassQueryParams, deleteAcademicClass);
+  .delete(
+    superAdminProtect,
+    validateAcademicClassQueryParams,
+    deleteAcademicClass
+  );
 
 module.exports = router;

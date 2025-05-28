@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addFeeType,
   getFeeTypes,
@@ -17,16 +17,16 @@ const router = express.Router();
 
 router
   .route("/fee-types")
-  .get(protect, getFeeTypes)
-  .post(protect, validateFeeTypesPostReqBody, addFeeType);
+  .get(superAdminProtect, getFeeTypes)
+  .post(superAdminProtect, validateFeeTypesPostReqBody, addFeeType);
 router
   .route("/fee-types/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateFeeTypesQueryParams,
     validateFeeTypesPutReqBody,
     updateFeeType
   )
-  .delete(protect, validateFeeTypesQueryParams, deleteFeeType);
+  .delete(superAdminProtect, validateFeeTypesQueryParams, deleteFeeType);
 
 module.exports = router;

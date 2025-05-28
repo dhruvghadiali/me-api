@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addFacility,
   getFacilities,
@@ -17,16 +17,16 @@ const router = express.Router();
 
 router
   .route("/facilities")
-  .get(protect, getFacilities)
-  .post(protect, validateFacilitiesPostReqBody, addFacility);
+  .get(superAdminProtect, getFacilities)
+  .post(superAdminProtect, validateFacilitiesPostReqBody, addFacility);
 router
   .route("/facilities/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateFacilitiesQueryParams,
     validateFacilitiesPutReqBody,
     updateFacility
   )
-  .delete(protect, validateFacilitiesQueryParams, deleteFacility);
+  .delete(superAdminProtect, validateFacilitiesQueryParams, deleteFacility);
 
 module.exports = router;

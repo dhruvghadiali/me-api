@@ -11,7 +11,7 @@ const router = express.Router();
 router.route("/signin").post(signIn);
 router.route("/signup").post(signUp);
 router.route("/change-password").post(changePassword);
-// router.route("/school-admin/reset-password").put(protect);
-// router.route("/school-admin/profile").put(protect);
+// router.route("/school-admin/reset-password").put(superAdminProtect);
+// router.route("/school-admin/profile").put(superAdminProtect);
 
 module.exports = router;

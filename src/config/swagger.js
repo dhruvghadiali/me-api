@@ -30,7 +30,11 @@ const options = {
       },
     ],
   },
-  apis: ["./src/routes/*.js", "./src/routes/superAdminRouter/*.js"], // Path to your route files
+  apis: [
+    "./src/routes/*.js",
+    "./src/routes/superAdminRouter/*.js",
+    "./src/routes/schoolAdminRouter/*.js",
+  ], // Path to your route files
 };
 
 const swaggerSpec = swaggerJSDoc(options);
