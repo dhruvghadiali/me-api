@@ -152,6 +152,13 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+userSchema.virtual("school_address", {
+  ref: "school_address",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+
 userSchema.set("toObject", { virtuals: true });
 userSchema.set("toJSON", { virtuals: true });
 

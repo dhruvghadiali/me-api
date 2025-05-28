@@ -1,34 +1,33 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const { getISTDateTime } = require("@MEUtils/utility");
 
 const {
-  academicGradeMinChar,
-  academicGradeMaxChar,
+  academicClassMinChar,
+  academicClassMaxChar,
 } = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
   usernameRequired,
-  academicGradeRequired,
-  academicGradeMaxLength,
-  academicGradeMinLength,
+  academicClassRequired,
+  academicClassMaxLength,
+  academicClassMinLength,
 } = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
 
-const academicGradeSchema = Schema(
+const academicClassSchema = Schema(
   {
-    academic_grade: {
+    academic_class: {
       type: String,
       trim: true,
       lowercase: true,
       index: true,
       unique: true,
-      required: [true, academicGradeRequired],
-      maxlength: [academicGradeMaxChar, academicGradeMaxLength],
-      minlength: [academicGradeMinChar, academicGradeMinLength],
+      required: [true, academicClassRequired],
+      maxlength: [academicClassMaxChar, academicClassMaxLength],
+      minlength: [academicClassMinChar, academicClassMinLength],
     },
     is_active: {
       type: Boolean,
@@ -56,16 +55,7 @@ const academicGradeSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-academicGradeSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
-
-academicGradeSchema.set("toJSON", {
+academicClassSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
     if (response?.created_by?.username) {
@@ -90,6 +80,6 @@ academicGradeSchema.set("toJSON", {
     return response;
   },
 });
-academicGradeSchema.set("toObject", { virtuals: true });
+academicClassSchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("academic_grade", academicGradeSchema);
+module.exports = mongoose.model("academic_class", academicClassSchema);

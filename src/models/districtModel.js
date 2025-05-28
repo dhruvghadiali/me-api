@@ -84,6 +84,10 @@ districtSchema.virtual("cities", {
   foreignField: "district",
 });
 
+districtSchema.methods.getDistrictName = function () {
+  return this.name ? this.name : "";
+};
+
 districtSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

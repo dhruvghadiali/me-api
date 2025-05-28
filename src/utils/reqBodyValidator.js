@@ -9,7 +9,7 @@ const AreaName = require("@MEModels/areaNameModel");
 const Facility = require("@MEModels/facilityModel");
 const SchoolType = require("@MEModels/schoolTypeModel");
 const FacilityType = require("@MEModels/facilityTypeModel");
-const AcademicGrade = require("@MEModels/academicGradeModel");
+const AcademicClass = require("@MEModels/academicClassModel");
 const EducationBoard = require("@MEModels/educationBoardModel");
 const AdmissionDocument = require("@MEModels/admissionDocument");
 
@@ -26,7 +26,7 @@ const {
   facilityNameNotFound,
   facilityTypeNotFound,
   districtNameNotFound,
-  academicGradeNotFound,
+  academicClassNotFound,
   educationBoardNotFound,
   admissionDocumentNotFound,
 } = require("@MEHelpers/validationMessage");
@@ -78,10 +78,10 @@ const isActiveZipcodeExists = async (value) => {
   return value;
 };
 
-const isActiveAcademicGradeExists = async (value) => {
-  const response = await AcademicGrade.exists({ _id: value, is_active: true });
+const isActiveAcademicClassExists = async (value) => {
+  const response = await AcademicClass.exists({ _id: value, is_active: true });
   if (!response) {
-    throw new Error(academicGradeNotFound);
+    throw new Error(academicClassNotFound);
   }
   return value;
 };
@@ -238,7 +238,7 @@ module.exports = {
   isActiveFacilityExists,
   isActiveSchoolTypeExists,
   isActiveFacilityTypeExists,
-  isActiveAcademicGradeExists,
+  isActiveAcademicClassExists,
   isActiveEducationBoardExists,
   isActiveAdmissionDocumentExists,
 };

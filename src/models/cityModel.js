@@ -93,6 +93,10 @@ citySchema.virtual("area_names", {
   foreignField: "city",
 });
 
+citySchema.methods.getCityName = function () {
+  return this.name ? this.name : "";
+};
+
 citySchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

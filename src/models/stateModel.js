@@ -74,6 +74,10 @@ stateSchema.virtual("districts", {
   foreignField: "state",
 });
 
+stateSchema.methods.getStateName = function () {
+  return this.name ? this.name : "";
+};
+
 stateSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {

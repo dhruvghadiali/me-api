@@ -93,6 +93,10 @@ areaNameSchema.virtual("zipcodes", {
   foreignField: "area_name",
 });
 
+areaNameSchema.methods.getAreaName = function () {
+  return this.name ? this.name : "";
+};
+
 areaNameSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

@@ -69,6 +69,10 @@ schoolTypeSchema.pre("save", async function (next) {
   next();
 });
 
+schoolTypeSchema.methods.getSchoolType = function () {
+  return this.school_type ? this.school_type : "";
+};
+
 schoolTypeSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {

@@ -203,6 +203,12 @@ organizationSchema.virtual("organization_members", {
   foreignField: "organization",
 });
 
+organizationSchema.virtual("organization_member", {
+  ref: "organization_member",
+  localField: "_id",
+  foreignField: "organization",
+});
+
 organizationSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {

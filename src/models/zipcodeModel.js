@@ -76,6 +76,10 @@ zipcodeSchema.pre("save", async function (next) {
   next();
 });
 
+zipcodeSchema.methods.getZipcode = function () {
+  return this.zipcode ? this.zipcode : "";
+};
+
 zipcodeSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

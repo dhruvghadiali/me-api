@@ -1,0 +1,3 @@
+GET http://localhost:3000/super-admin/academic-classes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MGJkOTE5MGNkYzJmOTFjOWI0MmIwZSIsImlhdCI6MTc0ODM1NDgwMSwiZXhwIjoxNzQ4Mzk4MDAxfQ.xhVh1QNA2F_lT6AybcJqN6UT7Nqyfi-AmM0uclwF2dc
