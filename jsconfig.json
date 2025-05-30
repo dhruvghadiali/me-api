@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@ME/*": ["src/*"],
       "@MEUtils/*": ["src/utils/*"],
       "@MEModels/*": ["src/models/*"],
       "@MERoutes/*": ["src/routes/*"],

@@ -57,7 +57,11 @@ const addAcademicClass = asyncHandler(async (req, res, next) => {
     is_active: false,
   });
 
-  if (academicClassInfo) {
+  if (
+    academicClassInfo &&
+    academicClassInfo.id &&
+    academicClassInfo.is_active === false
+  ) {
     // If academic_class is already present, update the is_active status value to true with the user who signin
     response = await AcademicClass.findByIdAndUpdate(
       academicClassInfo.id,
