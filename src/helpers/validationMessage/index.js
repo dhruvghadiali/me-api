@@ -10,10 +10,12 @@ const paymentValidationMessage = require("@MEHelpers/validationMessage/paymentVa
 const facilityValidationMessage = require("@MEHelpers/validationMessage/facilityValidationMessage");
 const districtValidationMessage = require("@MEHelpers/validationMessage/districtValidationMessage");
 const areaNameValidationMessage = require("@MEHelpers/validationMessage/areaNameValidationMessage");
+const schoolFeeValidationMessage = require("@MEHelpers/validationMessage/schoolFeeValidationMessage");
 const schoolTypeValidationMessage = require("@MEHelpers/validationMessage/schoolTypeValidationMessage");
 const schoolAdminValidationMessage = require("@MEHelpers/validationMessage/schoolAdminValidationMessage");
 const organizationValidationMessage = require("@MEHelpers/validationMessage/organizationValidationMessage");
 const facilityTypeValidationMessage = require("@MEHelpers/validationMessage/facilityTypeValidationMessage");
+const schoolFeeLogValidationMessage = require("@MEHelpers/validationMessage/schoolFeeLogValidationMessage");
 const schoolAddressValidationMessage = require("@MEHelpers/validationMessage/schoolAddressValidationMessage");
 const schoolFeeTypeValidationMessage = require("@MEHelpers/validationMessage/schoolFeeTypeValidationMessage");
 const academicClassValidationMessage = require("@MEHelpers/validationMessage/academicClassValidationMessage");
@@ -35,10 +37,12 @@ const validationMessage = {
   ...facilityValidationMessage,
   ...districtValidationMessage,
   ...areaNameValidationMessage,
+  ...schoolFeeValidationMessage,
   ...schoolTypeValidationMessage,
   ...schoolAdminValidationMessage,
   ...organizationValidationMessage,
   ...facilityTypeValidationMessage,
+  ...schoolFeeLogValidationMessage,
   ...schoolAddressValidationMessage,
   ...schoolFeeTypeValidationMessage,
   ...academicClassValidationMessage,

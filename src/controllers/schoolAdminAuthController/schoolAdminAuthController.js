@@ -119,8 +119,8 @@ const setSchoolInformation = (user) => {
         affiliate_number: school.affiliate_number
           ? school.affiliate_number
           : "",
-        school_name: school.name ? school.name : "",
-        school_short_name: school.short_name ? school.short_name : "",
+        name: school.name ? school.name : "",
+        short_name: school.short_name ? school.short_name : "",
         email: school.email ? school.email : "",
         phone_number: school.phone_number ? school.phone_number : "",
         school_type: school.school_type
@@ -272,6 +272,24 @@ const signIn = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @desc    Sync school admin data
+ * @route   GET /school-admins/sync-data
+ * @access  Super Admin
+ */
+const syncData = asyncHandler(async (req, res, next) => {
+  /**
+   * This function will sync the school admin data and return
+   *  - school information
+   *  - organization information
+   * * Note: This API will not return any (refresh or new) auth token and user information.
+   */
+  res.status(200).json({
+    message: "Data synchronization is not implemented yet.",
+    status: 200,
+  });
+});
+
+/**
  * @desc    Update school admin profile
  * @route   PUT /super-admin/school-admins/profile/:id
  * @access  Super Admin
@@ -332,6 +350,7 @@ const changePassword = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   signIn,
+  syncData,
   changePassword,
   updateSchoolAdminProfile,
 };

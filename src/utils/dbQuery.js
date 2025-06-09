@@ -70,11 +70,23 @@ const isActiveAcademicClassExistsValidator = async (value) => {
   return !!(academicClassExists && academicClassExists.is_active);
 };
 
+const isActiveSchoolAcademicClassExistsValidator = async (value) => {
+  const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+  const schoolAcademicClassExists = await SchoolAcademicClass.findById(value);
+  return !!(schoolAcademicClassExists && schoolAcademicClassExists.is_active);
+};
+
+const isActiveFeeTypeExistsValidator = async (value) => {
+  const FeeType = require("@MEModels/feeTypeModel");
+  const feeTypeExists = await FeeType.findById(value);
+  return !!(feeTypeExists && feeTypeExists.is_active);
+};
 module.exports = {
   isActiveUserValidator,
   isActiveCityExistsValidator,
   isActiveStateExistsValidator,
   isActiveSchoolExistsValidator,
+  isActiveFeeTypeExistsValidator,
   isActiveZipcodeExistsValidator,
   isActiveDistrictExistsValidator,
   isActiveAreaNameExistsValidator,
@@ -83,4 +95,5 @@ module.exports = {
   isActiveOrganizationExistsValidator,
   isActiveAcademicClassExistsValidator,
   isActiveEducationBoardExistsValidator,
+  isActiveSchoolAcademicClassExistsValidator,
 };
