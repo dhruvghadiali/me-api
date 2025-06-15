@@ -5,12 +5,40 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const {
   schoolFeePostRequestFail,
   schoolFeePostRequestSuccess,
+  schoolFeesGetRequestSuccess,
 } = require("@MEHelpers/responseMessage");
 
 /**
+ * @desc    Get school fee
+ * @route   GET /school-admin/school-fees
+ * @access  School Admin
+ */
+const getSchoolFees = asyncHandler(async (req, res, next) => {
+  const { academic_class } = req.params;
+
+  // Find school fees that are is_active status value is true
+  const schoolFees = await SchoolFee.find({
+    is_active: true,
+    school_academic_class: academic_class,
+  }).populate([
+    {
+      path: "created_by updated_by",
+    },
+    { path: "academic_class", select: "academic_class" },
+  ]);
+
+  // Send response
+  res.status(200).json({
+    data: schoolFees,
+    message: schoolFeesGetRequestSuccess,
+    status: 200,
+  });
+});
+
+/**
  * @desc    Add new school fee
- * @route   POST /super-admin/school-fees
- * @access  Super Admin
+ * @route   POST /school-admin/school-fees
+ * @access  School Admin
  */
 const addSchoolFee = asyncHandler(async (req, res, next) => {
   let response;
@@ -77,4 +105,5 @@ const addSchoolFee = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   addSchoolFee,
+  getSchoolFees,
 };

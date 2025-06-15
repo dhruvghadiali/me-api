@@ -71,7 +71,26 @@ const router = express.Router();
  *         description: Invalid ID or validation error
  *       401:
  *         description: Unauthorized
- *
+ * /school-admin/school-academic-classes/{school}:
+ *   get:
+ *     summary: Get all school academic classes for a school
+ *     tags: [School Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: school
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: School ID
+ *     responses:
+ *       200:
+ *         description: List of school academic classes
+ *       400:
+ *         description: Invalid parameters or validation error
+ *       401:
+ *         description: Unauthorized
  * /school-admin/school-academic-classes/{school}/{education_board}:
  *   get:
  *     summary: Get all school academic classes for a school and education board
@@ -114,6 +133,14 @@ router
     schoolAdminProtect,
     validateSchoolAcademicClassQueryParamsForId,
     deleteSchoolAcademicClass
+  );
+
+router
+  .route("/school-academic-classes/:school")
+  .get(
+    schoolAdminProtect,
+    validateSchoolAcademicClassQueryParamsForSchool,
+    getSchoolAcademicClasses
   );
 
 router

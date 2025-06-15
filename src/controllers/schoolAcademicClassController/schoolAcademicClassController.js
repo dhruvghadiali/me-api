@@ -18,19 +18,34 @@ const {
  */
 const getSchoolAcademicClasses = asyncHandler(async (req, res, next) => {
   const { school, education_board } = req.params;
-  // Find school academic classes that are is_active status value is true and sort by academic_class
-  const schoolAcademicClasses = await SchoolAcademicClass.find({
-    is_active: true,
-    school: school,
-    education_board: education_board,
-  }).populate([
-    {
-      path: "created_by updated_by",
-    },
-    { path: "academic_class", select: "academic_class" },
-    { path: "education_board", select: "education_board" },
-  ]);
+  let schoolAcademicClasses = [];
 
+  // Find school academic classes that are is_active status value is true and sort by academic_class
+
+  if (school && education_board) {
+    schoolAcademicClasses = await SchoolAcademicClass.find({
+      is_active: true,
+      school: school,
+      education_board: education_board,
+    }).populate([
+      {
+        path: "created_by updated_by",
+      },
+      { path: "academic_class", select: "academic_class" },
+      { path: "education_board", select: "education_board" },
+    ]);
+  } else if (school && !education_board) {
+    schoolAcademicClasses = await SchoolAcademicClass.find({
+      is_active: true,
+      school: school,
+    }).populate([
+      {
+        path: "created_by updated_by",
+      },
+      { path: "academic_class", select: "academic_class" },
+      { path: "education_board", select: "education_board" },
+    ]);
+  }
   // Send response
   res.status(200).json({
     data: schoolAcademicClasses,
