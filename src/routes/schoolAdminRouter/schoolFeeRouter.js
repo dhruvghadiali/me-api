@@ -12,3 +12,5 @@ router.route("/school-fees").post(schoolAdminProtect, addSchoolFee);
 router
   .route("/school-fees/:academic_class")
   .get(schoolAdminProtect, getSchoolFees);
+
+module.exports = router;
