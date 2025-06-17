@@ -1,90 +1,90 @@
 ### Scenario 001 (Valid credentials)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload001.json
 
 ### Scenario 002 (Invalid credentials: missing username)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload002.json
 
 ### Scenario 003 (Invalid credentials: missing password)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload003.json
 
 ### Scenario 004 (Invalid credentials: empty username)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload004.json
 
 ### Scenario 005 (Invalid credentials: empty password)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload005.json
 
 
 ### Scenario 006 (Invalid credentials: incorrect username)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload006.json
 
 ### Scenario 007 (Invalid credentials: incorrect password)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload007.json
 
 ### Scenario 008 (Invalid credentials: added extra field)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload008.json
 
 ### Scenario 009 (Invalid credentials: username min length)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload009.json
 
 ### Scenario 010 (Invalid credentials: password min length)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload010.json
 
 ### Scenario 011 (Invalid credentials: username max length)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload011.json
 
 ### Scenario 012 (Invalid credentials: password max length)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload012.json
 
 ### Scenario 013 (Invalid credentials: username as number)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload013.json
 
 ### Scenario 014 (Invalid credentials: password as number)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload014.json
 
 ### Scenario 015 (Invalid credentials: empty payload)
-POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSingInRoute}}
+POST {{schoolAdminLocalhostBaseUrl}}{{schoolAdminSigninRoute}}
 Content-Type: application/json
 
 < ./payload/payload015.json
