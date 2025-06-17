@@ -6,11 +6,11 @@
   "license": "MIT",
   "main": "app.js",
   "scripts": {
-    "start": "node --env-file ./config/.env src/app.js",
+    "start": "node --env-file ./config/.env src/server.js",
     "start:dev": "nodemon --watch src --ext js --env-file ./config/.env.dev src/server.js",
-    "start:loc": "nodemon --watch src --ext js --env-file ./config/.env.local src/app.js",
-    "start:sit": "nodemon --watch src --ext js --env-file ./config/.env.sit src/app.js",
-    "start:uat": "nodemon --watch src --ext js --env-file ./config/.env.uat src/app.js",
+    "start:loc": "nodemon --watch src --ext js --env-file ./config/.env.local src/server.js",
+    "start:sit": "nodemon --watch src --ext js --env-file ./config/.env.sit src/server.js",
+    "start:uat": "nodemon --watch src --ext js --env-file ./config/.env.uat src/server.js",
     "init:replica": "node scripts/mongo-init.js",
     "test": "jest --coverage"
   },
