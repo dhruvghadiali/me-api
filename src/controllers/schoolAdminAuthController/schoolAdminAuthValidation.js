@@ -148,7 +148,7 @@ const schoolAdminPostReqBodyValidationSchema = Joi.array()
     "any.required": schoolAdminsDetailsRequired,
   });
 
-const validationSignInSchema = Joi.object({
+const signInValidationSchema = Joi.object({
   username: Joi.string()
     .required()
     .empty()
@@ -189,7 +189,7 @@ const validationSignInSchema = Joi.object({
 const validateSchoolAdminSignInReqBody = asyncHandler(
   async (req, res, next) => {
     try {
-      await validationSignInSchema.validateAsync(req.body);
+      await signInValidationSchema.validateAsync(req.body);
       next();
     } catch (err) {
       next(new ErrorResponse(setValidationMessage(err), 400));
