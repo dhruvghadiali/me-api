@@ -1,0 +1,6 @@
+### Scenario 001 (Valid payload)
+POST {{superAdminLocalhostBaseUrl}}{{superAdminFeeTypesRoute}}
+Content-Type: application/json
+Authorization: {{superAdminAuthToken}}
+
+< ./payload/payload001.json

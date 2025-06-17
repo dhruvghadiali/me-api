@@ -1,0 +1,3 @@
+GET {{superAdminLocalhostBaseUrl}}{{superAdminFeeTypesRoute}}
+Content-Type: application/json
+Authorization: {{superAdminAuthToken}}
