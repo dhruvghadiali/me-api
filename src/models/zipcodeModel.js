@@ -1,4 +1,3 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { zipcode } = require("@MEHelpers/regex");
@@ -65,15 +64,6 @@ zipcodeSchema.index(
   { area_name: 1, zipcode: 1 },
   { unique: true, index: true }
 );
-
-zipcodeSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
 
 zipcodeSchema.methods.getZipcode = function () {
   return this.zipcode ? this.zipcode : "";

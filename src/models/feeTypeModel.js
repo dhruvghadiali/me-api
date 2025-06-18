@@ -1,4 +1,3 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");

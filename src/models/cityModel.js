@@ -1,4 +1,3 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const {
@@ -67,15 +66,6 @@ const citySchema = Schema(
 );
 
 citySchema.index({ district: 1, name: 1 }, { unique: true, index: true });
-
-citySchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
 
 citySchema.virtual("area_count", {
   ref: "area_name",

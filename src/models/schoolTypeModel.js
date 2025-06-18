@@ -1,4 +1,3 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
@@ -58,15 +57,6 @@ const schoolTypeSchema = Schema(
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
-
-schoolTypeSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
 
 schoolTypeSchema.methods.getSchoolType = function () {
   return this.school_type ? this.school_type : "";
