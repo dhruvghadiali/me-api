@@ -172,6 +172,9 @@ const updateSchoolFee = asyncHandler(async (req, res, next) => {
       throw error;
     }
   } else {
+    await session.abortTransaction();
+    session.endSession();
+
     // Send error response
     next(new ErrorResponse(schoolFeePutRequestFail, 400));
   }
