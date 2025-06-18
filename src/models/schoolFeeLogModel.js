@@ -34,9 +34,11 @@ const {
   schoolAcademicClassIdRequired,
 } = require("@MEHelpers/validationMessage");
 const {
+  feeTypeMaxChar,
+  feeTypeMinChar,
   maxFeeAmount,
   minFeeAmount,
-  schoolFeesMaxLimit,
+  schoolFeesMaxDataLimit,
 } = require("@MEHelpers/validationConst");
 
 const { Schema } = mongoose;
@@ -99,7 +101,7 @@ const schoolFeeLogSchema = Schema(
         },
         {
           validator: function (val) {
-            return Array.isArray(val) && val.length <= schoolFeesMaxLimit;
+            return Array.isArray(val) && val.length <= schoolFeesMaxDataLimit;
           },
           message: schoolFeesMaxLimit,
         },
@@ -110,7 +112,7 @@ const schoolFeeLogSchema = Schema(
       required: [true, schoolFeeStartDateRequired],
       validate: {
         validator: function (value) {
-          return value > moment().toDate();
+          return value < moment().add(1, "days");
         },
         message: schoolFeeStartDateInvalid,
       },
@@ -120,7 +122,7 @@ const schoolFeeLogSchema = Schema(
       required: [true, schoolFeeEndDateRequired],
       validate: {
         validator: function (value) {
-          return value > moment().toDate();
+          return value < moment().add(1, "days");
         },
         message: schoolFeeEndDateInvalid,
       },

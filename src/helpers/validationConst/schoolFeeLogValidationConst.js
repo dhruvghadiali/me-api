@@ -1,5 +1,5 @@
 const schoolFeeLogValidationConst = {
-  schoolFeesMaxLimit: 100,
+  schoolFeesMaxDataLimit: 100,
 };
 
 module.exports = schoolFeeLogValidationConst;

@@ -198,7 +198,7 @@ const addSchool = asyncHandler(async (req, res, next) => {
         }
       );
 
-      let x = await session.commitTransaction();
+      await session.commitTransaction();
       session.endSession();
 
       res.status(200).json({
