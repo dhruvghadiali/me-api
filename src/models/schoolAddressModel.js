@@ -148,6 +148,10 @@ schoolAddressSchema.set("toJSON", {
       delete response.updated_by;
     }
 
+    if (response?.user?.id) {
+      response.user_id = response.user.id;
+    }
+
     if (response?.created_at) {
       response.created_at = getISTDateTime(response.created_at);
     }

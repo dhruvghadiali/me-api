@@ -1,5 +1,10 @@
 const Joi = require("joi");
 
+const ErrorResponse = require("@MEUtils/errorResponse");
+
+const { asyncHandler } = require("@MEMiddleware/async");
+const { setValidationMessage } = require("@MEUtils/utility");
+
 const {
   firstNameMaxChar,
   firstNameMinChar,
@@ -10,6 +15,10 @@ const {
   phoneNumberChar,
   schoolAdminArrayMaxLength,
   schoolAdminArrayMinLength,
+  usernameMaxChar,
+  usernameMinChar,
+  passwordMaxCharWithoutEncryption,
+  passwordMinChar,
 } = require("@MEHelpers/validationConst");
 const {
   firstNameEmpty,
@@ -43,6 +52,20 @@ const {
   schoolAdminsDetailsMinLength,
   schoolAdminsDetailsMaxLength,
   schoolAdminsDetailsMustBeArray,
+  usernameEmpty,
+  usernameBase,
+  usernameRequired,
+  usernameMinLength,
+  usernameMaxLength,
+  passwordEmpty,
+  passwordBase,
+  passwordRequired,
+  passwordMinLength,
+  passwordMaxLengthWithoutEncryption,
+  signInReqBodyRequired,
+  signInReqBodyEmpty,
+  signInReqBodyBase,
+  signInReqBodyUnknown,
 } = require("@MEHelpers/validationMessage");
 
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
@@ -125,6 +148,55 @@ const schoolAdminPostReqBodyValidationSchema = Joi.array()
     "any.required": schoolAdminsDetailsRequired,
   });
 
+const signInValidationSchema = Joi.object({
+  username: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(usernameMinChar)
+    .max(usernameMaxChar)
+    .messages({
+      "string.empty": usernameEmpty,
+      "string.base": usernameBase,
+      "any.required": usernameRequired,
+      "string.min": usernameMinLength,
+      "string.max": usernameMaxLength,
+    }),
+  password: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(passwordMinChar)
+    .max(passwordMaxCharWithoutEncryption)
+    .messages({
+      "string.empty": passwordEmpty,
+      "string.base": passwordBase,
+      "any.required": passwordRequired,
+      "string.min": passwordMinLength,
+      "string.max": passwordMaxLengthWithoutEncryption,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": signInReqBodyBase,
+    "object.empty": signInReqBodyEmpty,
+    "object.unknown": signInReqBodyUnknown,
+    "any.required": signInReqBodyRequired,
+  });
+
+const validateSchoolAdminSignInReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await signInValidationSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(new ErrorResponse(setValidationMessage(err), 400));
+    }
+  }
+);
 module.exports = {
   schoolAdminPostReqBodyValidationSchema,
+  validateSchoolAdminSignInReqBody,
 };

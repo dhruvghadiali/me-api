@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addAdmissionDocument,
   getAdmissionDocuments,
@@ -17,18 +17,22 @@ const router = express.Router();
 
 router
   .route("/admission-documents")
-  .get(protect, getAdmissionDocuments)
-  .post(protect, validateAdmissionDocumentsPostReqBody, addAdmissionDocument);
+  .get(superAdminProtect, getAdmissionDocuments)
+  .post(
+    superAdminProtect,
+    validateAdmissionDocumentsPostReqBody,
+    addAdmissionDocument
+  );
 router
   .route("/admission-documents/:id")
   .put(
-    protect,
+    superAdminProtect,
     validateAdmissionDocumentsQueryParams,
     validateAdmissionDocumentsPutReqBody,
     updateAdmissionDocument
   )
   .delete(
-    protect,
+    superAdminProtect,
     validateAdmissionDocumentsQueryParams,
     deleteAdmissionDocument
   );

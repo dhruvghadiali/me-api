@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   changePassword,
   updateSchoolAdminProfile,
@@ -10,7 +10,9 @@ const router = express.Router();
 
 router
   .route("/school-admins/profile/:id")
-  .put(protect, updateSchoolAdminProfile);
-router.route("/school-admins/change-password/:id").put(protect, changePassword);
+  .put(superAdminProtect, updateSchoolAdminProfile);
+router
+  .route("/school-admins/change-password/:id")
+  .put(superAdminProtect, changePassword);
 
 module.exports = router;

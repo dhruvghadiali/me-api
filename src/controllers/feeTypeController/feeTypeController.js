@@ -15,7 +15,9 @@ const {
 /**
  * @desc    Get all fee types
  * @route   GET /super-admin/fee-types
+ *          GET /school-admin/fee-types
  * @access  Super Admin
+ *          School Admin
  */
 const getFeeTypes = asyncHandler(async (req, res, next) => {
   // Find fee types that are active status and sort them by fee_type

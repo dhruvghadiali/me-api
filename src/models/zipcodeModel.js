@@ -1,8 +1,6 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { zipcode } = require("@MEHelpers/regex");
-const { getISTDateTime } = require("@MEUtils/utility");
 
 const {
   isActiveUserValidator,
@@ -67,14 +65,9 @@ zipcodeSchema.index(
   { unique: true, index: true }
 );
 
-zipcodeSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
+zipcodeSchema.methods.getZipcode = function () {
+  return this.zipcode ? this.zipcode : "";
+};
 
 zipcodeSchema.set("toJSON", {
   virtuals: true,
@@ -89,14 +82,6 @@ zipcodeSchema.set("toJSON", {
       response.updated_by = response.updated_by.username;
     } else {
       delete response.updated_by;
-    }
-
-    if (response?.created_at) {
-      response.created_at = getISTDateTime(response.created_at);
-    }
-
-    if (response?.updated_at) {
-      response.updated_at = getISTDateTime(response.updated_at);
     }
 
     return response;

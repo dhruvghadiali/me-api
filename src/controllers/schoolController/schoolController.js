@@ -28,7 +28,7 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const getSchools = asyncHandler(async (req, res, next) => {
   // Find schools that are is_active status value is true and sort them by name
   const schools = await School.find({
-    is_active: req.params.is_active || true,
+    is_active: req.query.is_active || true,
   })
     .select(["-__v"])
     .populate([
@@ -198,7 +198,7 @@ const addSchool = asyncHandler(async (req, res, next) => {
         }
       );
 
-      let x = await session.commitTransaction();
+      await session.commitTransaction();
       session.endSession();
 
       res.status(200).json({

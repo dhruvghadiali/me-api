@@ -1,0 +1,3 @@
+
+POST {{superAdminLocalhostBaseUrl}}{{superAdminSignupRoute}}
+Content-Type: application/json

@@ -7,14 +7,16 @@ const feeTypeResponseMessage = require("@MEHelpers/responseMessage/feeTypeRespon
 const zipcodeResponseMessage = require("@MEHelpers/responseMessage/zipcodeResponseMessage");
 const areaNameResponseMessage = require("@MEHelpers/responseMessage/areaNameResponseMessage");
 const districtResponseMessage = require("@MEHelpers/responseMessage/districtResponseMessage");
+const schoolFeeResponseMessage = require("@MEHelpers/responseMessage/schoolFeeResponseMessage");
 const schoolTypeResponseMessage = require("@MEHelpers/responseMessage/schoolTypeResponseMessage");
 const organizationResponseMessage = require("@MEHelpers/responseMessage/organizationResponseMessage");
 const facilityTypeResponseMessage = require("@MEHelpers/responseMessage/facilityTypeResponseMessage");
 const schoolAddressResponseMessage = require("@MEHelpers/responseMessage/schoolAddressResponseMessage");
-const academicGradeResponseMessage = require("@MEHelpers/responseMessage/academicGradeResponseMessage");
+const academicClassResponseMessage = require("@MEHelpers/responseMessage/academicClassResponseMessage");
 const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educationBoardResponseMessage");
 const admissionDocumentResponseMessage = require("@MEHelpers/responseMessage/admissionDocumentResponseMessage");
 const organizationMemberResponseMessage = require("@MEHelpers/responseMessage/organizationMemberResponseMessage");
+const schoolAcademicClassResponseMessage = require("@MEHelpers/responseMessage/schoolAcademicClassResponseMessage");
 
 const responseMessage = {
   ...authResponseMessage,
@@ -26,14 +28,16 @@ const responseMessage = {
   ...zipcodeResponseMessage,
   ...districtResponseMessage,
   ...areaNameResponseMessage,
+  ...schoolFeeResponseMessage,
   ...schoolTypeResponseMessage,
   ...organizationResponseMessage,
   ...facilityTypeResponseMessage,
   ...schoolAddressResponseMessage,
-  ...academicGradeResponseMessage,
+  ...academicClassResponseMessage,
   ...educationBoardResponseMessage,
   ...admissionDocumentResponseMessage,
   ...organizationMemberResponseMessage,
+  ...schoolAcademicClassResponseMessage,
   studentSignUpSuccess: "Student Signup process successfully completed",
   studentSignInSuccess: "Students signin process successfully completed",
 };

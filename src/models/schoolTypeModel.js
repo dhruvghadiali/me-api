@@ -1,8 +1,6 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
-const { getISTDateTime } = require("@MEUtils/utility");
 
 const {
   schoolTypeMaxChar,
@@ -60,14 +58,9 @@ const schoolTypeSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-schoolTypeSchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
+schoolTypeSchema.methods.getSchoolType = function () {
+  return this.school_type ? this.school_type : "";
+};
 
 schoolTypeSchema.set("toJSON", {
   virtuals: true,
@@ -82,14 +75,6 @@ schoolTypeSchema.set("toJSON", {
       response.updated_by = response.updated_by.username;
     } else {
       delete response.updated_by;
-    }
-
-    if (response?.created_at) {
-      response.created_at = getISTDateTime(response.created_at);
-    }
-
-    if (response?.updated_at) {
-      response.updated_at = getISTDateTime(response.updated_at);
     }
 
     return response;

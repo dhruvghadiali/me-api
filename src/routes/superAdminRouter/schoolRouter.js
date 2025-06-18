@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("@MEMiddleware/auth");
+const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   addSchool,
   getSchools,
@@ -14,10 +14,10 @@ const router = express.Router();
 
 router
   .route("/schools")
-  .get(protect, getSchools)
-  .post(protect, schoolPostReqBodyValidate, addSchool);
-router.route("/schools/:id").put(protect, updateSchool);
-// .patch(protect)
-// .delete(protect);
+  .get(superAdminProtect, getSchools)
+  .post(superAdminProtect, schoolPostReqBodyValidate, addSchool);
+router.route("/schools/:id").put(superAdminProtect, updateSchool);
+// .patch(superAdminProtect)
+// .delete(superAdminProtect);
 
 module.exports = router;

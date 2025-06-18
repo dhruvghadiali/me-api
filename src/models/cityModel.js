@@ -1,7 +1,4 @@
-const moment = require("moment");
 const mongoose = require("mongoose");
-
-const { getISTDateTime } = require("@MEUtils/utility");
 
 const {
   isActiveUserValidator,
@@ -70,15 +67,6 @@ const citySchema = Schema(
 
 citySchema.index({ district: 1, name: 1 }, { unique: true, index: true });
 
-citySchema.pre("save", async function (next) {
-  let now = moment.utc(moment());
-
-  this.updated_at = now;
-  this.created_at = now;
-  this.is_active = true;
-  next();
-});
-
 citySchema.virtual("area_count", {
   ref: "area_name",
   localField: "_id",
@@ -93,6 +81,10 @@ citySchema.virtual("area_names", {
   foreignField: "city",
 });
 
+citySchema.methods.getCityName = function () {
+  return this.name ? this.name : "";
+};
+
 citySchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
@@ -106,14 +98,6 @@ citySchema.set("toJSON", {
       response.updated_by = response.updated_by.username;
     } else {
       delete response.updated_by;
-    }
-
-    if (response?.created_at) {
-      response.created_at = getISTDateTime(response.created_at);
-    }
-
-    if (response?.updated_at) {
-      response.updated_at = getISTDateTime(response.updated_at);
     }
 
     return response;

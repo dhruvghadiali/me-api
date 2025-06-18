@@ -7,6 +7,7 @@ const educationBoardValidationMessage = {
   educationBoardEmpty: "Eduction board can't be empty",
   educationBoardRequired: "Education board is required",
   educationBoardIdRequired: "Eduction board id is required",
+  educationBoardIdNotFound: "Eduction board id not found in database",
   educationBoardBase: "Eduction board must be string formate",
   educationBoardNotFound: "Eduction board not found in database",
   educationBoardIdBase: "Eduction board id must be string formate",
