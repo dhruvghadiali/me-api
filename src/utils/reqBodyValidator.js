@@ -8,6 +8,7 @@ const Zipcode = require("@MEModels/zipcodeModel");
 const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
 const Facility = require("@MEModels/facilityModel");
+const SchoolFee = require("@MEModels/schoolFeeModel");
 const SchoolType = require("@MEModels/schoolTypeModel");
 const FacilityType = require("@MEModels/facilityTypeModel");
 const AcademicClass = require("@MEModels/academicClassModel");
@@ -21,6 +22,7 @@ const {
   cityNameNotFound,
   areaNameNotFound,
   stateNameNotFound,
+  schoolFeeNotFound,
   schoolTypeNotFound,
   facilityNameNotFound,
   facilityTypeNotFound,
@@ -198,6 +200,18 @@ const isActiveSchoolAcademicClassExists = async (value, helpers) => {
   return value;
 };
 
+const isActiveSchoolFeeExists = async (value, helpers) => {
+  const response = await SchoolFee.exists({
+    _id: value,
+    is_active: true,
+  });
+
+  if (!response) {
+    throw new Error(schoolFeeNotFound);
+  }
+  return value;
+};
+
 module.exports = {
   isActiveCityExists,
   checkValidObjectId,
@@ -208,6 +222,7 @@ module.exports = {
   isActiveDistrictExists,
   isActiveAreaNameExists,
   isActiveFacilityExists,
+  isActiveSchoolFeeExists,
   isActiveSchoolTypeExists,
   isActiveFacilityTypeExists,
   isActiveAcademicClassExists,

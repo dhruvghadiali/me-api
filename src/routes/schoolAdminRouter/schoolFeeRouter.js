@@ -7,17 +7,34 @@ const {
   updateSchoolFee,
   deleteSchoolFee,
 } = require("@MEControllers/schoolFeeController/schoolFeeController");
+const {
+  validateSchoolFeesPutReqBody,
+  validateSchoolFeesPostReqBody,
+  validateSchoolFeeQueryParams,
+  validateSchoolFeesAcademicClassQueryParams,
+} = require("@MEControllers/schoolFeeController/schoolFeeValidation");
 
 const router = express.Router();
 
-router.route("/school-fees").post(schoolAdminProtect, addSchoolFee);
+router
+  .route("/school-fees")
+  .post(schoolAdminProtect, validateSchoolFeesPostReqBody, addSchoolFee);
 router
   .route("/school-fees/:school_academic_class")
-  .get(schoolAdminProtect, getSchoolFees);
+  .get(
+    schoolAdminProtect,
+    validateSchoolFeesAcademicClassQueryParams,
+    getSchoolFees
+  );
 
 router
   .route("/school-fees/:id")
-  .put(schoolAdminProtect, updateSchoolFee)
-  .delete(schoolAdminProtect, deleteSchoolFee);
+  .put(
+    schoolAdminProtect,
+    validateSchoolFeeQueryParams,
+    validateSchoolFeesPutReqBody,
+    updateSchoolFee
+  )
+  .delete(schoolAdminProtect, validateSchoolFeeQueryParams, deleteSchoolFee);
 
 module.exports = router;
