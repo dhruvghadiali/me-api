@@ -81,6 +81,13 @@ const isActiveFeeTypeExistsValidator = async (value) => {
   const feeTypeExists = await FeeType.findById(value);
   return !!(feeTypeExists && feeTypeExists.is_active);
 };
+
+const isActiveAdmissionDocumentValidator = async (value) => {
+  const AdmissionDocument = require("@MEModels/admissionDocumentModel");
+  const admissionDocument = await AdmissionDocument.findById(value);
+  return !!(admissionDocument && admissionDocument.is_active);
+};
+
 module.exports = {
   isActiveUserValidator,
   isActiveCityExistsValidator,
@@ -91,6 +98,7 @@ module.exports = {
   isActiveDistrictExistsValidator,
   isActiveAreaNameExistsValidator,
   isActiveSchoolTypeExistsValidator,
+  isActiveAdmissionDocumentValidator,
   isActiveFacilityTypeExistsValidator,
   isActiveOrganizationExistsValidator,
   isActiveAcademicClassExistsValidator,
