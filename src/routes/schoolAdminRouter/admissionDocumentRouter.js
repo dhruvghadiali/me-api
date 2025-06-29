@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { superAdminProtect } = require("@MEMiddleware/auth");
+const { schoolAdminProtect } = require("@MEMiddleware/auth");
 const {
   getAdmissionDocuments,
 } = require("@MEControllers/admissionDocumentController/admissionDocumentController");
@@ -9,6 +9,6 @@ const router = express.Router();
 
 router
   .route("/admission-documents")
-  .get(superAdminProtect, getAdmissionDocuments);
+  .get(schoolAdminProtect, getAdmissionDocuments);
 
 module.exports = router;
