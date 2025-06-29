@@ -15,6 +15,7 @@ const AcademicClass = require("@MEModels/academicClassModel");
 const EducationBoard = require("@MEModels/educationBoardModel");
 const AdmissionDocument = require("@MEModels/admissionDocument");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
 
 const {
   feeTypeNotFound,
@@ -33,6 +34,7 @@ const {
   admissionDocumentNotFound,
   schoolAcademicClassNotFound,
   schoolEductionBoardNotFound,
+  schoolAdmissionDocumentNotFound,
 } = require("@MEHelpers/validationMessage");
 
 const checkValidObjectId = (value, helpers) => {
@@ -212,6 +214,17 @@ const isActiveSchoolFeeExists = async (value, helpers) => {
   return value;
 };
 
+const isActiveSchoolAdmissionDocumentExists = async (value) => {
+  const response = await SchoolAdmissionDocument.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(schoolAdmissionDocumentNotFound);
+  }
+  return value;
+};
+
 module.exports = {
   isActiveCityExists,
   checkValidObjectId,
@@ -230,4 +243,5 @@ module.exports = {
   isActiveAdmissionDocumentExists,
   isActiveSchoolAcademicClassExists,
   isSchoolHasActiveEducationBoardExists,
+  isActiveSchoolAdmissionDocumentExists,
 };

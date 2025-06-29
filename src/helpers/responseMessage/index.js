@@ -17,6 +17,7 @@ const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educat
 const admissionDocumentResponseMessage = require("@MEHelpers/responseMessage/admissionDocumentResponseMessage");
 const organizationMemberResponseMessage = require("@MEHelpers/responseMessage/organizationMemberResponseMessage");
 const schoolAcademicClassResponseMessage = require("@MEHelpers/responseMessage/schoolAcademicClassResponseMessage");
+const schoolAdmissionDocumentResponseMessage = require("@MEHelpers/responseMessage/schoolAdmissionDocumentResponseMessage");
 
 const responseMessage = {
   ...authResponseMessage,
@@ -38,6 +39,7 @@ const responseMessage = {
   ...admissionDocumentResponseMessage,
   ...organizationMemberResponseMessage,
   ...schoolAcademicClassResponseMessage,
+  ...schoolAdmissionDocumentResponseMessage,
   studentSignUpSuccess: "Student Signup process successfully completed",
   studentSignInSuccess: "Students signin process successfully completed",
 };

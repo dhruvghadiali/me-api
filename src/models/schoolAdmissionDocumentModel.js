@@ -8,12 +8,18 @@ const {
 const {
   usernameInvalid,
   usernameRequired,
-  documentVerificationStatus,
   admissionDocumentIdInvalid,
   admissionDocumentIdRequired,
   schoolAcademicClassIdInvalid,
   schoolAcademicClassIdRequired,
+  schoolAdmissionDocumentNotesMaxLength,
+  schoolAdmissionDocumentNotesMinLength,
+  schoolAdmissionDocumentVerificationStatusRequired,
 } = require("@MEHelpers/validationMessage");
+const {
+  schoolAdmissionDocumentNotesMaxChar,
+  schoolAdmissionDocumentNotesMinChar,
+} = require("@MEHelpers/validationConst");
 
 const { Schema } = mongoose;
 
@@ -36,9 +42,21 @@ const schoolAdmissionDocumentSchema = Schema({
       message: admissionDocumentIdInvalid,
     },
   },
+  notes: {
+    type: String,
+    trim: true,
+    maxlength: [
+      schoolAdmissionDocumentNotesMaxChar,
+      schoolAdmissionDocumentNotesMaxLength,
+    ],
+    minlength: [
+      schoolAdmissionDocumentNotesMinChar,
+      schoolAdmissionDocumentNotesMinLength,
+    ],
+  },
   is_required: {
     type: Boolean,
-    required: [true, documentVerificationStatus],
+    required: [true, schoolAdmissionDocumentVerificationStatusRequired],
   },
   is_active: {
     type: Boolean,
