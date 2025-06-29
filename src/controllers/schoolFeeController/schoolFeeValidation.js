@@ -268,7 +268,7 @@ const validateSchoolFeesAcademicClassQueryParams = asyncHandler(
   async (req, res, next) => {
     try {
       await schoolAcademicClassQueryParamsValidationSchema.validateAsync(
-        req.params.id
+        req.params.school_academic_class
       );
       next();
     } catch (err) {
