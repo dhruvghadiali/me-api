@@ -131,7 +131,7 @@ const updateSchoolAdmissionDocument = asyncHandler(async (req, res, next) => {
       }
     ).populate("created_by updated_by");
 
-  if (response) {
+  if (schoolAdmissionDocumentInfo) {
     // Send response
     res.status(200).json({
       data: [schoolAdmissionDocumentInfo],
