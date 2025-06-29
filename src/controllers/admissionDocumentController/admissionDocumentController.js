@@ -1,4 +1,4 @@
-const AdmissionDocument = require("@MEModels/admissionDocument");
+const AdmissionDocument = require("@ME/models/admissionDocumentModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
@@ -16,7 +16,9 @@ const {
 /**
  * @desc    Get all admission documents
  * @route   GET /super-admin/admission-documents
+ *          GET /school-admin/admission-documents
  * @access  Super Admin
+ *          School Admin
  */
 const getAdmissionDocuments = asyncHandler(async (req, res, next) => {
   // Find admission documents that are is_active status value is true and sort them by admission_document

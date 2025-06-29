@@ -50,7 +50,8 @@ const getSchoolAdmissionDocuments = asyncHandler(async (req, res, next) => {
  */
 const addSchoolAdmissionDocument = asyncHandler(async (req, res, next) => {
   let response;
-  const { admission_document, school_academic_class, notes } = req.body;
+  const { admission_document, school_academic_class, is_required, notes } =
+    req.body;
   const { id } = req.user;
 
   // Find school admission document that has is_active status value is false
@@ -70,6 +71,7 @@ const addSchoolAdmissionDocument = asyncHandler(async (req, res, next) => {
       schoolAdmissionDocumentInfo.id,
       {
         notes,
+        is_required,
         is_active: true,
         updated_by: id,
       },
@@ -84,6 +86,7 @@ const addSchoolAdmissionDocument = asyncHandler(async (req, res, next) => {
       admission_document,
       school_academic_class,
       notes,
+      is_required,
       created_by: id,
       updated_by: id,
     });

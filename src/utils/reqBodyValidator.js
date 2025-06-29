@@ -13,7 +13,7 @@ const SchoolType = require("@MEModels/schoolTypeModel");
 const FacilityType = require("@MEModels/facilityTypeModel");
 const AcademicClass = require("@MEModels/academicClassModel");
 const EducationBoard = require("@MEModels/educationBoardModel");
-const AdmissionDocument = require("@MEModels/admissionDocument");
+const AdmissionDocument = require("@MEModels/admissionDocumentModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
 
