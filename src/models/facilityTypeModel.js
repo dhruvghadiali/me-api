@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const {
-  facilityNameMaxChar,
-  facilityNameMinChar,
+  facilityTypeMaxChar,
+  facilityTypeMinChar,
 } = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
@@ -25,8 +25,8 @@ const facilityTypeSchema = Schema(
       index: true,
       unique: true,
       required: [true, facilityTypeRequired],
-      maxlength: [facilityNameMaxChar, facilityTypeMaxLength],
-      minlength: [facilityNameMinChar, facilityTypeMinLength],
+      maxlength: [facilityTypeMaxChar, facilityTypeMaxLength],
+      minlength: [facilityTypeMinChar, facilityTypeMinLength],
     },
     is_active: {
       type: Boolean,

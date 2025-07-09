@@ -11,7 +11,7 @@ const {
 } = require("@MEUtils/reqBodyValidator");
 const {
   facilityTypeMaxChar,
-  facilityNameMinChar,
+  facilityTypeMinChar,
 } = require("@MEHelpers/validationConst");
 const {
   facilityTypeBase,
@@ -32,7 +32,7 @@ const {
 const postValidationSchema = Joi.object({
   facility_type: Joi.string()
     .trim()
-    .min(facilityNameMinChar)
+    .min(facilityTypeMinChar)
     .max(facilityTypeMaxChar)
     .required()
     .messages({
@@ -56,7 +56,7 @@ const postValidationSchema = Joi.object({
 const putValidationSchema = Joi.object({
   facility_type: Joi.string()
     .trim()
-    .min(facilityNameMinChar)
+    .min(facilityTypeMinChar)
     .max(facilityTypeMaxChar)
     .required()
     .messages({
