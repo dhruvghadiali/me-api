@@ -5,6 +5,7 @@ const schoolResponseMessage = require("@MEHelpers/responseMessage/schoolResponse
 const commonResponseMessage = require("@MEHelpers/responseMessage/commonResponseMessage");
 const feeTypeResponseMessage = require("@MEHelpers/responseMessage/feeTypeResponseMessage");
 const zipcodeResponseMessage = require("@MEHelpers/responseMessage/zipcodeResponseMessage");
+const facilityResponseMessage = require("@MEHelpers/responseMessage/facilityResponseMessage");
 const areaNameResponseMessage = require("@MEHelpers/responseMessage/areaNameResponseMessage");
 const districtResponseMessage = require("@MEHelpers/responseMessage/districtResponseMessage");
 const schoolFeeResponseMessage = require("@MEHelpers/responseMessage/schoolFeeResponseMessage");
@@ -28,6 +29,7 @@ const responseMessage = {
   ...feeTypeResponseMessage,
   ...zipcodeResponseMessage,
   ...districtResponseMessage,
+  ...facilityResponseMessage,
   ...areaNameResponseMessage,
   ...schoolFeeResponseMessage,
   ...schoolTypeResponseMessage,

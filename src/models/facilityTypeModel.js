@@ -66,12 +66,17 @@ facilityTypeSchema.pre("save", async function (next) {
 facilityTypeSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
-    response.created_by = response?.created_by?.username
-      ? response.created_by.username
-      : null;
-    response.updated_by = response?.updated_by?.username
-      ? response.updated_by.username
-      : null;
+    if (response?.created_by?.first_name && response?.created_by?.last_name) {
+      response.created_by = `${response.created_by.first_name} ${response.created_by.last_name}`;
+    } else {
+      delete response.created_by;
+    }
+
+    if (response?.updated_by?.first_name && response?.updated_by?.last_name) {
+      response.updated_by = `${response.updated_by.first_name} ${response.updated_by.last_name}`;
+    } else {
+      delete response.updated_by;
+    }
     return response;
   },
 });

@@ -82,7 +82,7 @@ const addFacility = asyncHandler(async (req, res, next) => {
     );
   } else {
     // If facility is not present, create a new facility with the user who signin
-    response = await City.create({
+    response = await Facility.create({
       facility_name,
       facility_type,
       created_by: id,
