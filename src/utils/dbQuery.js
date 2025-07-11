@@ -40,6 +40,12 @@ const isActiveFacilityTypeExistsValidator = async (value) => {
   return !!(facilityTypeExists && facilityTypeExists.is_active);
 };
 
+const isActiveFacilityExistsValidator = async (value) => {
+  const Facility = require("@MEModels/facilityModel");
+  const facilityExists = await Facility.findById(value);
+  return !!(facilityExists && facilityExists.is_active);
+};
+
 const isActiveOrganizationExistsValidator = async (value) => {
   const Organization = require("@MEModels/organizationModel");
   const organizationExists = await Organization.findById(value);
@@ -97,6 +103,7 @@ module.exports = {
   isActiveZipcodeExistsValidator,
   isActiveDistrictExistsValidator,
   isActiveAreaNameExistsValidator,
+  isActiveFacilityExistsValidator,
   isActiveSchoolTypeExistsValidator,
   isActiveAdmissionDocumentValidator,
   isActiveFacilityTypeExistsValidator,
