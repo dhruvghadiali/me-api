@@ -19,6 +19,7 @@ const schoolValidationMessage = {
   schoolDetailsMustBeObjectRequired: "School details must be object formate",
   schoolDetailsInvalid: `Invalid school details. No matching school details found`,
   schoolIdRequired: "School id is required",
+  schoolIdEmpty: "School id cannot be empty",
   schoolIdBase: "School id must be string formate",
   schoolIdInvalid: `Invalid school id. No matching school id found`,
   schoolIdNotFound: `School id not found in database`,
