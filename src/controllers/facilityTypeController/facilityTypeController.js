@@ -29,7 +29,7 @@ const getFacilityTypes = asyncHandler(async (req, res, next) => {
       "created_by",
       "updated_by",
     ])
-    .populate("created_by updated_by")
+    .populate("created_by updated_by facilities")
     .sort({ facility_type: 1 });
 
   // Send response

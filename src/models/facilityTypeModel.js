@@ -63,6 +63,12 @@ facilityTypeSchema.pre("save", async function (next) {
   next();
 });
 
+facilityTypeSchema.virtual("facilities", {
+  ref: "facility",
+  localField: "_id",
+  foreignField: "facility_type",
+});
+
 facilityTypeSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
