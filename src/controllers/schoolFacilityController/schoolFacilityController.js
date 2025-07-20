@@ -1,14 +1,13 @@
-const moment = require("moment");
-const mongoose = require("mongoose");
-
-const SchoolFacility = require("@MEModels/schoolFacilityModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
+const SchoolFacility = require("@MEModels/schoolFacilityModel");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const {
   schoolFacilityPostRequestFail,
+  schoolFacilityDeleteRequestFail,
   schoolFacilityPostRequestSuccess,
   schoolFacilitiesGetRequestSuccess,
+  schoolFacilityDeleteRequestSuccess,
 } = require("@MEHelpers/responseMessage");
 
 /**
@@ -40,7 +39,7 @@ const getSchoolFacilities = asyncHandler(async (req, res, next) => {
 
 /**
  * @desc    Add new school facility
- * @route   POST /super-admin/school-facilities
+ * @route   POST /school-admin/school-facilities
  * @access  Super Admin
  */
 const addSchoolFacility = asyncHandler(async (req, res, next) => {
@@ -99,7 +98,39 @@ const addSchoolFacility = asyncHandler(async (req, res, next) => {
   }
 });
 
+/**
+ * @desc    Delete school facility
+ * @route   DELETE /school-admin/school-facilities/:id
+ * @access  Super Admin
+ */
+const deleteSchoolFacility = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
+  // Find school facility id and update is active status to false
+  const schoolFacilityInfo = await SchoolFacility.findByIdAndUpdate(
+    req.params.id,
+    { is_active: false, updated_by: id },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (schoolFacilityInfo) {
+    // Send response
+    res.status(200).json({
+      data: [],
+      message: schoolFacilityDeleteRequestSuccess,
+      status: 200,
+    });
+  } else {
+    // Send error response
+    next(new ErrorResponse(schoolFacilityDeleteRequestFail, 400));
+  }
+});
+
 module.exports = {
   addSchoolFacility,
   getSchoolFacilities,
+  deleteSchoolFacility,
 };

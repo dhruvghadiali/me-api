@@ -13,6 +13,7 @@ const SchoolType = require("@MEModels/schoolTypeModel");
 const FacilityType = require("@MEModels/facilityTypeModel");
 const AcademicClass = require("@MEModels/academicClassModel");
 const EducationBoard = require("@MEModels/educationBoardModel");
+const SchoolFacility = require("@MEModels/schoolFacilityModel");
 const AdmissionDocument = require("@MEModels/admissionDocumentModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
@@ -31,6 +32,7 @@ const {
   schoolDetailsNotFound,
   academicClassNotFound,
   educationBoardNotFound,
+  schoolFacilityNotFound,
   admissionDocumentNotFound,
   schoolAcademicClassNotFound,
   schoolEductionBoardNotFound,
@@ -225,6 +227,17 @@ const isActiveSchoolAdmissionDocumentExists = async (value) => {
   return value;
 };
 
+const isActiveSchoolFacilityExists = async (value) => {
+  const response = await SchoolFacility.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(schoolFacilityNotFound);
+  }
+  return value;
+};
+
 module.exports = {
   isActiveCityExists,
   checkValidObjectId,
@@ -240,6 +253,7 @@ module.exports = {
   isActiveFacilityTypeExists,
   isActiveAcademicClassExists,
   isActiveEducationBoardExists,
+  isActiveSchoolFacilityExists,
   isActiveAdmissionDocumentExists,
   isActiveSchoolAcademicClassExists,
   isSchoolHasActiveEducationBoardExists,
