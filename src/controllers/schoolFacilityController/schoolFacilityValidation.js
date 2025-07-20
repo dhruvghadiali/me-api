@@ -8,6 +8,7 @@ const { setValidationMessage } = require("@MEUtils/utility");
 const {
   checkValidObjectId,
   isActiveSchoolExists,
+  isActiveFacilityExists,
 } = require("@MEUtils/reqBodyValidator");
 const {
   schoolIdBase,
@@ -15,7 +16,54 @@ const {
   schoolIdInvalid,
   schoolIdRequired,
   schoolIdNotFound,
+  facilityIdBase,
+  facilityIdEmpty,
+  facilityIdInvalid,
+  facilityIdRequired,
+  facilityNameNotFound,
+  schoolFacilityReqBodyBase,
+  schoolFacilityReqBodyEmpty,
+  schoolFacilityReqBodyUnknown,
+  schoolFacilityReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
+
+const validationPostSchema = Joi.object({
+  school: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .external(isActiveSchoolExists)
+    .messages({
+      "string.empty": schoolIdEmpty,
+      "string.base": schoolIdBase,
+      "any.invalid": schoolIdInvalid,
+      "any.required": schoolIdRequired,
+      "any.notFound": schoolIdNotFound,
+    }),
+  facility: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .external(isActiveFacilityExists)
+    .messages({
+      "string.empty": facilityIdEmpty,
+      "string.base": facilityIdBase,
+      "any.invalid": facilityIdInvalid,
+      "any.required": facilityIdRequired,
+      "any.notFound": facilityNameNotFound,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": schoolFacilityReqBodyBase,
+    "object.empty": schoolFacilityReqBodyEmpty,
+    "object.unknown": schoolFacilityReqBodyUnknown,
+    "any.required": schoolFacilityReqBodyRequired,
+  });
 
 const validationQueryParamsSchemaForSchool = Joi.string()
   .required()
@@ -29,6 +77,17 @@ const validationQueryParamsSchemaForSchool = Joi.string()
     "any.required": schoolIdRequired,
     "any.notFound": schoolIdNotFound,
   });
+
+const validateSchoolFacilityPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validationPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(new ErrorResponse(setValidationMessage(err), 400));
+    }
+  }
+);
 
 const validateSchoolFacilityQueryParamsForSchool = asyncHandler(
   async (req, res, next) => {
@@ -44,5 +103,6 @@ const validateSchoolFacilityQueryParamsForSchool = asyncHandler(
 );
 
 module.exports = {
+  validateSchoolFacilityPostReqBody,
   validateSchoolFacilityQueryParamsForSchool,
 };

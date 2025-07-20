@@ -4,6 +4,7 @@ const {
 } = require("@MEHelpers/validationConst");
 
 const facilityValidationMessage = {
+  facilityIdEmpty: "Facility id can't be empty",
   facilityIdRequired: "Facility id is required",
   facilityIdBase: "Facility id must be string formate",
   facilityIdInvalid: `Invalid facility id. No matching facility id`,
