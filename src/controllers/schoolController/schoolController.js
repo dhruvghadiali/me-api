@@ -26,6 +26,8 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @access  Super Admin
  */
 const getSchools = asyncHandler(async (req, res, next) => {
+  SchoolAddress.setSchoolAddressTransformMode("default");
+
   // Find schools that are is_active status value is true and sort them by name
   const schools = await School.find({
     is_active: req.query.is_active || true,
@@ -95,6 +97,8 @@ const getSchools = asyncHandler(async (req, res, next) => {
  * @access  Public
  */
 const getSchoolsSummary = asyncHandler(async (req, res, next) => {
+  SchoolAddress.setSchoolAddressTransformMode("summary");
+
   // Find schools that are is_active status value is true and sort them by name
   const schools = await School.find({
     is_active: req.query.is_active || true,
@@ -103,6 +107,13 @@ const getSchoolsSummary = asyncHandler(async (req, res, next) => {
     .populate({
       path: "school_address",
       select: "address city state district area_name zipcode", // select only address fields you want
+      populate: [
+        { path: "state", select: ["name"] },
+        { path: "district", select: ["name"] },
+        { path: "city", select: ["name"] },
+        { path: "area_name", select: ["name"] },
+        { path: "zipcode", select: ["zipcode"] },
+      ],
     })
     .sort({ name: 1 });
 
