@@ -90,6 +90,30 @@ const getSchools = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @desc    Get all schools
+ * @route   GET /schools
+ * @access  Public
+ */
+const getSchoolsSummary = asyncHandler(async (req, res, next) => {
+  // Find schools that are is_active status value is true and sort them by name
+  const schools = await School.find({
+    is_active: req.query.is_active || true,
+  })
+    .select(["name", "phone_number", "email", "school_address"]) // Only select required fields
+    .populate({
+      path: "school_address",
+      select: "address city state district area_name zipcode", // select only address fields you want
+    })
+    .sort({ name: 1 });
+
+  // Send response
+  res.status(200).json({
+    data: schools,
+    message: schoolsGetRequestSuccess,
+  });
+});
+
+/**
  * @desc    Add school
  * @route   PATCH /super-admin/schools
  * @access  Super Admin
@@ -265,4 +289,5 @@ module.exports = {
   addSchool,
   getSchools,
   updateSchool,
+  getSchoolsSummary,
 };
