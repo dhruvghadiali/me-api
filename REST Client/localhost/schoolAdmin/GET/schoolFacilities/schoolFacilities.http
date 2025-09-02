@@ -1,0 +1,3 @@
+GET {{schoolAdminLocalhostBaseUrl}}{{schoolAdminFacilitiesRoute}}{{schoolId}}
+Content-Type: application/json
+Authorization: {{schoolAdminAuthToken}}

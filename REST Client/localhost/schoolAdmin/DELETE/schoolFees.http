@@ -1,0 +1,3 @@
+DELETE  {{schoolAdminLocalhostBaseUrl}}{{schoolAdminFeesRoute}}{{schoolFeeId}}
+Content-Type: application/json
+Authorization: {{schoolAdminAuthToken}}

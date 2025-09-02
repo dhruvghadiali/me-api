@@ -8,12 +8,15 @@ const Zipcode = require("@MEModels/zipcodeModel");
 const District = require("@MEModels/districtModel");
 const AreaName = require("@MEModels/areaNameModel");
 const Facility = require("@MEModels/facilityModel");
+const SchoolFee = require("@MEModels/schoolFeeModel");
 const SchoolType = require("@MEModels/schoolTypeModel");
 const FacilityType = require("@MEModels/facilityTypeModel");
 const AcademicClass = require("@MEModels/academicClassModel");
 const EducationBoard = require("@MEModels/educationBoardModel");
-const AdmissionDocument = require("@MEModels/admissionDocument");
+const SchoolFacility = require("@MEModels/schoolFacilityModel");
+const AdmissionDocument = require("@MEModels/admissionDocumentModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
 
 const {
   feeTypeNotFound,
@@ -21,6 +24,7 @@ const {
   cityNameNotFound,
   areaNameNotFound,
   stateNameNotFound,
+  schoolFeeNotFound,
   schoolTypeNotFound,
   facilityNameNotFound,
   facilityTypeNotFound,
@@ -28,9 +32,11 @@ const {
   schoolDetailsNotFound,
   academicClassNotFound,
   educationBoardNotFound,
+  schoolFacilityNotFound,
   admissionDocumentNotFound,
   schoolAcademicClassNotFound,
   schoolEductionBoardNotFound,
+  schoolAdmissionDocumentNotFound,
 } = require("@MEHelpers/validationMessage");
 
 const checkValidObjectId = (value, helpers) => {
@@ -198,6 +204,40 @@ const isActiveSchoolAcademicClassExists = async (value, helpers) => {
   return value;
 };
 
+const isActiveSchoolFeeExists = async (value, helpers) => {
+  const response = await SchoolFee.exists({
+    _id: value,
+    is_active: true,
+  });
+
+  if (!response) {
+    throw new Error(schoolFeeNotFound);
+  }
+  return value;
+};
+
+const isActiveSchoolAdmissionDocumentExists = async (value) => {
+  const response = await SchoolAdmissionDocument.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(schoolAdmissionDocumentNotFound);
+  }
+  return value;
+};
+
+const isActiveSchoolFacilityExists = async (value) => {
+  const response = await SchoolFacility.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error(schoolFacilityNotFound);
+  }
+  return value;
+};
+
 module.exports = {
   isActiveCityExists,
   checkValidObjectId,
@@ -208,11 +248,14 @@ module.exports = {
   isActiveDistrictExists,
   isActiveAreaNameExists,
   isActiveFacilityExists,
+  isActiveSchoolFeeExists,
   isActiveSchoolTypeExists,
   isActiveFacilityTypeExists,
   isActiveAcademicClassExists,
   isActiveEducationBoardExists,
+  isActiveSchoolFacilityExists,
   isActiveAdmissionDocumentExists,
   isActiveSchoolAcademicClassExists,
   isSchoolHasActiveEducationBoardExists,
+  isActiveSchoolAdmissionDocumentExists,
 };

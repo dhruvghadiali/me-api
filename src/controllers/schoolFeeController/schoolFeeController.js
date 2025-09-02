@@ -9,9 +9,11 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const {
   schoolFeePutRequestFail,
   schoolFeePostRequestFail,
+  schoolFeeDeleteRequestFail,
   schoolFeePutRequestSuccess,
   schoolFeePostRequestSuccess,
   schoolFeesGetRequestSuccess,
+  schoolFeeDeleteRequestSuccess,
 } = require("@MEHelpers/responseMessage");
 
 /**
@@ -70,7 +72,14 @@ const addSchoolFee = asyncHandler(async (req, res, next) => {
     // If school fee is already present, update the is_active status value to true with the user who signin
     response = await SchoolFee.findByIdAndUpdate(
       schoolFeeInfo.id,
-      { is_active: true, updated_by: id },
+      {
+        yearly_fee,
+        monthly_fee,
+        quarterly_fee,
+        half_yearly_fee,
+        is_active: true,
+        updated_by: id,
+      },
       {
         new: true,
         runValidators: true,
@@ -180,8 +189,40 @@ const updateSchoolFee = asyncHandler(async (req, res, next) => {
   }
 });
 
+/**
+ * @desc    Delete school fee
+ * @route   DELETE /school-admin/school-fees/:id
+ * @access  School Admin
+ */
+const deleteSchoolFee = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
+  // Find school fee id and update is active status to false
+  const schoolFeeInfo = await SchoolFee.findByIdAndUpdate(
+    req.params.id,
+    { is_active: false, updated_by: id },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (schoolFeeInfo) {
+    // Send response
+    res.status(200).json({
+      data: [],
+      message: schoolFeeDeleteRequestSuccess,
+      status: 200,
+    });
+  } else {
+    // Send error response
+    next(new ErrorResponse(schoolFeeDeleteRequestFail, 400));
+  }
+});
+
 module.exports = {
   addSchoolFee,
   getSchoolFees,
   updateSchoolFee,
+  deleteSchoolFee,
 };

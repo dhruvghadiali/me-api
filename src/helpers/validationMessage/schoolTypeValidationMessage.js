@@ -13,9 +13,9 @@ const schoolTypeValidationMessage = {
   schoolTypeReqBodyRequired: "School type request body is required",
   schoolTypeReqBodyEmpty: "School type request body can't be  empty",
   schoolTypeReqBodyBase: "School type request body has invalid formate",
+  schoolTypeReqBodyUnknown: "School type request body has unknown parameters",
   schoolTypeInvalid: "Invalid school type. No matching school type found",
   schoolTypeIdInvalid: "Invalid school type id. No matching school type id",
-  schoolTypeReqBodyUnknown: "School type request body has unknown parameters",
   schoolTypeMaxLength: `School type must be less then ${schoolTypeMaxChar} characters`,
   schoolTypeMinLength: `School type must be greater then ${schoolTypeMinChar} characters`,
 };

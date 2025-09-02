@@ -78,8 +78,8 @@ const signUp = asyncHandler(async (req, res, next) => {
     next(new ErrorResponse(superAdminSignUpError, 400));
   } else {
     let data = {
-      first_name: "me_super_admin",
-      last_name: "me_super_admin",
+      first_name: "me",
+      last_name: "super admin",
       email: "me_super_admin@gmail.com",
       phone_number: "1234567890",
       username: "me_super_admin",

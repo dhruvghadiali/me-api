@@ -20,6 +20,7 @@ const schoolAddressValidationConst = require("@MEHelpers/validationConst/schoolA
 const academicClassValidationConst = require("@MEHelpers/validationConst/academicClassValidationConst");
 const educationBoardValidationConst = require("@MEHelpers/validationConst/educationBoardValidationConst");
 const organizationMemberValidationConst = require("@MEHelpers/validationConst/organizationMemberValidationConst");
+const schoolAdmissionDocumentValidationConst = require("@MEHelpers/validationConst/schoolAdmissionDocumentValidationConst");
 
 const validationConst = {
   ...userValidationConst,
@@ -44,6 +45,7 @@ const validationConst = {
   ...academicClassValidationConst,
   ...educationBoardValidationConst,
   ...organizationMemberValidationConst,
+  ...schoolAdmissionDocumentValidationConst,
 };
 
 module.exports = validationConst;

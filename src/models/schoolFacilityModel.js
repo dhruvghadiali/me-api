@@ -2,14 +2,12 @@ const mongoose = require("mongoose");
 
 const {
   isActiveUserValidator,
-  isActiveFeeTypeExistsValidator,
-  isActiveSchoolAcademicClassExistsValidator,
+  isActiveSchoolExistsValidator,
+  isActiveFacilityExistsValidator,
 } = require("@MEUtils/dbQuery");
 const {
   usernameInvalid,
   usernameRequired,
-  feeTypeIdInvalid,
-  feeTypeIdRequired,
   yearlyFeeRequired,
   yearlyFeeMaxAmount,
   yearlyFeeMinAmount,
@@ -22,56 +20,35 @@ const {
   halfYearlyFeeRequired,
   halfYearlyFeeMaxAmount,
   halfYearlyFeeMinAmount,
-  schoolAcademicClassIdInvalid,
-  schoolAcademicClassIdRequired,
+
+  schoolDetailsRequired,
+  schoolDetailsInvalid,
+  facilityIdRequired,
+  facilityIdInvalid,
 } = require("@MEHelpers/validationMessage");
 const { maxFeeAmount, minFeeAmount } = require("@MEHelpers/validationConst");
 
 const { Schema } = mongoose;
 
-const schoolFeeSchema = Schema(
+const schoolFacilitySchema = Schema(
   {
-    school_academic_class: {
+    school: {
       type: Schema.Types.ObjectId,
-      ref: "school_academic_class",
-      required: [true, schoolAcademicClassIdRequired],
+      ref: "school",
+      required: [true, schoolDetailsRequired],
       validate: {
-        validator: isActiveSchoolAcademicClassExistsValidator,
-        message: schoolAcademicClassIdInvalid,
+        validator: isActiveSchoolExistsValidator,
+        message: schoolDetailsInvalid,
       },
     },
-    fee_type: {
+    facility: {
       type: Schema.Types.ObjectId,
-      ref: "fee_type",
-      required: [true, feeTypeIdRequired],
+      ref: "facility",
+      required: [true, facilityIdRequired],
       validate: {
-        validator: isActiveFeeTypeExistsValidator,
-        message: feeTypeIdInvalid,
+        validator: isActiveFacilityExistsValidator,
+        message: facilityIdInvalid,
       },
-    },
-    monthly_fee: {
-      type: Number,
-      required: [true, monthlyFeeRequired],
-      min: [minFeeAmount, monthlyFeeMinAmount],
-      max: [maxFeeAmount, monthlyFeeMaxAmount],
-    },
-    quarterly_fee: {
-      type: Number,
-      required: [true, quarterlyFeeRequired],
-      min: [minFeeAmount, quarterlyFeeMinAmount],
-      max: [maxFeeAmount, quarterlyFeeMaxAmount],
-    },
-    half_yearly_fee: {
-      type: Number,
-      required: [true, halfYearlyFeeRequired],
-      min: [minFeeAmount, halfYearlyFeeMinAmount],
-      max: [maxFeeAmount, halfYearlyFeeMaxAmount],
-    },
-    yearly_fee: {
-      type: Number,
-      required: [true, yearlyFeeRequired],
-      min: [minFeeAmount, yearlyFeeMinAmount],
-      max: [maxFeeAmount, yearlyFeeMaxAmount],
     },
     is_active: {
       type: Boolean,
@@ -99,12 +76,12 @@ const schoolFeeSchema = Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-schoolFeeSchema.index(
-  { school_academic_class: 1, fee_type: 1 },
+schoolFacilitySchema.index(
+  { school: 1, facility: 1 },
   { unique: true, index: true }
 );
 
-schoolFeeSchema.set("toJSON", {
+schoolFacilitySchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
     if (response?.created_by?.first_name && response?.created_by?.last_name) {
@@ -121,6 +98,6 @@ schoolFeeSchema.set("toJSON", {
     return response;
   },
 });
-schoolFeeSchema.set("toObject", { virtuals: true });
+schoolFacilitySchema.set("toObject", { virtuals: true });
 
-module.exports = mongoose.model("school_fee", schoolFeeSchema);
+module.exports = mongoose.model("school_facility", schoolFacilitySchema);

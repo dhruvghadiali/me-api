@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const {
-  facilityNameMaxChar,
-  facilityNameMinChar,
+  facilityTypeMaxChar,
+  facilityTypeMinChar,
 } = require("@MEHelpers/validationConst");
 const {
   usernameInvalid,
@@ -25,8 +25,8 @@ const facilityTypeSchema = Schema(
       index: true,
       unique: true,
       required: [true, facilityTypeRequired],
-      maxlength: [facilityNameMaxChar, facilityTypeMaxLength],
-      minlength: [facilityNameMinChar, facilityTypeMinLength],
+      maxlength: [facilityTypeMaxChar, facilityTypeMaxLength],
+      minlength: [facilityTypeMinChar, facilityTypeMinLength],
     },
     is_active: {
       type: Boolean,
@@ -63,15 +63,26 @@ facilityTypeSchema.pre("save", async function (next) {
   next();
 });
 
+facilityTypeSchema.virtual("facilities", {
+  ref: "facility",
+  localField: "_id",
+  foreignField: "facility_type",
+});
+
 facilityTypeSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {
-    response.created_by = response?.created_by?.username
-      ? response.created_by.username
-      : null;
-    response.updated_by = response?.updated_by?.username
-      ? response.updated_by.username
-      : null;
+    if (response?.created_by?.first_name && response?.created_by?.last_name) {
+      response.created_by = `${response.created_by.first_name} ${response.created_by.last_name}`;
+    } else {
+      delete response.created_by;
+    }
+
+    if (response?.updated_by?.first_name && response?.updated_by?.last_name) {
+      response.updated_by = `${response.updated_by.first_name} ${response.updated_by.last_name}`;
+    } else {
+      delete response.updated_by;
+    }
     return response;
   },
 });

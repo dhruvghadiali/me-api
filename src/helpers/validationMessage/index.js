@@ -20,9 +20,11 @@ const schoolAddressValidationMessage = require("@MEHelpers/validationMessage/sch
 const schoolFeeTypeValidationMessage = require("@MEHelpers/validationMessage/schoolFeeTypeValidationMessage");
 const academicClassValidationMessage = require("@MEHelpers/validationMessage/academicClassValidationMessage");
 const educationBoardValidationMessage = require("@MEHelpers/validationMessage/educationBoardValidationMessage");
+const schoolFacilityValidationMessage = require("@MEHelpers/validationMessage/schoolFacilityValidationMessage");
 const admissionDocumentValidationMessage = require("@MEHelpers/validationMessage/admissionDocumentValidationMessage");
 const organizationMemberValidationMessage = require("@MEHelpers/validationMessage/organizationMemberValidationMessage");
 const schoolAcademicClassValidationMessage = require("@MEHelpers/validationMessage/schoolAcademicClassValidationMessage");
+const schoolAdmissionDocumentValidationMessage = require("@MEHelpers/validationMessage/schoolAdmissionDocumentValidationMessage");
 
 const validationMessage = {
   ...userValidationMessage,
@@ -47,9 +49,11 @@ const validationMessage = {
   ...schoolFeeTypeValidationMessage,
   ...academicClassValidationMessage,
   ...educationBoardValidationMessage,
+  ...schoolFacilityValidationMessage,
   ...admissionDocumentValidationMessage,
   ...organizationMemberValidationMessage,
   ...schoolAcademicClassValidationMessage,
+  ...schoolAdmissionDocumentValidationMessage,
 };
 
 module.exports = validationMessage;
