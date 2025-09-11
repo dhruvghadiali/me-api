@@ -125,6 +125,77 @@ const getSchoolsSummary = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @desc    Get school
+ * @route   GET /school/:id
+ * @access  Public
+ */
+const getSchool = asyncHandler(async (req, res, next) => {
+  SchoolAddress.setSchoolAddressTransformMode("default");
+
+  // Find school that are is_active status value is true.
+  const school = await School.findOne({
+    _id: req.params.id,
+    is_active: true,
+  })
+    .select(["-__v"])
+    .populate([
+      { path: "created_by updated_by" },
+      {
+        path: "education_boards",
+        select: ["education_board"],
+      },
+      {
+        path: "school_type",
+        select: ["school_type"],
+      },
+      {
+        path: "organization",
+        populate: [
+          { path: "created_by updated_by" },
+          { path: "state", select: ["name"] },
+          { path: "district", select: ["name"] },
+          { path: "city", select: ["name"] },
+          { path: "area_name", select: ["name"] },
+          { path: "zipcode", select: ["zipcode"] },
+          { path: "organization_member_count" },
+          {
+            path: "organization_members",
+            populate: [
+              { path: "created_by updated_by" },
+              { path: "state", select: ["name"] },
+              { path: "district", select: ["name"] },
+              { path: "city", select: ["name"] },
+              { path: "area_name", select: ["name"] },
+              { path: "zipcode", select: ["zipcode"] },
+            ],
+          },
+        ],
+      },
+    ])
+    .populate([
+      { path: "school_address_count" },
+      {
+        path: "school_address",
+        populate: [
+          { path: "created_by updated_by" },
+          { path: "state", select: ["name"] },
+          { path: "district", select: ["name"] },
+          { path: "city", select: ["name"] },
+          { path: "area_name", select: ["name"] },
+          { path: "zipcode", select: ["zipcode"] },
+          { path: "user" },
+        ],
+      },
+    ]);
+
+  // Send response
+  res.status(200).json({
+    data: [school],
+    message: schoolsGetRequestSuccess,
+  });
+});
+
+/**
  * @desc    Add school
  * @route   PATCH /super-admin/schools
  * @access  Super Admin
@@ -297,6 +368,7 @@ const updateSchool = asyncHandler(async (req, res, next) => {
 // });
 
 module.exports = {
+  getSchool,
   addSchool,
   getSchools,
   updateSchool,

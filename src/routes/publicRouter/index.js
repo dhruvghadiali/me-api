@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {
+  getSchool,
   getSchoolsSummary,
 } = require("@MEControllers/schoolController/schoolController");
 
@@ -23,5 +24,6 @@ const router = express.Router();
  *         description: Unauthorized
  */
 router.route("/schools").get(getSchoolsSummary);
+router.route("/school/:id").get(getSchool);
 
 module.exports = router;
