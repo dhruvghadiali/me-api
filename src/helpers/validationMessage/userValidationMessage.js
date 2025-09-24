@@ -30,6 +30,7 @@ const userValidationMessage = {
   signInReqBodyEmpty: `Sign in request body can't be  empty`,
   signInReqBodyBase: `Sign in request body has invalid formate`,
   signInReqBodyUnknown: `Sign in request body has unknown parameters`,
+  usernameFound: `User found in database please use different username`,
 };
 
 module.exports = userValidationMessage;

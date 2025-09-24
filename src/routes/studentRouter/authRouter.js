@@ -1,12 +1,12 @@
-// const express = require("express");
+const express = require("express");
 
-// const {
-//   signIn,
-//   signUp,
-//   changePassword,
-//   resetPassword,
-//   forgottenPasswordFindUserAccount,
-// } = require("@MEControllers/studentAuthController/studentAuthController");
+const {
+  signUp,
+} = require("@MEControllers/studentAuthController/studentAuthController");
+
+const {
+  validateStudentSignupPostReqBody,
+} = require("@MEControllers/studentAuthController/studentAuthValidation");
 
 // const {
 //   signUpSendOTP,
@@ -15,7 +15,7 @@
 //   forgottenPasswordOTPVerification,
 // } = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
-// const router = express.Router();
+const router = express.Router();
 
 // /**
 //  * @swagger
@@ -106,7 +106,7 @@
 //  */
 // router.route("/signin").post(signIn);
 
-// router.route("/signup").post(signUp);
+router.route("/signup").post(validateStudentSignupPostReqBody, signUp);
 
 // router.route("/signup/send-otp").post(signUpSendOTP);
 
@@ -191,3 +191,5 @@
 //   .get(changePassword)
 //   .post(changePassword)
 //   .put(changePassword);
+
+module.exports = router;

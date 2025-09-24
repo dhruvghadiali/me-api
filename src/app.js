@@ -9,6 +9,7 @@ var cors = require("cors");
 const setupSwagger = require("@MEConfig/swagger");
 const errorHandler = require("@MEMiddleware/error");
 const publicRouter = require("@MERoutes/publicRouter");
+const studentRouter = require("@MERoutes/studentRouter");
 const schoolAdminRouter = require("@MERoutes/schoolAdminRouter");
 const superAdminRouter = require("@MERoutes/superAdminRouter");
 
@@ -21,6 +22,7 @@ app.use(cors());
 setupSwagger(app);
 
 app.use("/", publicRouter);
+app.use("/student", studentRouter);
 app.use("/super-admin/", superAdminRouter);
 app.use("/school-admin/", schoolAdminRouter);
 app.use((req, res) => {
