@@ -1,0 +1,10 @@
+﻿### Scenario 001 (Valid credentials)
+POST {{studentLocalhostBaseUrl}}{{studentSignupOTPVerificationRoute}}
+Content-Type: application/json
+
+{
+  "user_id": "68e41548711d9d8d67f521e4",
+  "verification_token": "$2a$10$y2O8/dZSBIN15ZPJk1y2Vu65/l2/8iwnUDblBnEG9NwMt8hECZBF6",
+  "email_otp": 405656,
+  "phone_otp": 418514
+}
