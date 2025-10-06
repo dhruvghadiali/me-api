@@ -132,3 +132,5 @@ dist
 
 yarn-lock.json
 package-lock.json
+.env.dev
+config/.env.dev
