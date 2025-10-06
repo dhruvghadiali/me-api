@@ -23,6 +23,7 @@ const responseMessage = require("@MEHelpers/responseMessage");
 //     const user = await User.findOne({
 //       username: username,
 //       is_active: true,
+//       is_account_verified: true,
 //       user_type: "STUDENT",
 //     }).select(
 //       "+password -is_active -reset_password_token -created_at -updated_at -__v"
