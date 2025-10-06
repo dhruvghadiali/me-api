@@ -76,6 +76,7 @@ const signUpOTPVerification = asyncHandler(async (req, res, next) => {
     user: req.body.user_id,
     verification_token: req.body.verification_token,
     is_otp_verified: false,
+    verification_type: "SU",
   });
   
   if (!otpVerificationData) {
