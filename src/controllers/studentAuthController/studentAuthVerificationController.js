@@ -78,8 +78,6 @@ const signUpOTPVerification = asyncHandler(async (req, res, next) => {
     is_otp_verified: false,
   });
   
-  console.log("otpVerificationData", otpVerificationData);
-
   if (!otpVerificationData) {
     next(new ErrorResponse(responseMessage.invalidFormat, 400));
   } else {
