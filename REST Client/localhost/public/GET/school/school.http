@@ -1,0 +1,2 @@
+GET {{publicLocalhostBaseUrl}}{{publicSchoolRoute}}{{schoolId}}
+Content-Type: application/json

@@ -13,6 +13,7 @@ const areaNameValidationMessage = require("@MEHelpers/validationMessage/areaName
 const schoolFeeValidationMessage = require("@MEHelpers/validationMessage/schoolFeeValidationMessage");
 const schoolTypeValidationMessage = require("@MEHelpers/validationMessage/schoolTypeValidationMessage");
 const schoolAdminValidationMessage = require("@MEHelpers/validationMessage/schoolAdminValidationMessage");
+const studentAuthValidationMessage = require("@MEHelpers/validationMessage/studentAuthValidationMessage");
 const organizationValidationMessage = require("@MEHelpers/validationMessage/organizationValidationMessage");
 const facilityTypeValidationMessage = require("@MEHelpers/validationMessage/facilityTypeValidationMessage");
 const schoolFeeLogValidationMessage = require("@MEHelpers/validationMessage/schoolFeeLogValidationMessage");
@@ -42,6 +43,7 @@ const validationMessage = {
   ...schoolFeeValidationMessage,
   ...schoolTypeValidationMessage,
   ...schoolAdminValidationMessage,
+  ...studentAuthValidationMessage,
   ...organizationValidationMessage,
   ...facilityTypeValidationMessage,
   ...schoolFeeLogValidationMessage,

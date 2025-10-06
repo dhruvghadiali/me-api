@@ -1,13 +1,13 @@
-// const { asyncHandler } = require("@MEMiddleware/async");
-// const {
-//   maskEmail,
-//   maskPhoneNumber,
-//   maskUsername,
-// } = require("@MEHelpers/maskingValue");
+const { asyncHandler } = require("@MEMiddleware/async");
+const {
+  maskEmail,
+  maskPhoneNumber,
+  maskUsername,
+} = require("@MEHelpers/maskingValue");
 
-// const User = require("@MEModels/userModel");
-// const ErrorResponse = require("@MEUtils/errorResponse");
-// const responseMessage = require("@MEHelpers/responseMessage");
+const User = require("@MEModels/userModel");
+const ErrorResponse = require("@MEUtils/errorResponse");
+const responseMessage = require("@MEHelpers/responseMessage");
 
 // /**
 //  * @desc    Sign in user
@@ -61,25 +61,30 @@
 //   }
 // });
 
-// exports.signUp = asyncHandler(async (req, res, next) => {
-//   const user = await User.create(req.body);
+/**
+ * @desc    Sign up student
+ * @route   POST /student/signup
+ * @access  Student
+ */
+const signUp = asyncHandler(async (req, res, next) => {
+  const user = await User.create(req.body);
 
-//   if (user) {
-//     delete user._doc.password;
-//     delete user._doc.user_type;
-//     delete user._doc.reset_password_token;
-//     delete user._doc.is_active;
-//     delete user._doc.updated_at;
-//     delete user._doc.__v;
-//     res.status(201).json({
-//       data: [user],
-//       message: responseMessage.studentSignUpSuccess,
-//       status: 201,
-//     });
-//   } else {
-//     next(new ErrorResponse(responseMessage.serverError, 401));
-//   }
-// });
+  if (user) {
+    delete user._doc.password;
+    delete user._doc.user_type;
+    delete user._doc.reset_password_token;
+    delete user._doc.is_active;
+    delete user._doc.updated_at;
+    delete user._doc.__v;
+    res.status(201).json({
+      data: [user],
+      message: responseMessage.studentSignUpSuccess,
+      status: 201,
+    });
+  } else {
+    next(new ErrorResponse(responseMessage.serverError, 401));
+  }
+});
 
 // exports.changePassword = asyncHandler(async (req, res, next) => {
 //   res.status(200).json({
@@ -166,3 +171,7 @@
 //     }
 //   }
 // );
+
+module.exports = {
+  signUp,
+};

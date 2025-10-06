@@ -37,6 +37,8 @@ const { getISTDateTime } = require("@MEUtils/utility");
 
 const { Schema } = mongoose;
 
+let schoolAddressTransformMode = "default";
+
 const schoolAddressSchema = Schema(
   {
     school: {
@@ -133,6 +135,10 @@ schoolAddressSchema.index(
   { unique: true, index: true }
 );
 
+schoolAddressSchema.statics.setSchoolAddressTransformMode = function (mode) {
+  schoolAddressTransformMode = mode;
+};
+
 schoolAddressSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {
@@ -158,6 +164,28 @@ schoolAddressSchema.set("toJSON", {
 
     if (response?.updated_at) {
       response.updated_at = getISTDateTime(response.updated_at);
+    }
+
+    if (schoolAddressTransformMode === "summary") {
+      if (response?.state?.name) {
+        response.state = response.state.name;
+      }
+
+      if (response?.district?.name) {
+        response.district = response.district.name;
+      }
+
+      if (response?.city?.name) {
+        response.city = response.city.name;
+      }
+
+      if (response?.area_name?.name) {
+        response.area_name = response.area_name.name;
+      }
+
+      if (response?.zipcode?.zipcode) {
+        response.zipcode = response.zipcode.zipcode;
+      }
     }
 
     return response;

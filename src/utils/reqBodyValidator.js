@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+const User = require("@MEModels/userModel");
 const City = require("@MEModels/cityModel");
 const State = require("@MEModels/stateModel");
 const School = require("@MEModels/schoolModel");
@@ -19,6 +20,7 @@ const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
 
 const {
+  usernameFound,
   feeTypeNotFound,
   zipcodeNotFound,
   cityNameNotFound,
@@ -238,7 +240,18 @@ const isActiveSchoolFacilityExists = async (value) => {
   return value;
 };
 
+const isUserNameExists = async (value) => {
+  const response = await User.exists({
+    username: value,
+  });
+  if (response) {
+    throw new Error(usernameFound);
+  }
+  return value;
+};
+
 module.exports = {
+  isUserNameExists,
   isActiveCityExists,
   checkValidObjectId,
   isActiveStateExists,
