@@ -57,6 +57,10 @@ const {
   studentSignupReqBodyEmpty,
   studentSignupReqBodyUnknown,
   studentSignupReqBodyRequired,
+  studentSigninReqBodyBase,
+  studentSigninReqBodyEmpty,
+  studentSigninReqBodyUnknown,
+  studentSigninReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
@@ -151,6 +155,45 @@ const validateStudentSignupPostSchema = Joi.object({
     "any.required": studentSignupReqBodyRequired,
   });
 
+const validateStudentSigninPostSchema = Joi.object({
+  username: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(usernameMinChar)
+    .max(usernameMaxChar)
+    .external(isUserNameExists)
+    .messages({
+      "string.empty": usernameEmpty,
+      "string.base": usernameBase,
+      "any.required": usernameRequired,
+      "string.min": usernameMinLength,
+      "string.max": usernameMaxLength,
+    }),
+  password: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(passwordMinChar)
+    .max(passwordMaxCharWithoutEncryption)
+    .messages({
+      "string.empty": passwordEmpty,
+      "string.base": passwordBase,
+      "any.required": passwordRequired,
+      "string.min": passwordMinLength,
+      "string.max": passwordMaxLengthWithoutEncryption,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentSigninReqBodyBase,
+    "object.empty": studentSigninReqBodyEmpty,
+    "object.unknown": studentSigninReqBodyUnknown,
+    "any.required": studentSigninReqBodyRequired,
+  });
+
 const validateStudentSignupPostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
@@ -162,6 +205,18 @@ const validateStudentSignupPostReqBody = asyncHandler(
   }
 );
 
+const validateStudentSigninPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentSigninPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(new ErrorResponse(setValidationMessage(err), 400));
+    }
+  }
+);
+
 module.exports = {
   validateStudentSignupPostReqBody,
+  validateStudentSigninPostReqBody,
 };

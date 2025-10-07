@@ -7,6 +7,7 @@ const {
 
 const {
   validateStudentSignupPostReqBody,
+  validateStudentSigninPostReqBody,
 } = require("@MEControllers/studentAuthController/studentAuthValidation");
 
 const {
@@ -105,7 +106,7 @@ const router = express.Router();
 //  *                  type: number
 //  *                  example: 400
 //  */
-router.route("/signin").post(signIn);
+router.route("/signin").post(validateStudentSigninPostReqBody, signIn);
 
 router.route("/signup").post(validateStudentSignupPostReqBody, signUp);
 
