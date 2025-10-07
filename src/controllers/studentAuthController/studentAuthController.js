@@ -1,5 +1,11 @@
 const { asyncHandler } = require("@MEMiddleware/async");
 const {
+  USER_TYPES,
+  USER_STATUS,
+  ACCOUNT_VERIFICATION_STATUS,
+  HTTP_STATUS_CODES,
+} = require("@MEHelpers/enums");
+const {
   maskEmail,
   maskPhoneNumber,
   maskUsername,
@@ -9,63 +15,76 @@ const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEHelpers/responseMessage");
 
-// /**
-//  * @desc    Sign in user
-//  * @route   POST /signin
-//  * @access  Public
-//  */
-// exports.signIn = asyncHandler(async (req, res, next) => {
-//   const { username, password } = req.body;
+/**
+ * @desc    Sign in user
+ * @route   POST /student/signin
+ * @access  Student/Parent
+ */
+const signIn = asyncHandler(async (req, res, next) => {
+  const { username, password } = req.body;
 
-//   // Validate request body
-//   if (username && password) {
-//     // Find user by username
-//     const user = await User.findOne({
-//       username: username,
-//       is_active: true,
-//       is_account_verified: true,
-//       user_type: "STUDENT",
-//     }).select(
-//       "+password -is_active -reset_password_token -created_at -updated_at -__v"
-//     );
+  // Validate request body
+  if (username && password) {
+    // Find user by username
+    const user = await User.findOne({
+      username: username,
+      is_active: USER_STATUS.ACTIVE,
+      is_account_verified: ACCOUNT_VERIFICATION_STATUS.VERIFIED,
+      user_type: USER_TYPES.STUDENT,
+    }).select("+password -reset_password_token -created_at -updated_at -__v");
 
-//     if (user) {
-//       // Compare password
-//       const isPasswordMatch = await user.matchPassword(password);
+    if (user) {
+      // Compare password
+      const isPasswordMatch = await user.matchPassword(password);
 
-//       if (isPasswordMatch) {
-//         // Generate JWT Token
-//         let token = user.getSignedJwtToken();
-//         user._doc.token = token;
+      if (isPasswordMatch) {
+        // Generate JWT Token
+        let token = user.getSignedJwtToken();
+        user._doc.token = token;
 
-//         // Remove user_type and password from response
-//         delete user._doc.user_type;
-//         delete user._doc.password;
+        // Remove user_type and password from response
+        delete user._doc.user_type;
+        delete user._doc.password;
 
-//         // Send response
-//         res.status(200).json({
-//           data: [user],
-//           message: responseMessage.studentSignInSuccess,
-//           status: 200,
-//         });
-//       } else {
-//         // Send error response
-//         next(new ErrorResponse(responseMessage.invalidCredentials, 401));
-//       }
-//     } else {
-//       // Send error response
-//       next(new ErrorResponse(responseMessage.invalidCredentials, 401));
-//     }
-//   } else {
-//     // Send error response
-//     next(new ErrorResponse(responseMessage.invalidFormat, 400));
-//   }
-// });
+        // Send response
+        res.status(HTTP_STATUS_CODES.STATUS_200).json({
+          data: [user],
+          message: responseMessage.studentSignInSuccess,
+          status: HTTP_STATUS_CODES.STATUS_200,
+        });
+      } else {
+        // Send error response
+        next(
+          new ErrorResponse(
+            responseMessage.invalidCredentials,
+            HTTP_STATUS_CODES.STATUS_401
+          )
+        );
+      }
+    } else {
+      // Send error response
+      next(
+        new ErrorResponse(
+          responseMessage.invalidCredentials,
+          HTTP_STATUS_CODES.STATUS_401
+        )
+      );
+    }
+  } else {
+    // Send error response
+    next(
+      new ErrorResponse(
+        responseMessage.invalidFormat,
+        HTTP_STATUS_CODES.STATUS_400
+      )
+    );
+  }
+});
 
 /**
  * @desc    Sign up student
  * @route   POST /student/signup
- * @access  Student
+ * @access  Student/Parent
  */
 const signUp = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
@@ -77,13 +96,18 @@ const signUp = asyncHandler(async (req, res, next) => {
     delete user._doc.is_active;
     delete user._doc.updated_at;
     delete user._doc.__v;
-    res.status(201).json({
+    res.status(HTTP_STATUS_CODES.STATUS_201).json({
       data: [user],
       message: responseMessage.studentSignUpSuccess,
-      status: 201,
+      status: HTTP_STATUS_CODES.STATUS_201,
     });
   } else {
-    next(new ErrorResponse(responseMessage.serverError, 401));
+    next(
+      new ErrorResponse(
+        responseMessage.serverError,
+        HTTP_STATUS_CODES.STATUS_401
+      )
+    );
   }
 });
 
@@ -175,4 +199,5 @@ const signUp = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   signUp,
+  signIn,
 };

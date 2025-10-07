@@ -1,8 +1,8 @@
-
 const express = require("express");
 
 const {
   signUp,
+  signIn,
 } = require("@MEControllers/studentAuthController/studentAuthController");
 
 const {
@@ -105,7 +105,7 @@ const router = express.Router();
 //  *                  type: number
 //  *                  example: 400
 //  */
-// router.route("/signin").post(signIn);
+router.route("/signin").post(signIn);
 
 router.route("/signup").post(validateStudentSignupPostReqBody, signUp);
 

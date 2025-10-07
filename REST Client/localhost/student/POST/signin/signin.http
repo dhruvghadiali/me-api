@@ -1,0 +1,11 @@
+### Scenario 001 (Valid credentials)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload001.json
+
+### Scenario 002 (Invalid credentials: missing username)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload002.json

@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
+const { USER_TYPES } = require("@MEHelpers/enums");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
   emailMaxChar,
@@ -132,10 +133,12 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 
 userSchema.methods.getSignedJwtToken = function () {
   let expiresIn = "1m";
-  if (this.user_type === "SUPER_ADMIN") {
+  if (this.user_type === USER_TYPES.SUPER_ADMIN) {
     expiresIn = process.env.SUPER_ADMIN_JWT_EXPIRE_TIME || expiresIn;
-  } else if (this.user_type === "SCHOOL_ADMIN") {
+  } else if (this.user_type === USER_TYPES.SCHOOL_ADMIN) {
     expiresIn = process.env.SCHOOL_ADMIN_JWT_EXPIRE_TIME || expiresIn;
+  } else if (this.user_type === USER_TYPES.STUDENT) {
+    expiresIn = process.env.STUDENT_JWT_EXPIRE_TIME || expiresIn;
   }
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn,
