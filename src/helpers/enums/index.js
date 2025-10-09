@@ -6,10 +6,12 @@
 // Import all enum modules
 const userEnums = require("@ME/helpers/enums/userEnums");
 const apiEnums = require("@ME/helpers/enums/apiEnums");
+const otpEnums = require("@ME/helpers/enums/otpEnums");
 
 const enums = {
   ...userEnums,
   ...apiEnums,
+  ...otpEnums,
 };
 
 module.exports = enums;

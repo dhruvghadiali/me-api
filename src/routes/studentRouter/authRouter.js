@@ -14,7 +14,7 @@ const {
 const {
   signUpSendOTP,
   signUpOTPVerification,
-  // forgottenPasswordSendOTP,
+  forgottenPasswordSendOTP,
   // forgottenPasswordOTPVerification,
 } = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
@@ -117,7 +117,7 @@ router.route("/signup/otp-verification").post(signUpOTPVerification);
 
 router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
 
-// router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOTP);
+router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOTP);
 
 // router
 //   .route("/forgotten-password/otp-verification")
