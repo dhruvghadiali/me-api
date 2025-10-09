@@ -162,7 +162,6 @@ const validateStudentSigninPostSchema = Joi.object({
     .trim()
     .min(usernameMinChar)
     .max(usernameMaxChar)
-    .external(isUserNameExists)
     .messages({
       "string.empty": usernameEmpty,
       "string.base": usernameBase,
