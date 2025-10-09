@@ -3,6 +3,7 @@ const express = require("express");
 const {
   signUp,
   signIn,
+  forgottenPasswordFindUserAccount,
 } = require("@MEControllers/studentAuthController/studentAuthController");
 
 const {
@@ -114,7 +115,7 @@ router.route("/signup/send-otp").post(signUpSendOTP);
 
 router.route("/signup/otp-verification").post(signUpOTPVerification);
 
-// router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
+router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
 
 // router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOTP);
 

@@ -151,53 +151,59 @@ const signUp = asyncHandler(async (req, res, next) => {
 //   }
 // });
 
-// exports.forgottenPasswordFindUserAccount = asyncHandler(
-//   async (req, res, next) => {
-//     const { account_name } = req.body;
+const forgottenPasswordFindUserAccount = asyncHandler(
+  async (req, res, next) => {
+    const { account_name } = req.body;
 
-//     if (!account_name) {
-//       next(new ErrorResponse(responseMessage.accountDetailsRequired, 400));
-//     } else {
-//       const users = await User.find({
-//         $or: [
-//           { email: account_name },
-//           { phone_number: account_name },
-//           { username: account_name },
-//         ],
-//         is_active: true,
-//         is_account_verified: true,
-//         user_type: "STUDENT",
-//       }).select(
-//         "-password -is_active -is_account_verified -user_type -reset_password_token -created_at -updated_at -__v"
-//       );
+    if (!account_name) {
+      next(
+        new ErrorResponse(
+          responseMessage.accountDetailsRequired,
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    } else {
+      const users = await User.find({
+        $or: [
+          { email: account_name },
+          { phone_number: account_name },
+          { username: account_name },
+        ],
+        is_active: true,
+        is_account_verified: true,
+        user_type: USER_TYPES.STUDENT,
+      }).select(
+        "-password -is_active -is_account_verified -user_type -reset_password_token -created_at -updated_at -__v"
+      );
 
-//       if (users.length === 0) {
-//         res.status(200).json({
-//           data: [],
-//           message: responseMessage.forgottenPasswordFindUserAccountError,
-//           status: 200,
-//         });
-//       } else {
-//         const maskedUsers = users.map((user) => ({
-//           ...user.toObject(),
-//           email: user.email ? maskEmail(user.email) : "",
-//           phone_number: user.phone_number
-//             ? maskPhoneNumber(user.phone_number)
-//             : "",
-//           username: user.username ? maskUsername(user.username) : "",
-//         }));
+      if (users.length === 0) {
+        res.status(HTTP_STATUS_CODES.STATUS_200).json({
+          data: [],
+          message: responseMessage.forgottenPasswordFindUserAccountError,
+          status: HTTP_STATUS_CODES.STATUS_200,
+        });
+      } else {
+        const maskedUsers = users.map((user) => ({
+          ...user.toObject(),
+          email: user.email ? maskEmail(user.email) : "",
+          phone_number: user.phone_number
+            ? maskPhoneNumber(user.phone_number)
+            : "",
+          username: user.username ? maskUsername(user.username) : "",
+        }));
 
-//         res.status(200).json({
-//           data: maskedUsers,
-//           message: responseMessage.forgottenPasswordFindUserAccountSuccess,
-//           status: 200,
-//         });
-//       }
-//     }
-//   }
-// );
+        res.status(HTTP_STATUS_CODES.STATUS_200).json({
+          data: maskedUsers,
+          message: responseMessage.forgottenPasswordFindUserAccountSuccess,
+          status: HTTP_STATUS_CODES.STATUS_200,
+        });
+      }
+    }
+  }
+);
 
 module.exports = {
   signUp,
   signIn,
+  forgottenPasswordFindUserAccount,
 };
