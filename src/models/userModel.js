@@ -154,6 +154,11 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+userSchema.methods.generateResetPasswordToken = async function (userId) {
+  const saltRounds = await bcrypt.genSalt(10);
+  return await bcrypt.hash(userId, saltRounds);
+};
+
 userSchema.virtual("school_address", {
   ref: "school_address",
   localField: "_id",
