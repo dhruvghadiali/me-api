@@ -121,7 +121,7 @@ const verifyOTP = async (
   verificationType
 ) => {
   try {
-    const otpVerificationData = await otpVerificationLog1.findOne({
+    const otpVerificationData = await otpVerificationLog.findOne({
       user: userId,
       verification_token: verificationToken,
       is_otp_verified: OTP_STATUS.UNVERIFIED,
