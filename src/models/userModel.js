@@ -2,7 +2,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-const { USER_TYPES } = require("@MEHelpers/enums");
+const {
+  USER_TYPES,
+  USER_STATUS,
+  ACCOUNT_VERIFICATION_STATUS,
+} = require("@MEHelpers/enums");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
   emailMaxChar,
@@ -95,16 +99,20 @@ const userSchema = Schema(
     },
     user_type: {
       type: String,
-      enum: ["SUPER_ADMIN", "SCHOOL_ADMIN", "STUDENT"],
-      default: "STUDENT",
+      enum: [
+        USER_TYPES.SUPER_ADMIN,
+        USER_TYPES.SCHOOL_ADMIN,
+        USER_TYPES.STUDENT,
+      ],
+      default: USER_TYPES.STUDENT,
     },
     is_active: {
       type: Boolean,
-      default: false,
+      default: USER_STATUS.INACTIVE,
     },
     is_account_verified: {
       type: Boolean,
-      default: false,
+      default: ACCOUNT_VERIFICATION_STATUS.UNVERIFIED,
     },
     reset_password_token: {
       type: String,
@@ -117,8 +125,8 @@ const userSchema = Schema(
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
 
-  this.is_active = false;
-  this.is_account_verified = false;
+  this.is_active = USER_STATUS.INACTIVE;
+  this.is_account_verified = ACCOUNT_VERIFICATION_STATUS.UNVERIFIED;
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
@@ -154,7 +162,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.methods.generateResetPasswordToken = async function (userId) {
+userSchema.statics.generateResetPasswordToken = async function (userId) {
   const saltRounds = await bcrypt.genSalt(10);
   return await bcrypt.hash(userId, saltRounds);
 };

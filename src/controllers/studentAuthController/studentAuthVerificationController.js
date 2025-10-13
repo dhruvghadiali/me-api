@@ -17,7 +17,7 @@ const {
 const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const responseMessage = require("@MEHelpers/responseMessage");
-const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
+const OtpVerificationLog = require("@MEModels/otpVerificationLogModel");
 
 /**
  * Common method to send OTP for different verification types
@@ -62,7 +62,7 @@ const sendOTP = async (userId, verificationType, userQuery = {}) => {
   };
 
   // Create OTP verification log
-  const otpVerificationLogDetail = await otpVerificationLog.create(data);
+  const otpVerificationLogDetail = await OtpVerificationLog.create(data);
 
   if (!otpVerificationLogDetail) {
     throw new ErrorResponse(
@@ -113,7 +113,7 @@ const verifyOTP = async (
   phoneOTP,
   verificationType
 ) => {
-  const otpVerificationData = await otpVerificationLog.findOne({
+  const otpVerificationData = await OtpVerificationLog.findOne({
     user: userId,
     verification_token: verificationToken,
     is_otp_verified: OTP_STATUS.UNVERIFIED,
@@ -145,7 +145,7 @@ const verifyOTP = async (
           );
         } else {
           const updateOTPVerificationStatusResponse =
-            await otpVerificationLog.findByIdAndUpdate(
+            await OtpVerificationLog.findByIdAndUpdate(
               otpVerificationData.id,
               { is_otp_verified: OTP_STATUS.VERIFIED },
               {
@@ -257,36 +257,46 @@ const forgottenPasswordSendOTP = asyncHandler(async (req, res, next) => {
 
 const forgottenPasswordOTPVerification = asyncHandler(
   async (req, res, next) => {
-    const { user_id, verification_token, email_otp, phone_otp } = req.body;
+    try {
+      const { user_id, verification_token, email_otp, phone_otp } = req.body;
 
-    const otpVerificationResult = await verifyOTP(
-      user_id,
-      verification_token,
-      email_otp,
-      phone_otp,
-      OTP_VERIFICATION_TYPES.FORGOT_PASSWORD
-    );
-
-    if (otpVerificationResult) {
-      let resetPasswordToken = await user.generateResetPasswordToken(user_id);
-
-      const updateUserResetPasswordTokenResponse = await User.findByIdAndUpdate(
+      const otpVerificationResult = await verifyOTP(
         user_id,
-        { reset_password_token: resetPasswordToken },
-        {
-          new: true,
-          runValidators: true,
-        }
-      ).select(
-        "-first_name -last_name -email -phone_number -username -password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
+        verification_token,
+        email_otp,
+        phone_otp,
+        OTP_VERIFICATION_TYPES.FORGOT_PASSWORD
       );
 
-      if (updateUserResetPasswordTokenResponse) {
-        res.status(200).json({
-          data: [updateUserResetPasswordTokenResponse],
-          message: responseMessage.forgottenPasswordOTPVerificationSuccess,
-          status: 200,
-        });
+      if (otpVerificationResult) {
+        let resetPasswordToken = await User.generateResetPasswordToken(user_id);
+
+        const updateUserResetPasswordTokenResponse =
+          await User.findByIdAndUpdate(
+            user_id,
+            { reset_password_token: resetPasswordToken },
+            {
+              new: true,
+              runValidators: true,
+            }
+          ).select(
+            "-first_name -last_name -email -phone_number -username -password -is_active -is_account_verified -user_type -created_at -updated_at -__v"
+          );
+
+        if (updateUserResetPasswordTokenResponse) {
+          res.status(200).json({
+            data: [updateUserResetPasswordTokenResponse],
+            message: responseMessage.forgottenPasswordOTPVerificationSuccess,
+            status: 200,
+          });
+        } else {
+          next(
+            new ErrorResponse(
+              responseMessage.forgottenPasswordOTPVerificationError,
+              HTTP_STATUS_CODES.STATUS_400
+            )
+          );
+        }
       } else {
         next(
           new ErrorResponse(
@@ -295,13 +305,8 @@ const forgottenPasswordOTPVerification = asyncHandler(
           )
         );
       }
-    } else {
-      next(
-        new ErrorResponse(
-          responseMessage.forgottenPasswordOTPVerificationError,
-          HTTP_STATUS_CODES.STATUS_400
-        )
-      );
+    } catch (error) {
+      next(error);
     }
   }
 );
