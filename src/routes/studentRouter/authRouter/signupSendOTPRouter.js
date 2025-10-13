@@ -5,13 +5,13 @@ const {
 } = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
 const {
-  validateStudentSignUpSendOTP,
+  validateStudentSignupSendOTPPostReqBody,
 } = require("@MEControllers/studentAuthController/studentAuthValidation");
 
 const router = express.Router();
 
 router
   .route("/signup/send-otp")
-  .post(validateStudentSignUpSendOTP, signUpSendOTP);
+  .post(validateStudentSignupSendOTPPostReqBody, signUpSendOTP);
 
 module.exports = router;

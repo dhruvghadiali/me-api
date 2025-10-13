@@ -5,13 +5,13 @@ const {
 } = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
 const {
-  validateStudentOTPVerification,
+  validateStudentOTPVerificationPostReqBody,
 } = require("@MEControllers/studentAuthController/studentAuthValidation");
 
 const router = express.Router();
 
 router
   .route("/signup/otp-verification")
-  .post(validateStudentOTPVerification, signUpOTPVerification);
+  .post(validateStudentOTPVerificationPostReqBody, signUpOTPVerification);
 
 module.exports = router;

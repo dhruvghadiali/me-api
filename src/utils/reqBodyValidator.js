@@ -269,6 +269,19 @@ const checkStudentForSignupSendOTP = async (value) => {
   return value;
 };
 
+const checkStudentForForgottenPasswordSendOTP = async (value) => {
+  const response = await User.exists({
+    id: value,
+    is_active: USER_STATUS.ACTIVE,
+    is_account_verified: ACCOUNT_VERIFICATION_STATUS.VERIFIED,
+    user_type: USER_TYPES.STUDENT,
+  });
+  if (response) {
+    throw new Error(usernameFound);
+  }
+  return value;
+};
+
 module.exports = {
   isUserNameExists,
   isActiveCityExists,
@@ -291,4 +304,5 @@ module.exports = {
   isActiveSchoolAcademicClassExists,
   isSchoolHasActiveEducationBoardExists,
   isActiveSchoolAdmissionDocumentExists,
+  checkStudentForForgottenPasswordSendOTP,
 };

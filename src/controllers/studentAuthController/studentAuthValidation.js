@@ -10,6 +10,7 @@ const {
   isUserNameExists,
   checkValidObjectId,
   checkStudentForSignupSendOTP,
+  checkStudentForForgottenPasswordSendOTP,
 } = require("@MEUtils/reqBodyValidator");
 
 const {
@@ -234,7 +235,7 @@ const validateStudentSigninPostSchema = Joi.object({
     "any.required": studentSigninReqBodyRequired,
   });
 
-const validateStudentSignUpSendOTPSchema = Joi.object({
+const validateStudentSignupSendOTPPostSchema = Joi.object({
   user_id: Joi.string()
     .trim()
     .required()
@@ -258,7 +259,31 @@ const validateStudentSignUpSendOTPSchema = Joi.object({
     "any.required": studentSendOTPReqBodyRequired,
   });
 
-const validateStudentOTPVerificationSchema = Joi.object({
+const validateStudentForgottenPasswordSendOTPPostSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .external(checkStudentForForgottenPasswordSendOTP)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentSendOTPReqBodyBase,
+    "object.empty": studentSendOTPReqBodyEmpty,
+    "object.unknown": studentSendOTPReqBodyUnknown,
+    "any.required": studentSendOTPReqBodyRequired,
+  });
+
+const validateStudentOTPVerificationPostSchema = Joi.object({
   user_id: Joi.string()
     .trim()
     .required()
@@ -317,7 +342,7 @@ const validateStudentOTPVerificationSchema = Joi.object({
     "any.required": studentOTPVerificationReqBodyRequired,
   });
 
-const validateAccountNameSchema = Joi.object({
+const validateAccountNamePostSchema = Joi.object({
   account_name: Joi.string()
     .trim()
     .min(accountNameMinChar)
@@ -373,31 +398,59 @@ const validateStudentSigninPostReqBody = asyncHandler(
   }
 );
 
-const validateStudentOTPVerification = asyncHandler(async (req, res, next) => {
-  try {
-    await validateStudentOTPVerificationSchema.validateAsync(req.body);
-    next();
-  } catch (err) {
-    next(
-      new ErrorResponse(setValidationMessage(err), HTTP_STATUS_CODES.STATUS_400)
-    );
+const validateStudentOTPVerificationPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentOTPVerificationPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
   }
-});
+);
 
-const validateStudentSignUpSendOTP = asyncHandler(async (req, res, next) => {
-  try {
-    await validateStudentSignUpSendOTPSchema.validateAsync(req.body);
-    next();
-  } catch (err) {
-    next(
-      new ErrorResponse(setValidationMessage(err), HTTP_STATUS_CODES.STATUS_400)
-    );
+const validateStudentSignupSendOTPPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentSignupSendOTPPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
   }
-});
+);
 
-const validateAccountName = asyncHandler(async (req, res, next) => {
+const validateStudentForgottenPasswordSendOTPPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentForgottenPasswordSendOTPPostSchema.validateAsync(
+        req.body
+      );
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+const validateAccountNamePostReqBody = asyncHandler(async (req, res, next) => {
   try {
-    await validateAccountNameSchema.validateAsync(req.body);
+    await validateAccountNamePostSchema.validateAsync(req.body);
     next();
   } catch (err) {
     next(
@@ -407,9 +460,10 @@ const validateAccountName = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-  validateAccountName,
-  validateStudentSignUpSendOTP,
-  validateStudentOTPVerification,
+  validateAccountNamePostReqBody,
   validateStudentSignupPostReqBody,
   validateStudentSigninPostReqBody,
+  validateStudentSignupSendOTPPostReqBody,
+  validateStudentOTPVerificationPostReqBody,
+  validateStudentForgottenPasswordSendOTPPostReqBody,
 };

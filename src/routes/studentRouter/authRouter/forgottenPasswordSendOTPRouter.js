@@ -4,9 +4,17 @@ const {
   forgottenPasswordSendOTP,
 } = require("@MEControllers/studentAuthController/studentAuthVerificationController");
 
+const {
+  validateStudentForgottenPasswordSendOTPPostReqBody,
+} = require("@MEControllers/studentAuthController/studentAuthValidation");
+
 const router = express.Router();
 
-router.route("/forgotten-password/send-otp").post(forgottenPasswordSendOTP);
-// check user id present in DB or not, is active and is verified must be true
+router
+  .route("/forgotten-password/send-otp")
+  .post(
+    validateStudentForgottenPasswordSendOTPPostReqBody,
+    forgottenPasswordSendOTP
+  );
 
 module.exports = router;
