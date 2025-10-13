@@ -41,6 +41,12 @@ const {
   schoolAdmissionDocumentNotFound,
 } = require("@MEHelpers/validationMessage");
 
+const {
+  USER_TYPES,
+  USER_STATUS,
+  ACCOUNT_VERIFICATION_STATUS,
+} = require("@ME/helpers/enums");
+
 const checkValidObjectId = (value, helpers) => {
   if (!mongoose.Types.ObjectId.isValid(value)) {
     return helpers.error("any.invalid");
@@ -250,6 +256,19 @@ const isUserNameExists = async (value) => {
   return value;
 };
 
+const checkStudentForSignupSendOTP = async (value) => {
+  const response = await User.exists({
+    id: value,
+    is_active: USER_STATUS.INACTIVE,
+    is_account_verified: ACCOUNT_VERIFICATION_STATUS.UNVERIFIED,
+    user_type: USER_TYPES.STUDENT,
+  });
+  if (response) {
+    throw new Error(usernameFound);
+  }
+  return value;
+};
+
 module.exports = {
   isUserNameExists,
   isActiveCityExists,
@@ -267,6 +286,7 @@ module.exports = {
   isActiveAcademicClassExists,
   isActiveEducationBoardExists,
   isActiveSchoolFacilityExists,
+  checkStudentForSignupSendOTP,
   isActiveAdmissionDocumentExists,
   isActiveSchoolAcademicClassExists,
   isSchoolHasActiveEducationBoardExists,

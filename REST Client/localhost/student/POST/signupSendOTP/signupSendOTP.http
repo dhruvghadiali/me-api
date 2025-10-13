@@ -3,5 +3,5 @@ POST {{studentLocalhostBaseUrl}}{{studentSignupOTPRoute}}
 Content-Type: application/json
 
 {
-  "user_id": "68ea3d77a583f0c68fab8f6b"
+  "user_id": "68d41f3974f6942fa4c7a261"
 }

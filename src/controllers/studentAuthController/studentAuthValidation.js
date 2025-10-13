@@ -9,6 +9,7 @@ const { setValidationMessage } = require("@MEUtils/utility");
 const {
   isUserNameExists,
   checkValidObjectId,
+  checkStudentForSignupSendOTP,
 } = require("@MEUtils/reqBodyValidator");
 
 const {
@@ -73,6 +74,10 @@ const {
   studentOTPVerificationReqBodyEmpty,
   studentOTPVerificationReqBodyBase,
   studentOTPVerificationReqBodyUnknown,
+  studentSendOTPReqBodyBase,
+  studentSendOTPReqBodyEmpty,
+  studentSendOTPReqBodyUnknown,
+  studentSendOTPReqBodyRequired,
   userIdRequired,
   userIdEmpty,
   userIdInvalid,
@@ -218,6 +223,30 @@ const validateStudentSigninPostSchema = Joi.object({
     "any.required": studentSigninReqBodyRequired,
   });
 
+const validateStudentSignUpSendOTPSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .external(checkStudentForSignupSendOTP)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentSendOTPReqBodyBase,
+    "object.empty": studentSendOTPReqBodyEmpty,
+    "object.unknown": studentSendOTPReqBodyUnknown,
+    "any.required": studentSendOTPReqBodyRequired,
+  });
+
 const validateStudentOTPVerificationSchema = Joi.object({
   user_id: Joi.string()
     .trim()
@@ -320,8 +349,20 @@ const validateStudentOTPVerification = asyncHandler(async (req, res, next) => {
   }
 });
 
+const validateStudentSignUpSendOTP = asyncHandler(async (req, res, next) => {
+  try {
+    await validateStudentSignUpSendOTPSchema.validateAsync(req.body);
+    next();
+  } catch (err) {
+    next(
+      new ErrorResponse(setValidationMessage(err), HTTP_STATUS_CODES.STATUS_400)
+    );
+  }
+});
+
 module.exports = {
+  validateStudentSignUpSendOTP,
+  validateStudentOTPVerification,
   validateStudentSignupPostReqBody,
   validateStudentSigninPostReqBody,
-  validateStudentOTPVerification,
 };

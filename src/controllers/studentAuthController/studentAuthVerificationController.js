@@ -27,81 +27,74 @@ const otpVerificationLog = require("@MEModels/otpVerificationLogModel");
  * @returns {Object} OTP verification log details
  */
 const sendOTP = async (userId, verificationType, userQuery = {}) => {
-  try {
-    // Find user with provided query conditions
-    const user = await User.findOne({
-      _id: userId,
-      user_type: USER_TYPES.STUDENT,
-      ...userQuery,
-    });
+  // Find user with provided query conditions
+  const user = await User.findOne({
+    _id: userId,
+    user_type: USER_TYPES.STUDENT,
+    ...userQuery,
+  });
 
-    if (!user) {
-      throw new ErrorResponse(
-        responseMessage.invalidFormat,
-        HTTP_STATUS_CODES.STATUS_400
-      );
-    }
-
-    // Generate OTP
-    const emailOtp = Math.floor(
-      OTP_CONFIG.MIN_VALUE +
-        Math.random() * (OTP_CONFIG.MAX_VALUE - OTP_CONFIG.MIN_VALUE)
-    );
-    const phoneOtp = Math.floor(
-      OTP_CONFIG.MIN_VALUE +
-        Math.random() * (OTP_CONFIG.MAX_VALUE - OTP_CONFIG.MIN_VALUE)
-    );
-
-    // Prepare OTP verification data
-    const data = {
-      user: userId,
-      verification_token: `${userId}-${moment().format("DDMMYYYYHHMMA")}`,
-      email_otp: emailOtp,
-      phone_otp: phoneOtp,
-      verification_type: verificationType,
-      otp_expire_time: moment().add(OTP_CONFIG.EXPIRE_MINUTES, "minute"),
-    };
-
-    // Create OTP verification log
-    const otpVerificationLogDetail = await otpVerificationLog.create(data);
-
-    if (!otpVerificationLogDetail) {
-      throw new ErrorResponse(
-        responseMessage.serverError,
-        HTTP_STATUS_CODES.STATUS_503
-      );
-    }
-
-    // Clean up response data
-    delete otpVerificationLogDetail._doc.__v;
-    delete otpVerificationLogDetail._doc.user;
-    delete otpVerificationLogDetail._doc.email_otp;
-    delete otpVerificationLogDetail._doc.phone_otp;
-    delete otpVerificationLogDetail._doc.updated_at;
-    delete otpVerificationLogDetail._doc.created_at;
-    delete otpVerificationLogDetail._doc.is_otp_verified;
-    delete otpVerificationLogDetail._doc.otp_expire_time;
-    delete otpVerificationLogDetail._doc.verification_type;
-
-    // Send OTP via email
-    await sendEmailOTP({
-      toEmail: "dhruvghadiali21@gmail.com", // user.email,
-      otp: data.email_otp,
-    });
-
-    // Send OTP via SMS
-    await sendSMSOTP({
-      toPhoneNumber: "+917405111564", // `+91${user.phone_number}`,
-      otp: data.phone_otp,
-    });
-
-    return otpVerificationLogDetail;
-  } catch (error) {
+  if (!user) {
     throw new ErrorResponse(
-      responseMessage.serverError,
-      HTTP_STATUS_CODES.STATUS_500
+      responseMessage.invalidFormat,
+      HTTP_STATUS_CODES.STATUS_400
     );
   }
+
+  // Generate OTP
+  const emailOtp = Math.floor(
+    OTP_CONFIG.MIN_VALUE +
+      Math.random() * (OTP_CONFIG.MAX_VALUE - OTP_CONFIG.MIN_VALUE)
+  );
+  const phoneOtp = Math.floor(
+    OTP_CONFIG.MIN_VALUE +
+      Math.random() * (OTP_CONFIG.MAX_VALUE - OTP_CONFIG.MIN_VALUE)
+  );
+
+  // Prepare OTP verification data
+  const data = {
+    user: userId,
+    verification_token: `${userId}-${moment().format("DDMMYYYYHHMMA")}`,
+    email_otp: emailOtp,
+    phone_otp: phoneOtp,
+    verification_type: verificationType,
+    otp_expire_time: moment().add(OTP_CONFIG.EXPIRE_MINUTES, "minute"),
+  };
+
+  // Create OTP verification log
+  const otpVerificationLogDetail = await otpVerificationLog.create(data);
+
+  if (!otpVerificationLogDetail) {
+    throw new ErrorResponse(
+      responseMessage.serverError,
+      HTTP_STATUS_CODES.STATUS_503
+    );
+  }
+
+  // Clean up response data
+  delete otpVerificationLogDetail._doc.__v;
+  delete otpVerificationLogDetail._doc.user;
+  delete otpVerificationLogDetail._doc.email_otp;
+  delete otpVerificationLogDetail._doc.phone_otp;
+  delete otpVerificationLogDetail._doc.updated_at;
+  delete otpVerificationLogDetail._doc.created_at;
+  delete otpVerificationLogDetail._doc.is_otp_verified;
+  delete otpVerificationLogDetail._doc.otp_expire_time;
+  delete otpVerificationLogDetail._doc.verification_type;
+
+  // Send OTP via email
+  await sendEmailOTP({
+    toEmail: "dhruvghadiali21@gmail.com", // user.email,
+    otp: data.email_otp,
+  });
+
+  // Send OTP via SMS
+  await sendSMSOTP({
+    toPhoneNumber: "+917405111564", // `+91${user.phone_number}`,
+    otp: data.phone_otp,
+  });
+
+  return otpVerificationLogDetail;
 };
 
 /**
@@ -120,65 +113,58 @@ const verifyOTP = async (
   phoneOTP,
   verificationType
 ) => {
-  try {
-    const otpVerificationData = await otpVerificationLog.findOne({
-      user: userId,
-      verification_token: verificationToken,
-      is_otp_verified: OTP_STATUS.UNVERIFIED,
-      verification_type: verificationType,
-    });
+  const otpVerificationData = await otpVerificationLog.findOne({
+    user: userId,
+    verification_token: verificationToken,
+    is_otp_verified: OTP_STATUS.UNVERIFIED,
+    verification_type: verificationType,
+  });
 
-    if (!otpVerificationData) {
+  if (!otpVerificationData) {
+    throw new ErrorResponse(
+      responseMessage.invalidFormat,
+      HTTP_STATUS_CODES.STATUS_400
+    );
+  } else {
+    if (otpVerificationData.email_otp !== emailOTP) {
       throw new ErrorResponse(
-        responseMessage.invalidFormat,
+        responseMessage.emailOTPInvalid,
         HTTP_STATUS_CODES.STATUS_400
       );
     } else {
-      if (otpVerificationData.email_otp !== emailOTP) {
+      if (otpVerificationData.phone_otp !== phoneOTP) {
         throw new ErrorResponse(
-          responseMessage.emailOTPInvalid,
+          responseMessage.phoneOTPInvalid,
           HTTP_STATUS_CODES.STATUS_400
         );
       } else {
-        if (otpVerificationData.phone_otp !== phoneOTP) {
+        if (moment().isAfter(otpVerificationData.otp_expire_time)) {
           throw new ErrorResponse(
-            responseMessage.phoneOTPInvalid,
+            responseMessage.otpVerificationTimeExpire,
             HTTP_STATUS_CODES.STATUS_400
           );
         } else {
-          if (moment().isAfter(otpVerificationData.otp_expire_time)) {
+          const updateOTPVerificationStatusResponse =
+            await otpVerificationLog.findByIdAndUpdate(
+              otpVerificationData.id,
+              { is_otp_verified: OTP_STATUS.VERIFIED },
+              {
+                new: true,
+                runValidators: true,
+              }
+            );
+
+          if (updateOTPVerificationStatusResponse) {
+            return updateOTPVerificationStatusResponse;
+          } else {
             throw new ErrorResponse(
-              responseMessage.otpVerificationTimeExpire,
+              responseMessage.signUpOTPVerificationError,
               HTTP_STATUS_CODES.STATUS_400
             );
-          } else {
-            const updateOTPVerificationStatusResponse =
-              await otpVerificationLog.findByIdAndUpdate(
-                otpVerificationData.id,
-                { is_otp_verified: OTP_STATUS.VERIFIED },
-                {
-                  new: true,
-                  runValidators: true,
-                }
-              );
-
-            if (updateOTPVerificationStatusResponse) {
-              return updateOTPVerificationStatusResponse;
-            } else {
-              throw new ErrorResponse(
-                responseMessage.signUpOTPVerificationError,
-                HTTP_STATUS_CODES.STATUS_400
-              );
-            }
           }
         }
       }
     }
-  } catch (error) {
-    throw new ErrorResponse(
-      responseMessage.serverError,
-      HTTP_STATUS_CODES.STATUS_500
-    );
   }
 };
 
@@ -186,7 +172,11 @@ const signUpSendOTP = asyncHandler(async (req, res, next) => {
   try {
     const otpVerificationLogDetail = await sendOTP(
       req.body.user_id,
-      OTP_VERIFICATION_TYPES.SIGN_UP
+      OTP_VERIFICATION_TYPES.SIGN_UP,
+      {
+        is_active: USER_STATUS.INACTIVE,
+        is_account_verified: ACCOUNT_VERIFICATION_STATUS.UNVERIFIED,
+      }
     );
 
     res.status(HTTP_STATUS_CODES.STATUS_200).json({
