@@ -1,11 +1,15 @@
 const Joi = require("joi");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
+const { HTTP_STATUS_CODES } = require("@MEHelpers/enums");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const { setValidationMessage } = require("@MEUtils/utility");
 
-const { isUserNameExists } = require("@MEUtils/reqBodyValidator");
+const {
+  isUserNameExists,
+  checkValidObjectId,
+} = require("@MEUtils/reqBodyValidator");
 
 const {
   emailMinChar,
@@ -19,6 +23,10 @@ const {
   firstNameMaxChar,
   passwordMinChar,
   passwordMaxCharWithoutEncryption,
+  verificationTokenMaxChar,
+  verificationTokenMinChar,
+  otpMaxNumber,
+  otpMinNumber,
 } = require("@MEHelpers/validationConst");
 const {
   firstNameEmpty,
@@ -61,6 +69,23 @@ const {
   studentSigninReqBodyEmpty,
   studentSigninReqBodyUnknown,
   studentSigninReqBodyRequired,
+  studentOTPVerificationReqBodyRequired,
+  studentOTPVerificationReqBodyEmpty,
+  studentOTPVerificationReqBodyBase,
+  studentOTPVerificationReqBodyUnknown,
+  userIdRequired,
+  userIdEmpty,
+  userIdInvalid,
+  emailOtpRequired,
+  emailOtpInvalid,
+  emailOtpRange,
+  phoneOtpRequired,
+  phoneOtpInvalid,
+  phoneOtpRange,
+  verificationTokenRequired,
+  verificationTokenEmpty,
+  verificationTokenInvalid,
+  verificationTokenLength,
 } = require("@MEHelpers/validationMessage");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
@@ -193,13 +218,77 @@ const validateStudentSigninPostSchema = Joi.object({
     "any.required": studentSigninReqBodyRequired,
   });
 
+const validateStudentOTPVerificationSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+  email_otp: Joi.number()
+    .integer()
+    .min(otpMinNumber)
+    .max(otpMaxNumber)
+    .required()
+    .messages({
+      "number.base": emailOtpInvalid,
+      "number.integer": emailOtpInvalid,
+      "number.min": emailOtpRange,
+      "number.max": emailOtpRange,
+      "any.required": emailOtpRequired,
+    }),
+  phone_otp: Joi.number()
+    .integer()
+    .min(otpMinNumber)
+    .max(otpMaxNumber)
+    .required()
+    .messages({
+      "number.base": phoneOtpInvalid,
+      "number.integer": phoneOtpInvalid,
+      "number.min": phoneOtpRange,
+      "number.max": phoneOtpRange,
+      "any.required": phoneOtpRequired,
+    }),
+  verification_token: Joi.string()
+    .trim()
+    .min(verificationTokenMinChar)
+    .max(verificationTokenMaxChar)
+    .required()
+    .messages({
+      "string.base": verificationTokenInvalid,
+      "string.empty": verificationTokenEmpty,
+      "string.min": verificationTokenLength,
+      "string.max": verificationTokenLength,
+      "any.required": verificationTokenRequired,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentOTPVerificationReqBodyBase,
+    "object.empty": studentOTPVerificationReqBodyEmpty,
+    "object.unknown": studentOTPVerificationReqBodyUnknown,
+    "any.required": studentOTPVerificationReqBodyRequired,
+  });
+
 const validateStudentSignupPostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
       await validateStudentSignupPostSchema.validateAsync(req.body);
       next();
     } catch (err) {
-      next(new ErrorResponse(setValidationMessage(err), 400));
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
     }
   }
 );
@@ -210,12 +299,29 @@ const validateStudentSigninPostReqBody = asyncHandler(
       await validateStudentSigninPostSchema.validateAsync(req.body);
       next();
     } catch (err) {
-      next(new ErrorResponse(setValidationMessage(err), 400));
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
     }
   }
 );
 
+const validateStudentOTPVerification = asyncHandler(async (req, res, next) => {
+  try {
+    await validateStudentOTPVerificationSchema.validateAsync(req.body);
+    next();
+  } catch (err) {
+    next(
+      new ErrorResponse(setValidationMessage(err), HTTP_STATUS_CODES.STATUS_400)
+    );
+  }
+});
+
 module.exports = {
   validateStudentSignupPostReqBody,
   validateStudentSigninPostReqBody,
+  validateStudentOTPVerification,
 };
