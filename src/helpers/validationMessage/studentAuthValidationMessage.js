@@ -44,6 +44,10 @@ const studentAuthValidationMessage = {
   accountNameReqBodyEmpty: "Account name request body cannot be empty",
   accountNameReqBodyBase: "Account name request body has invalid format",
   accountNameReqBodyUnknown: "Account name request body has unknown parameters",
+  changePasswordReqBodyRequired: "Change password request body is required",
+  changePasswordReqBodyEmpty: "Change password request body cannot be empty",
+  changePasswordReqBodyBase: "Change password request body has invalid format",
+  changePasswordReqBodyUnknown: `Change password request body has unknown parameters`,
 };
 
 module.exports = studentAuthValidationMessage;

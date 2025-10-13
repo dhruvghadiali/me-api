@@ -103,6 +103,10 @@ const {
   accountNameReqBodyEmpty,
   accountNameReqBodyUnknown,
   accountNameReqBodyRequired,
+  changePasswordReqBodyRequired,
+  changePasswordReqBodyEmpty,
+  changePasswordReqBodyBase,
+  changePasswordReqBodyUnknown,
 } = require("@MEHelpers/validationMessage");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
@@ -366,6 +370,54 @@ const validateAccountNamePostSchema = Joi.object({
     "any.required": accountNameReqBodyRequired,
   });
 
+const validateChangePasswordPostSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+  reset_password_token: Joi.string()
+    .trim()
+    .min(verificationTokenMinChar)
+    .max(verificationTokenMaxChar)
+    .required()
+    .messages({
+      "string.base": verificationTokenInvalid,
+      "string.empty": verificationTokenEmpty,
+      "string.min": verificationTokenLength,
+      "string.max": verificationTokenLength,
+      "any.required": verificationTokenRequired,
+    }),
+  password: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(passwordMinChar)
+    .max(passwordMaxCharWithoutEncryption)
+    .messages({
+      "string.empty": passwordEmpty,
+      "string.base": passwordBase,
+      "any.required": passwordRequired,
+      "string.min": passwordMinLength,
+      "string.max": passwordMaxLengthWithoutEncryption,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": changePasswordReqBodyBase,
+    "object.empty": changePasswordReqBodyEmpty,
+    "object.unknown": changePasswordReqBodyUnknown,
+    "any.required": changePasswordReqBodyRequired,
+  });
+
 const validateStudentSignupPostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
@@ -459,10 +511,27 @@ const validateAccountNamePostReqBody = asyncHandler(async (req, res, next) => {
   }
 });
 
+const validateChangePasswordPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateChangePasswordPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
 module.exports = {
   validateAccountNamePostReqBody,
   validateStudentSignupPostReqBody,
   validateStudentSigninPostReqBody,
+  validateChangePasswordPostReqBody,
   validateStudentSignupSendOTPPostReqBody,
   validateStudentOTPVerificationPostReqBody,
   validateStudentForgottenPasswordSendOTPPostReqBody,
