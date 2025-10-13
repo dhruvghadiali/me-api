@@ -4,6 +4,8 @@ const {
   USER_STATUS,
   ACCOUNT_VERIFICATION_STATUS,
   HTTP_STATUS_CODES,
+  OTP_STATUS,
+  OTP_VERIFICATION_TYPES,
 } = require("@MEHelpers/enums");
 const {
   maskEmail,
@@ -111,12 +113,42 @@ const signUp = asyncHandler(async (req, res, next) => {
   }
 });
 
-// exports.changePassword = asyncHandler(async (req, res, next) => {
-//   res.status(200).json({
-//     data: [],
-//     message: "Student change password controller",
-//   });
-// });
+const changePassword = asyncHandler(async (req, res, next) => {
+  const userResetPasswordData = await User.findOne({
+    _id: req.body.user_id,
+    reset_password_token: req.body.reset_password_token,
+  });
+
+  if (!userResetPasswordData) {
+    return next(
+      new ErrorResponse(
+        responseMessage.invalidCredentials,
+        HTTP_STATUS_CODES.STATUS_401
+      )
+    );
+  } else {
+    const user = await User.findByIdAndUpdate(
+      req.body.user_id,
+      { password: req.body.password, reset_password_token: "" },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return next(
+        new ErrorResponse(
+          responseMessage.invalidCredentials,
+          HTTP_STATUS_CODES.STATUS_401
+        )
+      );
+    } else {
+      res.status(HTTP_STATUS_CODES.STATUS_200).json({
+        data: [],
+        message: responseMessage.studentChangePasswordSuccess,
+        status: HTTP_STATUS_CODES.STATUS_200,
+      });
+    }
+  }
+});
 
 // exports.resetPassword = asyncHandler(async (req, res, next) => {
 //   const { user_id, reset_password_token, password } = req.body;
@@ -205,5 +237,6 @@ const forgottenPasswordFindUserAccount = asyncHandler(
 module.exports = {
   signUp,
   signIn,
+  changePassword,
   forgottenPasswordFindUserAccount,
 };
