@@ -4,9 +4,14 @@ const {
   forgottenPasswordFindUserAccount,
 } = require("@MEControllers/studentAuthController/studentAuthController");
 
+const {
+  validateAccountName,
+} = require("@MEControllers/studentAuthController/studentAuthValidation");
+
 const router = express.Router();
 
-router.route("/forgotten-password").post(forgottenPasswordFindUserAccount);
-// account_name must be string formate min 3 char and max 50 char
+router
+  .route("/forgotten-password")
+  .post(validateAccountName, forgottenPasswordFindUserAccount);
 
 module.exports = router;

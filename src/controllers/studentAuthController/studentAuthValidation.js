@@ -28,6 +28,8 @@ const {
   verificationTokenMinChar,
   otpMaxNumber,
   otpMinNumber,
+  accountNameMinChar,
+  accountNameMaxChar,
 } = require("@MEHelpers/validationConst");
 const {
   firstNameEmpty,
@@ -91,6 +93,15 @@ const {
   verificationTokenEmpty,
   verificationTokenInvalid,
   verificationTokenLength,
+  accountNameRequired,
+  accountNameEmpty,
+  accountNameInvalid,
+  accountNameMinLength,
+  accountNameMaxLength,
+  accountNameReqBodyBase,
+  accountNameReqBodyEmpty,
+  accountNameReqBodyUnknown,
+  accountNameReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
@@ -306,6 +317,30 @@ const validateStudentOTPVerificationSchema = Joi.object({
     "any.required": studentOTPVerificationReqBodyRequired,
   });
 
+const validateAccountNameSchema = Joi.object({
+  account_name: Joi.string()
+    .trim()
+    .min(accountNameMinChar)
+    .max(accountNameMaxChar)
+    .required()
+    .messages({
+      "string.base": accountNameInvalid,
+      "string.empty": accountNameEmpty,
+      "string.min": accountNameMinLength,
+      "string.max": accountNameMaxLength,
+      "any.required": accountNameRequired,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": accountNameReqBodyBase,
+    "object.empty": accountNameReqBodyEmpty,
+    "object.unknown": accountNameReqBodyUnknown,
+    "any.required": accountNameReqBodyRequired,
+  });
+
 const validateStudentSignupPostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
@@ -360,7 +395,19 @@ const validateStudentSignUpSendOTP = asyncHandler(async (req, res, next) => {
   }
 });
 
+const validateAccountName = asyncHandler(async (req, res, next) => {
+  try {
+    await validateAccountNameSchema.validateAsync(req.body);
+    next();
+  } catch (err) {
+    next(
+      new ErrorResponse(setValidationMessage(err), HTTP_STATUS_CODES.STATUS_400)
+    );
+  }
+});
+
 module.exports = {
+  validateAccountName,
   validateStudentSignUpSendOTP,
   validateStudentOTPVerification,
   validateStudentSignupPostReqBody,

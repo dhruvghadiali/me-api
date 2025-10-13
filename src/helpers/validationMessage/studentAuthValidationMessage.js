@@ -1,4 +1,9 @@
-const {} = require("@MEHelpers/validationConst");
+const {
+  accountNameMaxChar,
+  accountNameMinChar,
+  otpMaxNumber,
+  otpMinNumber,
+} = require("@MEHelpers/validationConst");
 
 const studentAuthValidationMessage = {
   studentSignupReqBodyRequired: "Student signup request body is required",
@@ -22,14 +27,23 @@ const studentAuthValidationMessage = {
   userIdInvalid: "User ID must be a valid ObjectId",
   emailOtpRequired: "Email OTP is required",
   emailOtpInvalid: "Email OTP must be a valid number",
-  emailOtpRange: "Email OTP must be between 100000 and 999999",
+  emailOtpRange: `Email OTP must be between ${otpMinNumber} and ${otpMaxNumber}`,
   phoneOtpRequired: "Phone OTP is required",
   phoneOtpInvalid: "Phone OTP must be a valid number",
-  phoneOtpRange: "Phone OTP must be between 100000 and 999999",
+  phoneOtpRange: `Phone OTP must be between ${otpMinNumber} and ${otpMaxNumber}`,
   verificationTokenRequired: "Verification token is required",
   verificationTokenEmpty: "Verification token cannot be empty",
   verificationTokenInvalid: "Verification token must be a string",
   verificationTokenLength: "Verification token length is invalid",
+  accountNameRequired: "Account name is required",
+  accountNameEmpty: "Account name cannot be empty",
+  accountNameInvalid: "Account name must be a string",
+  accountNameMinLength: `Account name must be at least ${accountNameMinChar} characters long`,
+  accountNameMaxLength: `Account name cannot exceed ${accountNameMaxChar} characters`,
+  accountNameReqBodyRequired: "Account name request body is required",
+  accountNameReqBodyEmpty: "Account name request body cannot be empty",
+  accountNameReqBodyBase: "Account name request body has invalid format",
+  accountNameReqBodyUnknown: "Account name request body has unknown parameters",
 };
 
 module.exports = studentAuthValidationMessage;
