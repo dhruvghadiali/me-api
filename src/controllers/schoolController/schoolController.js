@@ -186,6 +186,13 @@ const getSchool = asyncHandler(async (req, res, next) => {
           { path: "user" },
         ],
       },
+    ])
+    .populate([
+      {
+        path: "school_academic_class",
+        select: "education_board academic_class",
+        populate: [{ path: "academic_class", select: "academic_class" }],
+      },
     ]);
 
   // Send response
