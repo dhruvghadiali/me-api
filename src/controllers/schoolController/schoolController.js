@@ -205,6 +205,19 @@ const getSchool = asyncHandler(async (req, res, next) => {
           },
         ],
       },
+    ])
+    .populate([
+      {
+        path: "school_facility",
+        select: "facility",
+        populate: [
+          {
+            path: "facility",
+            select: "facility_name facility_type",
+            populate: [{ path: "facility_type", select: "facility_type" }],
+          },
+        ],
+      },
     ]);
 
   // Send response
