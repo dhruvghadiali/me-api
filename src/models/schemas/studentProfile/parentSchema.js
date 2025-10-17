@@ -32,7 +32,7 @@ const {
   aadhaarNumberMinLength,
 } = require("@MEHelpers/validationMessage");
 
-const addressSchema = require("./addressSchema");
+// Referencing the Address model via ObjectId (no schema import needed)
 
 const { Schema } = mongoose;
 
@@ -79,7 +79,11 @@ const parentSchema = new Schema(
     annual_income: { type: Number },
     alive: { type: Boolean, default: true },
     same_address_as_student: { type: Boolean, default: true },
-    address_override: { type: addressSchema, required: false },
+    address_override: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "address",
+      required: false,
+    },
   },
   { _id: false }
 );

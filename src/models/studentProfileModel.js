@@ -12,7 +12,6 @@ const {
 const {
   usernameInvalid,
   usernameRequired,
-  firstNameRequired,
   phoneNumberInvalid,
   phoneNumberMaxLength,
   phoneNumberMinLength,
@@ -21,7 +20,6 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 // Sub-schemas
-const addressSchema = require("./schemas/studentProfile/addressSchema");
 const parentSchema = require("./schemas/studentProfile/parentSchema");
 const siblingSchema = require("./schemas/studentProfile/siblingSchema");
 const medicationSchema = require("./schemas/studentProfile/medicationSchema");
@@ -65,8 +63,8 @@ const studentProfileSchema = new Schema(
     nationality: { type: String, trim: true, lowercase: true },
     photo_url: { type: String, trim: true },
 
-    // Address (student)
-    address: { type: addressSchema, required: true },
+    // Address (student) - reference to Address model
+    address: { type: Schema.Types.ObjectId, ref: "address", required: true },
 
     // Parents
     father: { type: parentSchema, required: true },
