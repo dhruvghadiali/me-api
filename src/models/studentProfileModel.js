@@ -10,6 +10,11 @@ const {
   usernameRequired,
   aadhaarNumberMaxLength,
   aadhaarNumberMinLength,
+  hearingIssueDetailsRequired,
+  visionIssueDetailsRequired,
+  physicalIssueDetailsRequired,
+  mentalIssueDetailsRequired,
+  allergiesAtLeastOne,
 } = require("@MEHelpers/validationMessage");
 
 const { GENDERS, BLOOD_GROUPS } = require("@ME/helpers/enums/studentEnums");
@@ -26,8 +31,6 @@ const studentProfileSchema = new Schema(
         message: usernameInvalid,
       },
     },
-
-    // Student core info
     date_of_birth: { type: Date, required: true },
     gender: {
       type: String,
@@ -50,11 +53,7 @@ const studentProfileSchema = new Schema(
     },
     nationality: { type: String, trim: true, lowercase: true },
     photo_url: { type: String, trim: true },
-
-    // Address (student) - reference to Address model
     address: { type: Schema.Types.ObjectId, ref: "address", required: true },
-
-    // Parents (references to Parent model)
     father: {
       type: Schema.Types.ObjectId,
       ref: "parent_profile",
@@ -65,24 +64,17 @@ const studentProfileSchema = new Schema(
       ref: "parent_profile",
       required: true,
     },
-
-    // Siblings - references to SiblingProfile model
     siblings: {
       type: [Schema.Types.ObjectId],
       ref: "sibling_profile",
       default: [],
     },
-
-    // Emergency contacts (recommend up to two) - references to EmergencyContact model
     emergency_contacts: {
       type: [Schema.Types.ObjectId],
       ref: "emergency_contact",
       default: [],
     },
-
-    // Medical information
     medical_info: {
-      // Hearing
       has_hearing_issue: { type: Boolean, default: false },
       hearing_issue_details: {
         type: String,
@@ -92,12 +84,9 @@ const studentProfileSchema = new Schema(
             if (!this || !this.has_hearing_issue) return true;
             return typeof val === "string" && val.trim().length > 0;
           },
-          message:
-            "hearing_issue_details is required when has_hearing_issue is true",
+          message: hearingIssueDetailsRequired,
         },
       },
-
-      // Vision
       has_vision_issue: { type: Boolean, default: false },
       vision_issue_details: {
         type: String,
@@ -107,12 +96,9 @@ const studentProfileSchema = new Schema(
             if (!this || !this.has_vision_issue) return true;
             return typeof val === "string" && val.trim().length > 0;
           },
-          message:
-            "vision_issue_details is required when has_vision_issue is true",
+          message: visionIssueDetailsRequired,
         },
       },
-
-      // Physical
       has_physical_issue: { type: Boolean, default: false },
       physical_issue_details: {
         type: String,
@@ -122,12 +108,9 @@ const studentProfileSchema = new Schema(
             if (!this || !this.has_physical_issue) return true;
             return typeof val === "string" && val.trim().length > 0;
           },
-          message:
-            "physical_issue_details is required when has_physical_issue is true",
+          message: physicalIssueDetailsRequired,
         },
       },
-
-      // Mental
       has_mental_issue: { type: Boolean, default: false },
       mental_issue_details: {
         type: String,
@@ -137,12 +120,9 @@ const studentProfileSchema = new Schema(
             if (!this || !this.has_mental_issue) return true;
             return typeof val === "string" && val.trim().length > 0;
           },
-          message:
-            "mental_issue_details is required when has_mental_issue is true",
+          message: mentalIssueDetailsRequired,
         },
       },
-
-      // Allergies
       has_allergies: { type: Boolean, default: false },
       allergies: {
         type: [String],
@@ -152,12 +132,10 @@ const studentProfileSchema = new Schema(
             if (!this || !this.has_allergies) return true;
             return Array.isArray(arr) && arr.length > 0;
           },
-          message:
-            "At least one allergy is required when has_allergies is true",
+          message: allergiesAtLeastOne,
         },
       },
     },
-
     is_active: { type: Boolean, default: true },
     created_by: {
       type: Schema.Types.ObjectId,
@@ -181,7 +159,6 @@ const studentProfileSchema = new Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-// Unique student profile per user
 studentProfileSchema.index({ user: 1 }, { unique: true, index: true });
 
 studentProfileSchema.set("toJSON", {
