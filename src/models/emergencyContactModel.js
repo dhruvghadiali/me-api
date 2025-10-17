@@ -19,11 +19,20 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 const { Schema } = mongoose;
+const {
+  EMERGENCY_CONTACT_RELATIONS,
+} = require("@ME/helpers/enums/studentEnums");
 
 const emergencyContactSchema = new Schema(
   {
     name: { type: String, trim: true, required: true },
-    relation: { type: String, trim: true, required: true },
+    relation: {
+      type: String,
+      trim: true,
+      required: true,
+      lowercase: true,
+      enum: Object.values(EMERGENCY_CONTACT_RELATIONS),
+    },
     phone_number: {
       type: String,
       trim: true,
@@ -48,7 +57,7 @@ const emergencyContactSchema = new Schema(
     },
     address: { type: String, trim: true, lowercase: true },
   },
-  { _id: false }
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-module.exports = emergencyContactSchema;
+module.exports = mongoose.model("emergency_contact", emergencyContactSchema);

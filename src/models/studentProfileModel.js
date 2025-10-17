@@ -2,29 +2,17 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
-const { phoneRegex } = require("@MEHelpers/regex");
 
-const {
-  phoneNumberChar,
-  aadhaarNumberChar,
-} = require("@MEHelpers/validationConst");
+const { aadhaarNumberChar } = require("@MEHelpers/validationConst");
 
 const {
   usernameInvalid,
   usernameRequired,
-  phoneNumberInvalid,
-  phoneNumberMaxLength,
-  phoneNumberMinLength,
   aadhaarNumberMaxLength,
   aadhaarNumberMinLength,
 } = require("@MEHelpers/validationMessage");
 
-// Sub-schemas
-const parentSchema = require("./schemas/studentProfile/parentSchema");
-const siblingSchema = require("./schemas/studentProfile/siblingSchema");
-const medicationSchema = require("./schemas/studentProfile/medicationSchema");
-const medicalCertificateSchema = require("./schemas/studentProfile/medicalCertificateSchema");
-const emergencyContactSchema = require("./schemas/studentProfile/emergencyContactSchema");
+const { GENDERS, BLOOD_GROUPS } = require("@ME/helpers/enums/studentEnums");
 
 const studentProfileSchema = new Schema(
   {
@@ -45,13 +33,13 @@ const studentProfileSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      enum: ["male", "female", "other"],
+      enum: Object.values(GENDERS),
     },
     blood_group: {
       type: String,
       trim: true,
       uppercase: true,
-      enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+      enum: Object.values(BLOOD_GROUPS),
     },
     aadhaar_number: {
       type: String,
@@ -66,48 +54,108 @@ const studentProfileSchema = new Schema(
     // Address (student) - reference to Address model
     address: { type: Schema.Types.ObjectId, ref: "address", required: true },
 
-    // Parents
-    father: { type: parentSchema, required: true },
-    mother: { type: parentSchema, required: true },
+    // Parents (references to Parent model)
+    father: {
+      type: Schema.Types.ObjectId,
+      ref: "parent_profile",
+      required: true,
+    },
+    mother: {
+      type: Schema.Types.ObjectId,
+      ref: "parent_profile",
+      required: true,
+    },
 
-    // Siblings
-    siblings: { type: [siblingSchema], default: [] },
+    // Siblings - references to SiblingProfile model
+    siblings: {
+      type: [Schema.Types.ObjectId],
+      ref: "sibling_profile",
+      default: [],
+    },
 
-    // Emergency contacts (recommend up to two)
-    emergency_contacts: { type: [emergencyContactSchema], default: [] },
+    // Emergency contacts (recommend up to two) - references to EmergencyContact model
+    emergency_contacts: {
+      type: [Schema.Types.ObjectId],
+      ref: "emergency_contact",
+      default: [],
+    },
 
     // Medical information
     medical_info: {
-      has_medical_issue: { type: Boolean, required: true, default: false },
-      medical_issue_details: {
+      // Hearing
+      has_hearing_issue: { type: Boolean, default: false },
+      hearing_issue_details: {
         type: String,
         trim: true,
         validate: {
           validator: function (val) {
-            if (!this.medical_info || !this.medical_info.has_medical_issue) {
-              return true;
-            }
+            if (!this || !this.has_hearing_issue) return true;
             return typeof val === "string" && val.trim().length > 0;
           },
           message:
-            "Medical issue details are required when has_medical_issue is true",
+            "hearing_issue_details is required when has_hearing_issue is true",
         },
       },
-      allergies: { type: [String], default: [] },
-      medications: { type: [medicationSchema], default: [] },
-      chronic_conditions: { type: [String], default: [] },
-      disability: { type: Boolean, default: false },
-      special_needs: { type: String, trim: true },
-      primary_physician_name: { type: String, trim: true, lowercase: true },
-      primary_physician_phone: {
+
+      // Vision
+      has_vision_issue: { type: Boolean, default: false },
+      vision_issue_details: {
         type: String,
         trim: true,
-        maxlength: [phoneNumberChar, phoneNumberMaxLength],
-        minlength: [phoneNumberChar, phoneNumberMinLength],
-        match: [phoneRegex, phoneNumberInvalid],
+        validate: {
+          validator: function (val) {
+            if (!this || !this.has_vision_issue) return true;
+            return typeof val === "string" && val.trim().length > 0;
+          },
+          message:
+            "vision_issue_details is required when has_vision_issue is true",
+        },
       },
-      last_tetanus_shot_at: { type: Date },
-      medical_certificates: { type: [medicalCertificateSchema], default: [] },
+
+      // Physical
+      has_physical_issue: { type: Boolean, default: false },
+      physical_issue_details: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: function (val) {
+            if (!this || !this.has_physical_issue) return true;
+            return typeof val === "string" && val.trim().length > 0;
+          },
+          message:
+            "physical_issue_details is required when has_physical_issue is true",
+        },
+      },
+
+      // Mental
+      has_mental_issue: { type: Boolean, default: false },
+      mental_issue_details: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: function (val) {
+            if (!this || !this.has_mental_issue) return true;
+            return typeof val === "string" && val.trim().length > 0;
+          },
+          message:
+            "mental_issue_details is required when has_mental_issue is true",
+        },
+      },
+
+      // Allergies
+      has_allergies: { type: Boolean, default: false },
+      allergies: {
+        type: [String],
+        default: [],
+        validate: {
+          validator: function (arr) {
+            if (!this || !this.has_allergies) return true;
+            return Array.isArray(arr) && arr.length > 0;
+          },
+          message:
+            "At least one allergy is required when has_allergies is true",
+        },
+      },
     },
 
     is_active: { type: Boolean, default: true },

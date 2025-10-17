@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
-const siblingSchema = new Schema(
+const siblingProfileSchema = new Schema(
   {
     first_name: { type: String, trim: true },
     last_name: { type: String, trim: true },
@@ -18,7 +18,7 @@ const siblingSchema = new Schema(
     same_school: { type: Boolean, default: false },
     admission_number: { type: String, trim: true },
   },
-  { _id: false }
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-module.exports = siblingSchema;
+module.exports = mongoose.model("sibling_profile", siblingProfileSchema);

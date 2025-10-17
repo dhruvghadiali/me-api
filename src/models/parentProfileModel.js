@@ -17,7 +17,6 @@ const {
   emailInvalid,
   emailMaxLength,
   emailMinLength,
-  addressMaxLength,
   lastNameRequired,
   lastNameMaxLength,
   lastNameMinLength,
@@ -32,11 +31,13 @@ const {
   aadhaarNumberMinLength,
 } = require("@MEHelpers/validationMessage");
 
-// Referencing the Address model via ObjectId (no schema import needed)
-
 const { Schema } = mongoose;
+const {
+  PARENT_OCCUPATIONS_IN,
+  EDUCATION_LEVELS_IN,
+} = require("@ME/helpers/enums/studentEnums");
 
-const parentSchema = new Schema(
+const parentProfileSchema = new Schema(
   {
     first_name: {
       type: String,
@@ -74,8 +75,18 @@ const parentSchema = new Schema(
       maxlength: [aadhaarNumberChar, aadhaarNumberMaxLength],
       minlength: [aadhaarNumberChar, aadhaarNumberMinLength],
     },
-    occupation: { type: String, trim: true, lowercase: true },
-    education: { type: String, trim: true, lowercase: true },
+    occupation: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      enum: Object.values(PARENT_OCCUPATIONS_IN),
+    },
+    education: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      enum: Object.values(EDUCATION_LEVELS_IN),
+    },
     annual_income: { type: Number },
     alive: { type: Boolean, default: true },
     same_address_as_student: { type: Boolean, default: true },
@@ -85,7 +96,7 @@ const parentSchema = new Schema(
       required: false,
     },
   },
-  { _id: false }
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-module.exports = parentSchema;
+module.exports = mongoose.model("parent_profile", parentProfileSchema);
