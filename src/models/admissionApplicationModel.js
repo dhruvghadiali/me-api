@@ -3,25 +3,35 @@ const mongoose = require("mongoose");
 const {
   isActiveUserValidator,
   isActiveSchoolAcademicClassExistsValidator,
+  validateDocumentNotesRequired,
 } = require("@MEUtils/dbQuery");
-
 const {
   usernameInvalid,
   usernameRequired,
   schoolAcademicClassIdInvalid,
   schoolAcademicClassIdRequired,
-  academicSessionRequired,
-  academicSessionInvalid,
-  applicationNumberRequired,
-  applicationNumberEmpty,
+  admissionApplicationAcademicSessionRequired,
+  admissionApplicationAcademicSessionInvalid,
+  admissionApplicationApplicationNumberRequired,
+  admissionApplicationApplicationNumberEmpty,
+  admissionApplicationDocumentVerificationNotesRequired,
+  admissionApplicationDocumentVerificationScheduleDateRequired,
+  admissionApplicationDocumentVerificationScheduleTimeSlotInvalid,
+  admissionApplicationDocumentVerificationScheduleTimeSlotRequired,
+  admissionApplicationDocumentVerificationSchedulerRequired,
+  admissionApplicationFeePaymentDateRequired,
+  admissionApplicationFeePaymentTimeSlotRequired,
+  admissionApplicationFeePaymentTimeSlotInvalid,
+  admissionApplicationFeePaymentSchedulerRequired,
 } = require("@MEHelpers/validationMessage");
-
-const { Schema } = mongoose;
-
 const {
   ADMISSION_APPLICATION_STATUS,
   ADMISSION_PAYMENT_METHODS,
 } = require("@MEHelpers/enums");
+const { validateTimeSlot } = require("@MEUtils/utility");
+const { minFeeAmount } = require("@MEHelpers/validationConst");
+
+const { Schema } = mongoose;
 
 const admissionApplicationSchema = Schema(
   {
@@ -46,7 +56,7 @@ const admissionApplicationSchema = Schema(
     academic_session: {
       type: String,
       trim: true,
-      required: [true, academicSessionRequired], // e.g., "2025-2026"
+      required: [true, admissionApplicationAcademicSessionRequired], // e.g., "2025-2026"
       validate: {
         validator: function (val) {
           if (typeof val !== "string") return false;
@@ -56,13 +66,13 @@ const admissionApplicationSchema = Schema(
           const end = parseInt(match[2], 10);
           return end === start + 1; // enforce consecutive years
         },
-        message: academicSessionInvalid,
+        message: admissionApplicationAcademicSessionInvalid,
       },
     },
     application_number: {
       type: String,
       trim: true,
-      required: [true, applicationNumberRequired],
+      required: [true, admissionApplicationApplicationNumberRequired],
       unique: true,
       index: true,
       validate: {
@@ -70,7 +80,7 @@ const admissionApplicationSchema = Schema(
           if (typeof val !== "string") return false;
           return val.trim().length > 0;
         },
-        message: applicationNumberEmpty,
+        message: admissionApplicationApplicationNumberEmpty,
       },
     },
     status: {
@@ -99,7 +109,78 @@ const admissionApplicationSchema = Schema(
           required: true,
         },
         is_verified: { type: Boolean, default: false },
-        notes: { type: String, trim: true },
+        notes: {
+          type: String,
+          trim: true,
+          validate: {
+            validator: async function (notes) {
+              return await validateDocumentNotesRequired(
+                notes,
+                this.is_verified,
+                this.school_admission_document
+              );
+            },
+            message: admissionApplicationDocumentVerificationNotesRequired,
+          },
+        },
+      },
+    ],
+    document_verification_appointment: [
+      {
+        scheduled_date: {
+          type: Date,
+          required: [
+            true,
+            admissionApplicationDocumentVerificationScheduleDateRequired,
+          ],
+        },
+        scheduled_time_slot: {
+          type: String,
+          trim: true,
+          required: [
+            true,
+            admissionApplicationDocumentVerificationScheduleTimeSlotRequired,
+          ],
+          validate: {
+            validator: validateTimeSlot,
+            message:
+              admissionApplicationDocumentVerificationScheduleTimeSlotInvalid,
+          },
+        },
+        booked_at: { type: Date, default: Date.now },
+        booked_by: {
+          type: Schema.Types.ObjectId,
+          ref: "user",
+          required: [
+            true,
+            admissionApplicationDocumentVerificationSchedulerRequired,
+          ],
+        },
+        remarks: { type: String, trim: true },
+      },
+    ],
+    fee_payment_appointment: [
+      {
+        scheduled_date: {
+          type: Date,
+          required: [true, admissionApplicationFeePaymentDateRequired],
+        },
+        scheduled_time_slot: {
+          type: String,
+          trim: true,
+          required: [true, admissionApplicationFeePaymentTimeSlotRequired],
+          validate: {
+            validator: validateTimeSlot,
+            message: admissionApplicationFeePaymentTimeSlotInvalid,
+          },
+        },
+        booked_at: { type: Date, default: Date.now },
+        booked_by: {
+          type: Schema.Types.ObjectId,
+          ref: "user",
+          required: [true, admissionApplicationFeePaymentSchedulerRequired],
+        },
+        remarks: { type: String, trim: true },
       },
     ],
     fee_payments: [
@@ -109,7 +190,7 @@ const admissionApplicationSchema = Schema(
           ref: "fee_type",
           required: true,
         },
-        amount: { type: Number, required: true, min: 0 },
+        amount: { type: Number, required: true, min: minFeeAmount },
         paid_at: { type: Date, default: Date.now },
         txn_id: { type: String, trim: true },
       },
@@ -117,7 +198,7 @@ const admissionApplicationSchema = Schema(
     payment_method: {
       type: String,
       enum: Object.values(ADMISSION_PAYMENT_METHODS),
-      default: ADMISSION_PAYMENT_METHODS.UPI,
+      default: ADMISSION_PAYMENT_METHODS.CASH,
     },
     created_by: {
       type: Schema.Types.ObjectId,
