@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const isActiveUserValidator = async (value) => {
   const User = require("@MEModels/userModel");
   const user = await User.findById(value);
@@ -94,11 +96,48 @@ const isActiveAdmissionDocumentValidator = async (value) => {
   return !!(admissionDocument && admissionDocument.is_active);
 };
 
+/**
+ * Validates that notes are provided when a required document is not verified
+ * @param {string} notes - The notes value
+ * @param {boolean} isVerified - Whether the document is verified
+ * @param {string} documentId - The school_admission_document ID
+ * @returns {Promise<boolean>} - True if validation passes
+ */
+const validateDocumentNotesRequired = async function (
+  notes,
+  isVerified,
+  documentId
+) {
+  // If notes are provided, it's always valid
+  if (!_.isEmpty(_.trim(notes))) {
+    return true;
+  }
+
+  // If is_verified is true, notes are optional
+  if (isVerified === true) {
+    return true;
+  }
+
+  // If is_verified is false, check if the document is required
+  if (isVerified === false && documentId) {
+    const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
+    const doc = await SchoolAdmissionDocument.findById(documentId);
+
+    // If document is required and is_verified is false, notes are required
+    if (doc && doc.is_required === true) {
+      return false; // Notes are required but not provided
+    }
+  }
+
+  return true; // Notes are optional for non-required documents
+};
+
 module.exports = {
   isActiveUserValidator,
   isActiveCityExistsValidator,
   isActiveStateExistsValidator,
   isActiveSchoolExistsValidator,
+  validateDocumentNotesRequired,
   isActiveFeeTypeExistsValidator,
   isActiveZipcodeExistsValidator,
   isActiveDistrictExistsValidator,
