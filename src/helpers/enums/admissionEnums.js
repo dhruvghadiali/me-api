@@ -27,6 +27,7 @@ const ADMISSION_PAYMENT_METHODS = Object.freeze({
   NETBANKING: "netbanking",
   CASH: "cash",
   OTHER: "other",
+  NA: "n/a",
 });
 
 module.exports = {

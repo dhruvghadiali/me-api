@@ -55,8 +55,40 @@ const validateTimeSlot = (timeSlot) => {
   return true;
 };
 
+/**
+ * Generates a unique string number
+ * Format: ${prefix}-YYYY-XXXXXXXX-${suffix}
+ * Where YYYY is current year and XXXXXXXX is a random alphanumeric string
+ * @returns {string} - Unique string number
+ * @example
+ * generateUniqueStringNumber() // returns "ADM-2025-A1B2C3D4"
+ */
+const generateUniqueStringNumber = (affixes = {}) => {
+  const { prefix, suffix } = affixes;
+  const year = new Date().getFullYear();
+  const randomString = Math.random()
+    .toString(36)
+    .substring(2, 10)
+    .toUpperCase();
+  const timestamp = Date.now().toString(36).toUpperCase();
+
+  // Combine random string and timestamp for better uniqueness
+  const uniqueId = (randomString + timestamp).substring(0, 8).toUpperCase();
+
+  if (prefix && suffix) {
+    return `${prefix}-${year}-${uniqueId}-${suffix}`;
+  } else if (prefix) {
+    return `${prefix}-${year}-${uniqueId}`;
+  } else if (suffix) {
+    return `${year}-${uniqueId}-${suffix}`;
+  } else {
+    return `${year}-${uniqueId}`;
+  }
+};
+
 module.exports = {
   getISTDateTime,
   setValidationMessage,
   validateTimeSlot,
+  generateUniqueStringNumber,
 };

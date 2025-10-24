@@ -198,7 +198,7 @@ const admissionApplicationSchema = Schema(
     payment_method: {
       type: String,
       enum: Object.values(ADMISSION_PAYMENT_METHODS),
-      default: ADMISSION_PAYMENT_METHODS.CASH,
+      default: ADMISSION_PAYMENT_METHODS.NA,
     },
     created_by: {
       type: Schema.Types.ObjectId,
