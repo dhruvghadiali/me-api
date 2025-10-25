@@ -5,9 +5,33 @@ const {
 const {
   updateAdmissionApplicationStatus,
 } = require("@MEControllers/admissionApplicationController/updateAdmissionApplicationStatus");
+const {
+  bookDocumentVerificationAppointment,
+} = require("@MEControllers/admissionApplicationController/bookDocumentVerificationAppointment");
+const {
+  updateDocumentVerification,
+} = require("@MEControllers/admissionApplicationController/updateDocumentVerification");
+const {
+  addDocumentVerificationAppointment,
+} = require("@MEControllers/admissionApplicationController/addDocumentVerificationAppointment");
+const {
+  bookFeePaymentAppointment,
+} = require("@MEControllers/admissionApplicationController/bookFeePaymentAppointment");
+const {
+  addPaymentMethod,
+} = require("@MEControllers/admissionApplicationController/addPaymentMethod");
+const {
+  addFeePaymentAppointment,
+} = require("@MEControllers/admissionApplicationController/addFeePaymentAppointment");
 
 // Re-export all controller methods
 module.exports = {
   addAdmissionApplication,
   updateAdmissionApplicationStatus,
+  bookDocumentVerificationAppointment,
+  updateDocumentVerification,
+  addDocumentVerificationAppointment,
+  bookFeePaymentAppointment,
+  addPaymentMethod,
+  addFeePaymentAppointment,
 };

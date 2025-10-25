@@ -16,6 +16,7 @@ const ADMISSION_APPLICATION_STATUS = Object.freeze({
   FEES_PENDING: "fees_pending",
   FEES_PAID: "fees_paid",
   SELECTED: "selected",
+  CLOSED: "closed",
 });
 
 /**
