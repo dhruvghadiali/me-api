@@ -5,7 +5,6 @@ const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
-  unauthorizedUser,
   admissionApplicationNotFound,
   admissionApplicationNotAuthorizedToChangeStatus,
   admissionApplicationPutRequestFail,
