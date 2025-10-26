@@ -14,9 +14,10 @@ const {
 } = require("@MEHelpers/responseMessage");
 const {
   ADMISSION_APPLICATION_STATUS,
-} = require("@ME/helpers/enums/admissionEnums");
+  HTTP_STATUS_CODES,
+  USER_TYPES,
+} = require("@MEHelpers/enums");
 const { asyncHandler } = require("@MEMiddleware/async");
-const { HTTP_STATUS_CODES, USER_TYPES } = require("@ME/helpers/enums");
 
 /**
  * Status transition rules

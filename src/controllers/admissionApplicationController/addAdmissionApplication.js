@@ -5,14 +5,14 @@ const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
   ADMISSION_APPLICATION_STATUS,
-} = require("@ME/helpers/enums/admissionEnums");
+  HTTP_STATUS_CODES,
+} = require("@MEHelpers/enums");
 const {
   admissionApplicationPostRequestFail,
   admissionApplicationPostRequestSuccess,
 } = require("@MEHelpers/responseMessage/admissionApplicationResponseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
-const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
 const { generateUniqueStringNumber } = require("@MEUtils/utility");
 
 /**
