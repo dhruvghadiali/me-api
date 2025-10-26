@@ -1,14 +1,11 @@
 const express = require("express");
 
-const { studentProtect } = require("@MEMiddleware/auth");
-const {
-  addAdmissionApplication,
-} = require("@MEControllers/admissionApplicationController");
+const addAdmissionApplicationRouter = require("@MERoutes/studentRouter/admissionApplicationRouter/addAdmissionApplicationRouter");
+const updateAdmissionApplicationStatusRouter = require("@MERoutes/studentRouter/admissionApplicationRouter/updateAdmissionApplicationStatusRouter");
 
 const router = express.Router();
 
-router
-  .route("/admission-applications")
-  .post(studentProtect, addAdmissionApplication);
+router.use("/", addAdmissionApplicationRouter);
+router.use("/", updateAdmissionApplicationStatusRouter);
 
 module.exports = router;

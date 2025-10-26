@@ -1,0 +1,6 @@
+### Scenario 001 (Valid payload)
+PUT {{studentLocalhostBaseUrl}}{{studentUpdateAdmissionApplicationStatusRoute}}
+Content-Type: application/json
+Authorization: {{studentAuthToken}}
+
+< ./payload/payload001.json

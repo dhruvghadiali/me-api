@@ -9,7 +9,8 @@ const {
 const {
   admissionApplicationPostRequestFail,
   admissionApplicationPostRequestSuccess,
-} = require("@MEHelpers/responseMessage");
+} = require("@MEHelpers/responseMessage/admissionApplicationResponseMessage");
+
 const { asyncHandler } = require("@MEMiddleware/async");
 const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
 const { generateUniqueStringNumber } = require("@MEUtils/utility");
@@ -60,8 +61,7 @@ const addAdmissionApplication = asyncHandler(async (req, res, next) => {
     updated_by,
   };
 
-  // const response = await AdmissionApplication.create(applicationData);
-  const response = null;
+  const response = await AdmissionApplication.create(applicationData);
 
   if (!response) {
     // Send error response

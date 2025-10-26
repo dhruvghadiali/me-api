@@ -1,13 +1,17 @@
 const _ = require("lodash");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const AdmissionApplication = require("@MEModels/admissionApplicationModel");
+const SchoolAddress = require("@MEModels/schoolAddressModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
+  unauthorizedUser,
   admissionApplicationNotFound,
   admissionApplicationNotAuthorizedToChangeStatus,
   admissionApplicationPutRequestFail,
   admissionApplicationPutRequestSuccess,
+  admissionApplicationStatusChangeFail,
+  admissionApplicationStatusChangeNotAllowed,
 } = require("@MEHelpers/responseMessage");
 const {
   ADMISSION_APPLICATION_STATUS,
@@ -18,7 +22,7 @@ const { HTTP_STATUS_CODES, USER_TYPES } = require("@ME/helpers/enums");
 /**
  * Status transition rules
  * Student transitions:
- *        DRAFT -> SUBMITTED
+ *        DRAFT -> SUBMITTED | DELETED
  *        SUBMITTED -> CANCELLED
  *        UNDER_REVIEW -> CANCELLED
  *        DOCUMENTS_VERIFICATION_PENDING -> CANCELLED
@@ -35,6 +39,7 @@ const { HTTP_STATUS_CODES, USER_TYPES } = require("@ME/helpers/enums");
 const STUDENT_ALLOWED_TRANSITIONS = {
   [ADMISSION_APPLICATION_STATUS.DRAFT]: [
     ADMISSION_APPLICATION_STATUS.SUBMITTED,
+    ADMISSION_APPLICATION_STATUS.DELETED,
   ],
   [ADMISSION_APPLICATION_STATUS.SUBMITTED]: [
     ADMISSION_APPLICATION_STATUS.CANCELLED,
@@ -88,6 +93,7 @@ const updateAdmissionApplicationStatus = asyncHandler(
 
     // Find application
     const application = await AdmissionApplication.findById(id);
+
     if (!application) {
       return next(
         new ErrorResponse(
@@ -99,8 +105,10 @@ const updateAdmissionApplicationStatus = asyncHandler(
 
     // Validate user role
     if (
-      userRole !== USER_TYPES.STUDENT &&
-      userRole !== USER_TYPES.SCHOOL_ADMIN
+      _.toLower(_.toString(userRole)) !==
+        _.toLower(_.toString(USER_TYPES.STUDENT)) &&
+      _.toLower(_.toString(userRole)) !==
+        _.toLower(_.toString(USER_TYPES.SCHOOL_ADMIN))
     ) {
       return next(
         new ErrorResponse(
@@ -114,11 +122,14 @@ const updateAdmissionApplicationStatus = asyncHandler(
     let allowedTransitions = [];
 
     // Handle student role
-    if (userRole === USER_TYPES.STUDENT) {
+    if (
+      _.toLower(_.toString(userRole)) ===
+      _.toLower(_.toString(USER_TYPES.STUDENT))
+    ) {
       // Verify student owns this application
       if (
         _.toLower(_.toString(application.applicant_user)) !==
-        _.toLower(_.toString(req.user._id))
+        _.toLower(_.toString(req.user.id))
       ) {
         return next(
           new ErrorResponse(
@@ -131,7 +142,10 @@ const updateAdmissionApplicationStatus = asyncHandler(
     }
 
     // Handle school admin role
-    if (userRole === USER_TYPES.SCHOOL_ADMIN) {
+    if (
+      _.toLower(_.toString(userRole)) ===
+      _.toLower(_.toString(USER_TYPES.SCHOOL_ADMIN))
+    ) {
       // Verify school admin's school matches the application's school
       const schoolAcademicClass = await SchoolAcademicClass.findById(
         application.school_academic_class
@@ -140,19 +154,21 @@ const updateAdmissionApplicationStatus = asyncHandler(
       if (!schoolAcademicClass) {
         return next(
           new ErrorResponse(
-            "School academic class not found",
+            admissionApplicationNotAuthorizedToChangeStatus,
             HTTP_STATUS_CODES.STATUS_400
           )
         );
       }
 
       // Get school admin's school from school_address
-      const schoolAdminSchool = req.user.school_address?.school;
+      const schoolAdminSchool = await SchoolAddress.findOne({
+        user: req.user.id,
+      }).select("school");
 
       if (!schoolAdminSchool) {
         return next(
           new ErrorResponse(
-            "School admin school information not found",
+            admissionApplicationNotAuthorizedToChangeStatus,
             HTTP_STATUS_CODES.STATUS_400
           )
         );
@@ -161,7 +177,7 @@ const updateAdmissionApplicationStatus = asyncHandler(
       // Compare schools
       if (
         _.toLower(_.toString(schoolAcademicClass.school)) !==
-        _.toLower(_.toString(schoolAdminSchool))
+        _.toLower(_.toString(schoolAdminSchool.school))
       ) {
         return next(
           new ErrorResponse(
@@ -176,28 +192,31 @@ const updateAdmissionApplicationStatus = asyncHandler(
     }
 
     // Check if status transition is allowed
-    if (!allowedTransitions.includes(status)) {
+    if (!_.includes(allowedTransitions, status)) {
       return next(
         new ErrorResponse(
-          `Cannot transition from ${currentStatus} to ${status} for current user role`,
+          admissionApplicationStatusChangeNotAllowed(currentStatus, status),
           HTTP_STATUS_CODES.STATUS_400
         )
       );
     }
 
     // Additional validation: Check if student is already selected for another school in the same academic session
-    if (status === ADMISSION_APPLICATION_STATUS.SELECTED) {
+    if (
+      _.toLower(_.toString(status)) ===
+      _.toLower(_.toString(ADMISSION_APPLICATION_STATUS.SELECTED))
+    ) {
       const existingSelectedApplication = await AdmissionApplication.findOne({
         applicant_user: application.applicant_user,
         academic_session: application.academic_session,
         status: ADMISSION_APPLICATION_STATUS.SELECTED,
-        _id: { $ne: application._id }, // Exclude current application
+        _id: { $ne: application.id }, // Exclude current application
       });
 
       if (existingSelectedApplication) {
         return next(
           new ErrorResponse(
-            `Student is already selected for another school in academic session ${application.academic_session}`,
+            admissionApplicationStatusChangeFail(application.academic_session),
             HTTP_STATUS_CODES.STATUS_400
           )
         );
@@ -208,11 +227,11 @@ const updateAdmissionApplicationStatus = asyncHandler(
     application.status = status;
     application.status_history.push({
       status,
-      changed_by: req.user._id,
+      changed_by: req.user.id,
       changed_at: new Date(),
       remarks: remarks || `Status changed to ${status}`,
     });
-    application.updated_by = req.user._id;
+    application.updated_by = req.user.id;
 
     // Save application
     const response = await application.save();

@@ -4,6 +4,7 @@
  */
 const ADMISSION_APPLICATION_STATUS = Object.freeze({
   DRAFT: "draft",
+  DELETED: "deleted",
   SUBMITTED: "submitted",
   UNDER_REVIEW: "under_review",
   CANCELLED: "cancelled",
