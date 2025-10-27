@@ -1,26 +1,28 @@
 const _ = require("lodash");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const AdmissionApplication = require("@MEModels/admissionApplicationModel");
+const SchoolAddress = require("@MEModels/schoolAddressModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
+  HTTP_STATUS_CODES,
   ADMISSION_APPLICATION_STATUS,
 } = require("@ME/helpers/enums/admissionEnums");
 const {
   admissionApplicationNotFound,
   admissionApplicationNotAuthorizedToChangeStatus,
-  admissionApplicationPutRequestFail,
-  admissionApplicationPutRequestSuccess,
+  admissionApplicationStatusMustBeDocumentsUnverified,
+  admissionApplicationDocumentVerificationAppointmentRescheduleFail,
+  admissionApplicationDocumentVerificationAppointmentRescheduleSuccess,
 } = require("@MEHelpers/responseMessage");
 const { asyncHandler } = require("@MEMiddleware/async");
-const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
 
 /**
- * @desc    Add document verification appointment (only adds to array, no status change)
- * @route   POST /school-admin/admission-applications/:id/document-verification-appointment
+ * @desc    Reschedule document verification appointment
+ * @route   POST /school-admin/admission-applications/:id/reschedule-document-verification-appointment
  * @access  School Admin
  */
-const addDocumentVerificationAppointment = asyncHandler(
+const rescheduleDocumentVerificationAppointment = asyncHandler(
   async (req, res, next) => {
     const { scheduled_date, scheduled_time_slot, remarks } = req.body;
     const { id } = req.params;
@@ -36,6 +38,19 @@ const addDocumentVerificationAppointment = asyncHandler(
       );
     }
 
+    // Check if application status is DOCUMENTS_UNVERIFIED
+    if (
+      _.toLower(_.toString(application.status)) !==
+      _.toLower(_.toString(ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED))
+    ) {
+      return next(
+        new ErrorResponse(
+          admissionApplicationStatusMustBeDocumentsUnverified,
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+
     // Verify school admin's school matches the application's school
     const schoolAcademicClass = await SchoolAcademicClass.findById(
       application.school_academic_class
@@ -44,19 +59,21 @@ const addDocumentVerificationAppointment = asyncHandler(
     if (!schoolAcademicClass) {
       return next(
         new ErrorResponse(
-          "School academic class not found",
+          admissionApplicationNotAuthorizedToChangeStatus,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
     }
 
     // Get school admin's school from school_address
-    const schoolAdminSchool = req.user.school_address?.school;
+    const schoolAdminAddress = await SchoolAddress.findOne({
+      user: req.user.id,
+    }).select("school");
 
-    if (!schoolAdminSchool) {
+    if (!schoolAdminAddress) {
       return next(
         new ErrorResponse(
-          "School admin school information not found",
+          admissionApplicationNotAuthorizedToChangeStatus,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
@@ -65,7 +82,7 @@ const addDocumentVerificationAppointment = asyncHandler(
     // Compare schools
     if (
       _.toLower(_.toString(schoolAcademicClass.school)) !==
-      _.toLower(_.toString(schoolAdminSchool))
+      _.toLower(_.toString(schoolAdminAddress.school))
     ) {
       return next(
         new ErrorResponse(
@@ -80,8 +97,8 @@ const addDocumentVerificationAppointment = asyncHandler(
       scheduled_date,
       scheduled_time_slot,
       booked_at: new Date(),
-      booked_by: req.user._id,
-      remarks: remarks || "Document verification appointment added",
+      booked_by: req.user.id,
+      remarks: remarks || "Document verification appointment rescheduled",
     });
 
     application.updated_by = req.user._id;
@@ -91,27 +108,28 @@ const addDocumentVerificationAppointment = asyncHandler(
     if (!response) {
       return next(
         new ErrorResponse(
-          admissionApplicationPutRequestFail,
+          admissionApplicationDocumentVerificationAppointmentRescheduleFail,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
     }
 
     // Populate the response with booked_by details
-    await response.populate([
-      {
-        path: "document_verification_appointment.booked_by",
-        select: "first_name last_name",
-      },
-    ]);
+    // await response.populate([
+    //   {
+    //     path: "document_verification_appointment.booked_by",
+    //     select: "first_name last_name",
+    //   },
+    // ]);
 
     // Send success response
     res.status(HTTP_STATUS_CODES.STATUS_200).json({
       data: [response],
-      message: admissionApplicationPutRequestSuccess,
+      message:
+        admissionApplicationDocumentVerificationAppointmentRescheduleSuccess,
       status: HTTP_STATUS_CODES.STATUS_200,
     });
   }
 );
 
-module.exports = { addDocumentVerificationAppointment };
+module.exports = { rescheduleDocumentVerificationAppointment };

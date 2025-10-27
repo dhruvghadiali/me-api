@@ -7,11 +7,11 @@ const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel"
 
 const {
   admissionApplicationNotFound,
-  admissionApplicationNotAuthorizedToChangeStatus,
-  admissionApplicationPutRequestFail,
-  admissionApplicationPutRequestSuccess,
   admissionApplicationStatusMustBeUnderReview,
+  admissionApplicationNotAuthorizedToChangeStatus,
   admissionApplicationVerificationDocumentListNotFound,
+  admissionApplicationDocumentVerificationAppointmentBookingFail,
+  admissionApplicationDocumentVerificationAppointmentBookingSuccess,
 } = require("@MEHelpers/responseMessage");
 const {
   HTTP_STATUS_CODES,
@@ -150,7 +150,7 @@ const documentVerificationAppointmentBooking = asyncHandler(
     if (!response) {
       return next(
         new ErrorResponse(
-          admissionApplicationPutRequestFail,
+          admissionApplicationDocumentVerificationAppointmentBookingFail,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
@@ -174,7 +174,8 @@ const documentVerificationAppointmentBooking = asyncHandler(
     // Send success response
     res.status(HTTP_STATUS_CODES.STATUS_200).json({
       data: [response],
-      message: admissionApplicationPutRequestSuccess,
+      message:
+        admissionApplicationDocumentVerificationAppointmentBookingSuccess,
       status: HTTP_STATUS_CODES.STATUS_200,
     });
   }

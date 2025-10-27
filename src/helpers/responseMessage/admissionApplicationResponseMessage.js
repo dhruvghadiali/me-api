@@ -9,7 +9,12 @@ const admissionApplicationResponseMessage = {
   admissionApplicationDeleteRequestSuccess: `Admission application details deleted successfully`,
   admissionApplicationDeleteRequestFail: `Facing issue while deleting admission application details`,
   admissionApplicationStatusMustBeUnderReview: `Cannot book document verification appointment. Application status must be UNDER REVIEW`,
+  admissionApplicationStatusMustBeDocumentsUnverified: `Cannot reschedule document verification appointment. Application status must be DOCUMENTS_UNVERIFIED`,
   admissionApplicationVerificationDocumentListNotFound: `No admission verification documents found for selected academic class`,
+  admissionApplicationDocumentVerificationAppointmentBookingSuccess: `Document verification appointment booked successfully`,
+  admissionApplicationDocumentVerificationAppointmentRescheduleSuccess: `Document verification appointment rescheduled successfully`,
+  admissionApplicationDocumentVerificationAppointmentBookingFail: `Facing issue while booking document verification appointment`,
+  admissionApplicationDocumentVerificationAppointmentRescheduleFail: `Facing issue while rescheduling document verification appointment`,
   admissionApplicationStatusChangeFail: (academicSession) =>
     `Student is already selected for another school in academic session ${academicSession}`,
   admissionApplicationStatusChangeNotAllowed: (
