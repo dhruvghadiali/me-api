@@ -6,8 +6,9 @@ const {
   updateAdmissionApplicationStatus,
 } = require("@MEControllers/admissionApplicationController/updateAdmissionApplicationStatus");
 const {
-  bookDocumentVerificationAppointment,
-} = require("@MEControllers/admissionApplicationController/bookDocumentVerificationAppointment");
+  documentVerificationAppointmentBooking,
+} = require("@MEControllers/admissionApplicationController/documentVerificationAppointmentBooking");
+
 const {
   updateDocumentVerification,
 } = require("@MEControllers/admissionApplicationController/updateDocumentVerification");
@@ -28,7 +29,7 @@ const {
 module.exports = {
   addAdmissionApplication,
   updateAdmissionApplicationStatus,
-  bookDocumentVerificationAppointment,
+  documentVerificationAppointmentBooking,
   updateDocumentVerification,
   addDocumentVerificationAppointment,
   bookFeePaymentAppointment,

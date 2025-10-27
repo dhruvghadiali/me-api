@@ -8,6 +8,8 @@ const admissionApplicationResponseMessage = {
   admissionApplicationNotAuthorizedToChangeStatus: `Not authorized to update this application status`,
   admissionApplicationDeleteRequestSuccess: `Admission application details deleted successfully`,
   admissionApplicationDeleteRequestFail: `Facing issue while deleting admission application details`,
+  admissionApplicationStatusMustBeUnderReview: `Cannot book document verification appointment. Application status must be UNDER REVIEW`,
+  admissionApplicationVerificationDocumentListNotFound: `No admission verification documents found for selected academic class`,
   admissionApplicationStatusChangeFail: (academicSession) =>
     `Student is already selected for another school in academic session ${academicSession}`,
   admissionApplicationStatusChangeNotAllowed: (

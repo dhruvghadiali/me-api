@@ -1,27 +1,30 @@
 const _ = require("lodash");
 const ErrorResponse = require("@MEUtils/errorResponse");
-const AdmissionApplication = require("@MEModels/admissionApplicationModel");
+const SchoolAddress = require("@MEModels/schoolAddressModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
 
-const {
-  ADMISSION_APPLICATION_STATUS,
-} = require("@ME/helpers/enums/admissionEnums");
 const {
   admissionApplicationNotFound,
   admissionApplicationNotAuthorizedToChangeStatus,
   admissionApplicationPutRequestFail,
   admissionApplicationPutRequestSuccess,
+  admissionApplicationStatusMustBeUnderReview,
+  admissionApplicationVerificationDocumentListNotFound,
 } = require("@MEHelpers/responseMessage");
+const {
+  HTTP_STATUS_CODES,
+  ADMISSION_APPLICATION_STATUS,
+} = require("@MEHelpers/enums");
 const { asyncHandler } = require("@MEMiddleware/async");
-const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
 
 /**
  * @desc    Book document verification appointment
- * @route   PUT /school-admin/admission-applications/:id/book-document-verification-appointment
+ * @route   PUT /school-admin/admission-applications/:id/document-verification-appointment-booking
  * @access  School Admin
  */
-const bookDocumentVerificationAppointment = asyncHandler(
+const documentVerificationAppointmentBooking = asyncHandler(
   async (req, res, next) => {
     const { scheduled_date, scheduled_time_slot, remarks } = req.body;
     const { id } = req.params;
@@ -44,7 +47,7 @@ const bookDocumentVerificationAppointment = asyncHandler(
     ) {
       return next(
         new ErrorResponse(
-          `Cannot book document verification appointment. Application status must be ${ADMISSION_APPLICATION_STATUS.UNDER_REVIEW}`,
+          admissionApplicationStatusMustBeUnderReview,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
@@ -58,19 +61,21 @@ const bookDocumentVerificationAppointment = asyncHandler(
     if (!schoolAcademicClass) {
       return next(
         new ErrorResponse(
-          "School academic class not found",
+          admissionApplicationNotAuthorizedToChangeStatus,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
     }
 
     // Get school admin's school from school_address
-    const schoolAdminSchool = req.user.school_address?.school;
+    const schoolAdminAddress = await SchoolAddress.findOne({
+      user: req.user.id,
+    }).select("school");
 
-    if (!schoolAdminSchool) {
+    if (!schoolAdminAddress) {
       return next(
         new ErrorResponse(
-          "School admin school information not found",
+          admissionApplicationNotAuthorizedToChangeStatus,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
@@ -79,7 +84,7 @@ const bookDocumentVerificationAppointment = asyncHandler(
     // Compare schools
     if (
       _.toLower(_.toString(schoolAcademicClass.school)) !==
-      _.toLower(_.toString(schoolAdminSchool))
+      _.toLower(_.toString(schoolAdminAddress.school))
     ) {
       return next(
         new ErrorResponse(
@@ -93,14 +98,12 @@ const bookDocumentVerificationAppointment = asyncHandler(
     const schoolAdmissionDocuments = await SchoolAdmissionDocument.find({
       school_academic_class: application.school_academic_class,
       is_active: true,
-    })
-      .select("_id admission_document is_required notes")
-      .populate("admission_document", "document_name");
+    }).select("_id");
 
     if (!schoolAdmissionDocuments || schoolAdmissionDocuments.length === 0) {
       return next(
         new ErrorResponse(
-          "No admission documents found for this school academic class",
+          admissionApplicationVerificationDocumentListNotFound,
           HTTP_STATUS_CODES.STATUS_400
         )
       );
@@ -108,7 +111,7 @@ const bookDocumentVerificationAppointment = asyncHandler(
 
     // Initialize verified_documents with all required documents (is_verified: false)
     const verifiedDocuments = schoolAdmissionDocuments.map((doc) => ({
-      school_admission_document: doc._id,
+      school_admission_document: doc.id,
       is_verified: false,
       notes: "n/a",
     }));
@@ -118,7 +121,7 @@ const bookDocumentVerificationAppointment = asyncHandler(
       scheduled_date,
       scheduled_time_slot,
       booked_at: new Date(),
-      booked_by: req.user._id,
+      booked_by: req.user.id,
       remarks: remarks || "Document verification appointment scheduled",
     });
 
@@ -126,20 +129,21 @@ const bookDocumentVerificationAppointment = asyncHandler(
 
     // Update status to DOCUMENTS_VERIFICATION_PENDING
     const previousStatus = application.status;
-    application.status =
+    const newStatus =
       ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING;
+    application.status = newStatus;
 
     // Add to status history
     application.status_history.push({
-      status: ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
-      changed_by: req.user._id,
+      status: newStatus,
+      changed_by: req.user.id,
       changed_at: new Date(),
       remarks:
         remarks ||
-        `Status changed from ${previousStatus} to ${ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING} - Document verification appointment scheduled`,
+        `Status changed from ${previousStatus} to ${newStatus} - Document verification appointment scheduled`,
     });
 
-    application.updated_by = req.user._id;
+    application.updated_by = req.user.id;
 
     // Save application
     const response = await application.save();
@@ -153,19 +157,19 @@ const bookDocumentVerificationAppointment = asyncHandler(
     }
 
     // Populate the response with document details
-    await response.populate([
-      {
-        path: "verified_documents.school_admission_document",
-        populate: {
-          path: "admission_document",
-          select: "document_name",
-        },
-      },
-      {
-        path: "document_verification_appointment.booked_by",
-        select: "first_name last_name",
-      },
-    ]);
+    // await response.populate([
+    //   {
+    //     path: "verified_documents.school_admission_document",
+    //     populate: {
+    //       path: "admission_document",
+    //       select: "document_name",
+    //     },
+    //   },
+    //   {
+    //     path: "document_verification_appointment.booked_by",
+    //     select: "first_name last_name",
+    //   },
+    // ]);
 
     // Send success response
     res.status(HTTP_STATUS_CODES.STATUS_200).json({
@@ -176,4 +180,4 @@ const bookDocumentVerificationAppointment = asyncHandler(
   }
 );
 
-module.exports = { bookDocumentVerificationAppointment };
+module.exports = { documentVerificationAppointmentBooking };

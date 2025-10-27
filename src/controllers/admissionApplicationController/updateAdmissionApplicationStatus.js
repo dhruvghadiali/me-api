@@ -161,11 +161,11 @@ const updateAdmissionApplicationStatus = asyncHandler(
       }
 
       // Get school admin's school from school_address
-      const schoolAdminSchool = await SchoolAddress.findOne({
+      const schoolAdminAddress = await SchoolAddress.findOne({
         user: req.user.id,
       }).select("school");
 
-      if (!schoolAdminSchool) {
+      if (!schoolAdminAddress) {
         return next(
           new ErrorResponse(
             admissionApplicationNotAuthorizedToChangeStatus,
@@ -177,7 +177,7 @@ const updateAdmissionApplicationStatus = asyncHandler(
       // Compare schools
       if (
         _.toLower(_.toString(schoolAcademicClass.school)) !==
-        _.toLower(_.toString(schoolAdminSchool.school))
+        _.toLower(_.toString(schoolAdminAddress.school))
       ) {
         return next(
           new ErrorResponse(
