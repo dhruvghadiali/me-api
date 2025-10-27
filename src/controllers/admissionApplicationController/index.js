@@ -11,10 +11,9 @@ const {
 const {
   rescheduleDocumentVerificationAppointment,
 } = require("@ME/controllers/admissionApplicationController/rescheduleDocumentVerificationAppointment");
-
 const {
-  updateDocumentVerification,
-} = require("@MEControllers/admissionApplicationController/updateDocumentVerification");
+  updateVerifiedDocuments,
+} = require("@ME/controllers/admissionApplicationController/updateVerifiedDocuments");
 
 const {
   bookFeePaymentAppointment,
@@ -29,7 +28,7 @@ const {
 // Re-export all controller methods
 module.exports = {
   addAdmissionApplication,
-  updateDocumentVerification,
+  updateVerifiedDocuments,
   updateAdmissionApplicationStatus,
   documentVerificationAppointmentBooking,
   rescheduleDocumentVerificationAppointment,

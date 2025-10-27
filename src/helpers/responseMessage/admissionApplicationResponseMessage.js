@@ -15,6 +15,10 @@ const admissionApplicationResponseMessage = {
   admissionApplicationDocumentVerificationAppointmentRescheduleSuccess: `Document verification appointment rescheduled successfully`,
   admissionApplicationDocumentVerificationAppointmentBookingFail: `Facing issue while booking document verification appointment`,
   admissionApplicationDocumentVerificationAppointmentRescheduleFail: `Facing issue while rescheduling document verification appointment`,
+  admissionApplicationDocumentVerificationStatusInvalid: `Application must be in DOCUMENTS VERIFICATION PENDING or DOCUMENTS UNVERIFIED status to update verified documents`,
+  admissionApplicationVerifiedDocumentListMissing: `All school admission documents must be present in the verified documents list`,
+  admissionApplicationVerifiedDocumentSuccess: `Verified documents updated successfully`,
+  admissionApplicationVerifiedDocumentFail: `Facing issue while updating verified documents`,
   admissionApplicationStatusChangeFail: (academicSession) =>
     `Student is already selected for another school in academic session ${academicSession}`,
   admissionApplicationStatusChangeNotAllowed: (
