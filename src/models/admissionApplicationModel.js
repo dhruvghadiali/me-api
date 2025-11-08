@@ -50,7 +50,6 @@ const {
   ADMISSION_PAYMENT_METHODS,
 } = require("@MEHelpers/enums");
 const { validateTimeSlot } = require("@MEUtils/utility");
-const { minFeeAmount } = require("@MEHelpers/validationConst");
 
 const { Schema } = mongoose;
 

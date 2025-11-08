@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "app.js",
   "scripts": {
-    "start": "node --env-file ./config/.env src/server.js",
+    "start": "nodemon --watch src --ext js --env-file .env src/server.js",
     "start:local": "nodemon --watch src --ext js --env-file ./config/.env.local src/server.js",
     "start:dev": "nodemon --watch src --ext js --env-file ./config/.env.dev src/server.js",
     "start:sit": "nodemon --watch src --ext js --env-file ./config/.env.sit src/server.js",
