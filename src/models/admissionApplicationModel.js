@@ -6,6 +6,12 @@ const {
   validateDocumentNotesRequired,
 } = require("@MEUtils/dbQuery");
 const {
+  maxFeeAmount,
+  minFeeAmount,
+  feeTypeMaxChar,
+  feeTypeMinChar,
+} = require("@MEHelpers/validationConst");
+const {
   usernameInvalid,
   usernameRequired,
   schoolAcademicClassIdInvalid,
@@ -23,6 +29,21 @@ const {
   admissionApplicationFeePaymentTimeSlotRequired,
   admissionApplicationFeePaymentTimeSlotInvalid,
   admissionApplicationFeePaymentSchedulerRequired,
+  feeTypeRequired,
+  feeTypeMaxLength,
+  feeTypeMinLength,
+  yearlyFeeRequired,
+  yearlyFeeMaxAmount,
+  yearlyFeeMinAmount,
+  monthlyFeeRequired,
+  monthlyFeeMaxAmount,
+  monthlyFeeMinAmount,
+  quarterlyFeeRequired,
+  quarterlyFeeMaxAmount,
+  quarterlyFeeMinAmount,
+  halfYearlyFeeRequired,
+  halfYearlyFeeMaxAmount,
+  halfYearlyFeeMinAmount,
 } = require("@MEHelpers/validationMessage");
 const {
   ADMISSION_APPLICATION_STATUS,
@@ -186,11 +207,42 @@ const admissionApplicationSchema = Schema(
     fee_payments: [
       {
         fee_type: {
-          type: Schema.Types.ObjectId,
-          ref: "fee_type",
-          required: true,
+          type: String,
+          trim: true,
+          lowercase: true,
+          required: [true, feeTypeRequired],
+          maxlength: [feeTypeMaxChar, feeTypeMaxLength],
+          minlength: [feeTypeMinChar, feeTypeMinLength],
         },
-        amount: { type: Number, required: true, min: minFeeAmount },
+        monthly_fee: {
+          type: Number,
+          required: [true, monthlyFeeRequired],
+          min: [minFeeAmount, monthlyFeeMinAmount],
+          max: [maxFeeAmount, monthlyFeeMaxAmount],
+        },
+        quarterly_fee: {
+          type: Number,
+          required: [true, quarterlyFeeRequired],
+          min: [minFeeAmount, quarterlyFeeMinAmount],
+          max: [maxFeeAmount, quarterlyFeeMaxAmount],
+        },
+        half_yearly_fee: {
+          type: Number,
+          required: [true, halfYearlyFeeRequired],
+          min: [minFeeAmount, halfYearlyFeeMinAmount],
+          max: [maxFeeAmount, halfYearlyFeeMaxAmount],
+        },
+        yearly_fee: {
+          type: Number,
+          required: [true, yearlyFeeRequired],
+          min: [minFeeAmount, yearlyFeeMinAmount],
+          max: [maxFeeAmount, yearlyFeeMaxAmount],
+        },
+        amount_paid: {
+          type: Number,
+          min: [minFeeAmount, yearlyFeeMinAmount],
+          max: [maxFeeAmount, yearlyFeeMaxAmount],
+        },
         paid_at: { type: Date, default: Date.now },
         txn_id: { type: String, trim: true },
       },

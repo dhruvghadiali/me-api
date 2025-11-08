@@ -19,6 +19,11 @@ const admissionApplicationResponseMessage = {
   admissionApplicationVerifiedDocumentListMissing: `All school admission documents must be present in the verified documents list`,
   admissionApplicationVerifiedDocumentSuccess: `Verified documents updated successfully`,
   admissionApplicationVerifiedDocumentFail: `Facing issue while updating verified documents`,
+  admissionApplicationFeeAppointmentStatusMustBeApproved: `Cannot book fee payment appointment. Application status must be APPROVED`,
+  admissionApplicationFeeAppointmentScheduleSuccess: `Fee payment appointment booked successfully`,
+  admissionApplicationFeeAppointmentScheduleFail: `Facing issue while booking fee payment appointment`,
+  admissionApplicationFeeAppointmentRescheduleSuccess: `Fee payment appointment rescheduled successfully`,
+  admissionApplicationFeeAppointmentRescheduleFail: `Facing issue while rescheduling fee payment appointment`,
   admissionApplicationStatusChangeFail: (academicSession) =>
     `Student is already selected for another school in academic session ${academicSession}`,
   admissionApplicationStatusChangeNotAllowed: (

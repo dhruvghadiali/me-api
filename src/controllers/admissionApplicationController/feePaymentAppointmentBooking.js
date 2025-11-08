@@ -1,32 +1,35 @@
 const _ = require("lodash");
-const ErrorResponse = require("@MEUtils/errorResponse");
-const AdmissionApplication = require("@MEModels/admissionApplicationModel");
-const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const SchoolFee = require("@MEModels/schoolFeeModel");
+const ErrorResponse = require("@MEUtils/errorResponse");
+const SchoolAddress = require("@MEModels/schoolAddressModel");
+const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
+const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
-  ADMISSION_APPLICATION_STATUS,
-} = require("@ME/helpers/enums/admissionEnums");
-const {
   admissionApplicationNotFound,
+  admissionApplicationFeeAppointmentScheduleFail,
   admissionApplicationNotAuthorizedToChangeStatus,
-  admissionApplicationPutRequestFail,
-  admissionApplicationPutRequestSuccess,
+  admissionApplicationFeeAppointmentScheduleSuccess,
+  admissionApplicationFeeAppointmentStatusMustBeApproved,
 } = require("@MEHelpers/responseMessage");
+const {
+  HTTP_STATUS_CODES,
+  ADMISSION_APPLICATION_STATUS,
+} = require("@MEHelpers/enums");
 const { asyncHandler } = require("@MEMiddleware/async");
-const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
 
 /**
  * @desc    Book fee payment appointment
- * @route   PUT /school-admin/admission-applications/:id/book-fee-payment
+ * @route   PUT /school-admin/admission-applications/:id/fee-payment-appointment-booking
  * @access  School Admin
  */
-const bookFeePaymentAppointment = asyncHandler(async (req, res, next) => {
+const feePaymentAppointmentBooking = asyncHandler(async (req, res, next) => {
   const { scheduled_date, scheduled_time_slot, remarks } = req.body;
   const { id } = req.params;
 
   // Find application
   const application = await AdmissionApplication.findById(id);
+
   if (!application) {
     return next(
       new ErrorResponse(
@@ -43,7 +46,7 @@ const bookFeePaymentAppointment = asyncHandler(async (req, res, next) => {
   ) {
     return next(
       new ErrorResponse(
-        `Cannot book fee payment appointment. Application status must be ${ADMISSION_APPLICATION_STATUS.APPROVED}`,
+        admissionApplicationFeeAppointmentStatusMustBeApproved,
         HTTP_STATUS_CODES.STATUS_400
       )
     );
@@ -57,19 +60,21 @@ const bookFeePaymentAppointment = asyncHandler(async (req, res, next) => {
   if (!schoolAcademicClass) {
     return next(
       new ErrorResponse(
-        "School academic class not found",
+        admissionApplicationNotAuthorizedToChangeStatus,
         HTTP_STATUS_CODES.STATUS_400
       )
     );
   }
 
   // Get school admin's school from school_address
-  const schoolAdminSchool = req.user.school_address?.school;
+  const schoolAdminAddress = await SchoolAddress.findOne({
+    user: req.user.id,
+  }).select("school");
 
-  if (!schoolAdminSchool) {
+  if (!schoolAdminAddress) {
     return next(
       new ErrorResponse(
-        "School admin school information not found",
+        admissionApplicationNotAuthorizedToChangeStatus,
         HTTP_STATUS_CODES.STATUS_400
       )
     );
@@ -78,7 +83,7 @@ const bookFeePaymentAppointment = asyncHandler(async (req, res, next) => {
   // Compare schools
   if (
     _.toLower(_.toString(schoolAcademicClass.school)) !==
-    _.toLower(_.toString(schoolAdminSchool))
+    _.toLower(_.toString(schoolAdminAddress.school))
   ) {
     return next(
       new ErrorResponse(
@@ -105,15 +110,19 @@ const bookFeePaymentAppointment = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Initialize fee_payments with all fee types (if empty)
-  if (!application.fee_payments || application.fee_payments.length === 0) {
-    application.fee_payments = schoolFees.map((feeDetail) => ({
-      fee_type: feeDetail.fee_type._id,
-      amount: feeDetail.yearly_fee || 0, // Default to yearly fee
-      paid_at: null,
-      txn_id: "",
-    }));
-  }
+  application.fee_payments = schoolFees.map((feeDetail) => ({
+    fee_type:
+      feeDetail && feeDetail.fee_type && feeDetail.fee_type.fee_type
+        ? feeDetail.fee_type.fee_type
+        : null,
+    monthly_fee: feeDetail.monthly_fee || 0,
+    quarterly_fee: feeDetail.quarterly_fee || 0,
+    half_yearly_fee: feeDetail.half_yearly_fee || 0,
+    yearly_fee: feeDetail.yearly_fee || 0,
+    amount_paid: 0,
+    paid_at: null,
+    txn_id: "",
+  }));
 
   // Add appointment to fee_payment_appointment array
   application.fee_payment_appointment.push({
@@ -145,30 +154,30 @@ const bookFeePaymentAppointment = asyncHandler(async (req, res, next) => {
   if (!response) {
     return next(
       new ErrorResponse(
-        admissionApplicationPutRequestFail,
+        admissionApplicationFeeAppointmentScheduleFail,
         HTTP_STATUS_CODES.STATUS_400
       )
     );
   }
 
   // Populate the response with fee and appointment details
-  await response.populate([
-    {
-      path: "fee_payments.fee_type",
-      select: "fee_type",
-    },
-    {
-      path: "fee_payment_appointment.booked_by",
-      select: "first_name last_name",
-    },
-  ]);
+  // await response.populate([
+  //   {
+  //     path: "fee_payments.fee_type",
+  //     select: "fee_type",
+  //   },
+  //   {
+  //     path: "fee_payment_appointment.booked_by",
+  //     select: "first_name last_name",
+  //   },
+  // ]);
 
   // Send success response
   res.status(HTTP_STATUS_CODES.STATUS_200).json({
     data: [response],
-    message: admissionApplicationPutRequestSuccess,
+    message: admissionApplicationFeeAppointmentScheduleSuccess,
     status: HTTP_STATUS_CODES.STATUS_200,
   });
 });
 
-module.exports = { bookFeePaymentAppointment };
+module.exports = { feePaymentAppointmentBooking };

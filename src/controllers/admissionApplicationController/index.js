@@ -10,14 +10,14 @@ const {
 } = require("@MEControllers/admissionApplicationController/documentVerificationAppointmentBooking");
 const {
   rescheduleDocumentVerificationAppointment,
-} = require("@ME/controllers/admissionApplicationController/rescheduleDocumentVerificationAppointment");
+} = require("@MEControllers/admissionApplicationController/rescheduleDocumentVerificationAppointment");
 const {
   updateVerifiedDocuments,
-} = require("@ME/controllers/admissionApplicationController/updateVerifiedDocuments");
-
+} = require("@MEControllers/admissionApplicationController/updateVerifiedDocuments");
 const {
-  bookFeePaymentAppointment,
-} = require("@MEControllers/admissionApplicationController/bookFeePaymentAppointment");
+  feePaymentAppointmentBooking,
+} = require("@MEControllers/admissionApplicationController/feePaymentAppointmentBooking");
+
 const {
   addPaymentMethod,
 } = require("@MEControllers/admissionApplicationController/addPaymentMethod");
@@ -32,7 +32,7 @@ module.exports = {
   updateAdmissionApplicationStatus,
   documentVerificationAppointmentBooking,
   rescheduleDocumentVerificationAppointment,
-  bookFeePaymentAppointment,
+  feePaymentAppointmentBooking,
   addPaymentMethod,
   addFeePaymentAppointment,
 };
