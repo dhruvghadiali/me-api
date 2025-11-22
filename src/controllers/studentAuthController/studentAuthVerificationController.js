@@ -214,7 +214,7 @@ const signUpOTPVerification = asyncHandler(async (req, res, next) => {
         }
       );
 
-      if (updateOTPVerificationStatusResponse && updateUserStatusResponse) {
+      if (updateUserStatusResponse) {
         res.status(HTTP_STATUS_CODES.STATUS_200).json({
           data: [],
           message: responseMessage.signUpOTPVerificationSuccess,
