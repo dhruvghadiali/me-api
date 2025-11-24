@@ -30,8 +30,8 @@ const signIn = asyncHandler(async (req, res, next) => {
     // Find user by username
     const user = await User.findOne({
       username: username,
-      is_active: USER_STATUS.ACTIVE,
-      is_account_verified: ACCOUNT_VERIFICATION_STATUS.VERIFIED,
+      // is_active: USER_STATUS.ACTIVE,
+      // is_account_verified: ACCOUNT_VERIFICATION_STATUS.VERIFIED,
       user_type: USER_TYPES.STUDENT,
     }).select("+password -reset_password_token -created_at -updated_at -__v");
 
