@@ -1,5 +1,6 @@
 const express = require("express");
 
+const { studentProtect } = require("@MEMiddleware/auth");
 const {
   getSchool,
   getSchoolsSummary,
@@ -23,7 +24,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.route("/schools").get(getSchoolsSummary);
-router.route("/school/:id").get(getSchool);
+router.route("/schools").get(studentProtect, getSchoolsSummary);
+router.route("/school/:id").get(studentProtect, getSchool);
 
 module.exports = router;
