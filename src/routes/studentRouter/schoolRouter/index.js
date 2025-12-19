@@ -31,7 +31,7 @@ const router = express.Router();
 router.route("/schools").get(studentProtect, getSchoolsSummary);
 router.route("/school/:id").get(studentProtect, getSchool);
 router
-  .route("/school-academic-classes")
+  .route("/schools/academic-classes")
   .get(studentProtect, getSchoolAcademicClasses);
 
 module.exports = router;
