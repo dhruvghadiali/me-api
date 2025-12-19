@@ -6,6 +6,10 @@ const {
   getSchoolsSummary,
 } = require("@MEControllers/schoolController/schoolController");
 
+const {
+  getSchoolAcademicClasses,
+} = require("@MEControllers/schoolController/getSchoolAcademicClassesController");
+
 const router = express.Router();
 
 /**
@@ -26,5 +30,8 @@ const router = express.Router();
  */
 router.route("/schools").get(studentProtect, getSchoolsSummary);
 router.route("/school/:id").get(studentProtect, getSchool);
+router
+  .route("/school-academic-classes")
+  .get(studentProtect, getSchoolAcademicClasses);
 
 module.exports = router;
