@@ -17,6 +17,12 @@ const getSchoolAcademicClasses = asyncHandler(async (req, res, next) => {
     .select(["name"])
     .populate([
       {
+        path: "education_boards",
+        select: ["education_board"],
+      },
+    ])
+    .populate([
+      {
         path: "school_academic_class",
         select: "education_board academic_class",
         populate: [{ path: "academic_class", select: "academic_class" }],
