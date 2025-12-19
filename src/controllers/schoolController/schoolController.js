@@ -186,6 +186,38 @@ const getSchool = asyncHandler(async (req, res, next) => {
           { path: "user" },
         ],
       },
+    ])
+    .populate([
+      {
+        path: "school_academic_class",
+        select: "education_board academic_class",
+        populate: [
+          { path: "academic_class", select: "academic_class" },
+          {
+            path: "school_fees",
+            populate: [{ path: "fee_type", select: "fee_type" }],
+          },
+          {
+            path: "school_admission_documents",
+            populate: [
+              { path: "admission_document", select: "admission_document" },
+            ],
+          },
+        ],
+      },
+    ])
+    .populate([
+      {
+        path: "school_facility",
+        select: "facility",
+        populate: [
+          {
+            path: "facility",
+            select: "facility_name facility_type",
+            populate: [{ path: "facility_type", select: "facility_type" }],
+          },
+        ],
+      },
     ]);
 
   // Send response

@@ -236,6 +236,20 @@ schoolSchema.virtual("school_address", {
   foreignField: "school",
 });
 
+schoolSchema.virtual("school_academic_class", {
+  ref: "school_academic_class",
+  localField: "_id",
+  foreignField: "school",
+  options: { match: { is_active: true } },
+});
+
+schoolSchema.virtual("school_facility", {
+  ref: "school_facility",
+  localField: "_id",
+  foreignField: "school",
+  options: { match: { is_active: true } },
+});
+
 schoolSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, response) {

@@ -29,6 +29,7 @@ const authResponseMessage = {
   schoolAdminChangePasswordSuccess: `School admin password updated successfully`,
   schoolAdminChangePasswordError: `Facing issue while updating school admin password`,
   schoolAdminSignInSuccess: `School admin signin process successfully completed`,
+  studentChangePasswordSuccess: `Student password updated successfully`,
 };
 
 module.exports = authResponseMessage;

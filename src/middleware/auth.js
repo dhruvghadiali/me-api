@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+const { USER_TYPES } = require("@MEHelpers/enums");
 const { asyncHandler } = require("@MEMiddleware/async");
 
 const User = require("@MEModels/userModel");
@@ -46,10 +47,12 @@ const authorizeUser = (userType) =>
     }
   });
 
-const superAdminProtect = authorizeUser("SUPER_ADMIN");
-const schoolAdminProtect = authorizeUser("SCHOOL_ADMIN");
+const superAdminProtect = authorizeUser(USER_TYPES.SUPER_ADMIN);
+const schoolAdminProtect = authorizeUser(USER_TYPES.SCHOOL_ADMIN);
+const studentProtect = authorizeUser(USER_TYPES.STUDENT);
 
 module.exports = {
   superAdminProtect,
   schoolAdminProtect,
+  studentProtect,
 };

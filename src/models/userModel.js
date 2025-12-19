@@ -2,6 +2,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
+const {
+  USER_TYPES,
+  USER_STATUS,
+  ACCOUNT_VERIFICATION_STATUS,
+} = require("@MEHelpers/enums");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
   emailMaxChar,
@@ -94,16 +99,20 @@ const userSchema = Schema(
     },
     user_type: {
       type: String,
-      enum: ["SUPER_ADMIN", "SCHOOL_ADMIN", "STUDENT"],
-      default: "STUDENT",
+      enum: [
+        USER_TYPES.SUPER_ADMIN,
+        USER_TYPES.SCHOOL_ADMIN,
+        USER_TYPES.STUDENT,
+      ],
+      default: USER_TYPES.STUDENT,
     },
     is_active: {
       type: Boolean,
-      default: false,
+      default: USER_STATUS.INACTIVE,
     },
     is_account_verified: {
       type: Boolean,
-      default: false,
+      default: ACCOUNT_VERIFICATION_STATUS.UNVERIFIED,
     },
     reset_password_token: {
       type: String,
@@ -116,8 +125,8 @@ const userSchema = Schema(
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
 
-  this.is_active = false;
-  this.is_account_verified = false;
+  this.is_active = USER_STATUS.INACTIVE;
+  this.is_account_verified = ACCOUNT_VERIFICATION_STATUS.UNVERIFIED;
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
@@ -132,10 +141,12 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 
 userSchema.methods.getSignedJwtToken = function () {
   let expiresIn = "1m";
-  if (this.user_type === "SUPER_ADMIN") {
+  if (this.user_type === USER_TYPES.SUPER_ADMIN) {
     expiresIn = process.env.SUPER_ADMIN_JWT_EXPIRE_TIME || expiresIn;
-  } else if (this.user_type === "SCHOOL_ADMIN") {
+  } else if (this.user_type === USER_TYPES.SCHOOL_ADMIN) {
     expiresIn = process.env.SCHOOL_ADMIN_JWT_EXPIRE_TIME || expiresIn;
+  } else if (this.user_type === USER_TYPES.STUDENT) {
+    expiresIn = process.env.STUDENT_JWT_EXPIRE_TIME || expiresIn;
   }
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn,
@@ -149,6 +160,11 @@ userSchema.statics.setSchoolAdminDefaultPassword = async function () {
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.statics.generateResetPasswordToken = async function (userId) {
+  const saltRounds = await bcrypt.genSalt(10);
+  return await bcrypt.hash(userId, saltRounds);
 };
 
 userSchema.virtual("school_address", {

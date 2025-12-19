@@ -8,6 +8,7 @@ const academicClassRouter = require("@MERoutes/schoolAdminRouter/academicClassRo
 const schoolFacilityRouter = require("@MERoutes/schoolAdminRouter/schoolFacilityRouter");
 const admissionDocumentRouter = require("@MERoutes/schoolAdminRouter/admissionDocumentRouter");
 const schoolAcademicClassRouter = require("@MERoutes/schoolAdminRouter/schoolAcademicClassRouter");
+const admissionApplicationRouter = require("@MERoutes/schoolAdminRouter/admissionApplicationRouter");
 const schoolAdmissionDocumentRouter = require("@MERoutes/schoolAdminRouter/schoolAdmissionDocumentRouter");
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.use("/", academicClassRouter);
 router.use("/", schoolFacilityRouter);
 router.use("/", admissionDocumentRouter);
 router.use("/", schoolAcademicClassRouter);
+router.use("/", admissionApplicationRouter);
 router.use("/", schoolAdmissionDocumentRouter);
 
 module.exports = router;

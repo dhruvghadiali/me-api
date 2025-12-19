@@ -79,6 +79,22 @@ schoolAcademicClassSchema.index(
   { unique: true, index: true }
 );
 
+// Virtual to fetch fees linked to this school_academic_class
+schoolAcademicClassSchema.virtual("school_fees", {
+  ref: "school_fee",
+  localField: "_id",
+  foreignField: "school_academic_class",
+  options: { match: { is_active: true } },
+});
+
+// Virtual to fetch admission documents linked to this school_academic_class
+schoolAcademicClassSchema.virtual("school_admission_documents", {
+  ref: "school_admission_document",
+  localField: "_id",
+  foreignField: "school_academic_class",
+  options: { match: { is_active: true } },
+});
+
 schoolAcademicClassSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

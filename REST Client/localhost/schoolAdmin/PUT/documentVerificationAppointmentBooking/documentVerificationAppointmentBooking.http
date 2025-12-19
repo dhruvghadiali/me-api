@@ -1,0 +1,6 @@
+### Scenario 001 (Valid payload)
+PUT {{schoolAdminLocalhostBaseUrl}}{{schoolAdminDocumentVerificationAppointmentBookingRoute}}
+Content-Type: application/json
+Authorization: {{schoolAdminAuthToken}}
+
+< ./payload/payload001.json

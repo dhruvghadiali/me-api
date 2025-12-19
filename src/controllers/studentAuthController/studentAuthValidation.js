@@ -1,11 +1,17 @@
 const Joi = require("joi");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
+const { HTTP_STATUS_CODES } = require("@MEHelpers/enums");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const { setValidationMessage } = require("@MEUtils/utility");
 
-const { isUserNameExists } = require("@MEUtils/reqBodyValidator");
+const {
+  isUserNameExists,
+  checkValidObjectId,
+  checkStudentForSignupSendOTP,
+  checkStudentForForgottenPasswordSendOTP,
+} = require("@MEUtils/reqBodyValidator");
 
 const {
   emailMinChar,
@@ -19,6 +25,12 @@ const {
   firstNameMaxChar,
   passwordMinChar,
   passwordMaxCharWithoutEncryption,
+  verificationTokenMaxChar,
+  verificationTokenMinChar,
+  otpMaxNumber,
+  otpMinNumber,
+  accountNameMinChar,
+  accountNameMaxChar,
 } = require("@MEHelpers/validationConst");
 const {
   firstNameEmpty,
@@ -57,6 +69,44 @@ const {
   studentSignupReqBodyEmpty,
   studentSignupReqBodyUnknown,
   studentSignupReqBodyRequired,
+  studentSigninReqBodyBase,
+  studentSigninReqBodyEmpty,
+  studentSigninReqBodyUnknown,
+  studentSigninReqBodyRequired,
+  studentOTPVerificationReqBodyRequired,
+  studentOTPVerificationReqBodyEmpty,
+  studentOTPVerificationReqBodyBase,
+  studentOTPVerificationReqBodyUnknown,
+  studentSendOTPReqBodyBase,
+  studentSendOTPReqBodyEmpty,
+  studentSendOTPReqBodyUnknown,
+  studentSendOTPReqBodyRequired,
+  userIdRequired,
+  userIdEmpty,
+  userIdInvalid,
+  emailOtpRequired,
+  emailOtpInvalid,
+  emailOtpRange,
+  phoneOtpRequired,
+  phoneOtpInvalid,
+  phoneOtpRange,
+  verificationTokenRequired,
+  verificationTokenEmpty,
+  verificationTokenInvalid,
+  verificationTokenLength,
+  accountNameRequired,
+  accountNameEmpty,
+  accountNameInvalid,
+  accountNameMinLength,
+  accountNameMaxLength,
+  accountNameReqBodyBase,
+  accountNameReqBodyEmpty,
+  accountNameReqBodyUnknown,
+  accountNameReqBodyRequired,
+  changePasswordReqBodyRequired,
+  changePasswordReqBodyEmpty,
+  changePasswordReqBodyBase,
+  changePasswordReqBodyUnknown,
 } = require("@MEHelpers/validationMessage");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 
@@ -151,17 +201,338 @@ const validateStudentSignupPostSchema = Joi.object({
     "any.required": studentSignupReqBodyRequired,
   });
 
+const validateStudentSigninPostSchema = Joi.object({
+  username: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(usernameMinChar)
+    .max(usernameMaxChar)
+    .messages({
+      "string.empty": usernameEmpty,
+      "string.base": usernameBase,
+      "any.required": usernameRequired,
+      "string.min": usernameMinLength,
+      "string.max": usernameMaxLength,
+    }),
+  password: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(passwordMinChar)
+    .max(passwordMaxCharWithoutEncryption)
+    .messages({
+      "string.empty": passwordEmpty,
+      "string.base": passwordBase,
+      "any.required": passwordRequired,
+      "string.min": passwordMinLength,
+      "string.max": passwordMaxLengthWithoutEncryption,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentSigninReqBodyBase,
+    "object.empty": studentSigninReqBodyEmpty,
+    "object.unknown": studentSigninReqBodyUnknown,
+    "any.required": studentSigninReqBodyRequired,
+  });
+
+const validateStudentSignupSendOTPPostSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .external(checkStudentForSignupSendOTP)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentSendOTPReqBodyBase,
+    "object.empty": studentSendOTPReqBodyEmpty,
+    "object.unknown": studentSendOTPReqBodyUnknown,
+    "any.required": studentSendOTPReqBodyRequired,
+  });
+
+const validateStudentForgottenPasswordSendOTPPostSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .external(checkStudentForForgottenPasswordSendOTP)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentSendOTPReqBodyBase,
+    "object.empty": studentSendOTPReqBodyEmpty,
+    "object.unknown": studentSendOTPReqBodyUnknown,
+    "any.required": studentSendOTPReqBodyRequired,
+  });
+
+const validateStudentOTPVerificationPostSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+  email_otp: Joi.number()
+    .integer()
+    .min(otpMinNumber)
+    .max(otpMaxNumber)
+    .required()
+    .messages({
+      "number.base": emailOtpInvalid,
+      "number.integer": emailOtpInvalid,
+      "number.min": emailOtpRange,
+      "number.max": emailOtpRange,
+      "any.required": emailOtpRequired,
+    }),
+  phone_otp: Joi.number()
+    .integer()
+    .min(otpMinNumber)
+    .max(otpMaxNumber)
+    .required()
+    .messages({
+      "number.base": phoneOtpInvalid,
+      "number.integer": phoneOtpInvalid,
+      "number.min": phoneOtpRange,
+      "number.max": phoneOtpRange,
+      "any.required": phoneOtpRequired,
+    }),
+  verification_token: Joi.string()
+    .trim()
+    .min(verificationTokenMinChar)
+    .max(verificationTokenMaxChar)
+    .required()
+    .messages({
+      "string.base": verificationTokenInvalid,
+      "string.empty": verificationTokenEmpty,
+      "string.min": verificationTokenLength,
+      "string.max": verificationTokenLength,
+      "any.required": verificationTokenRequired,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": studentOTPVerificationReqBodyBase,
+    "object.empty": studentOTPVerificationReqBodyEmpty,
+    "object.unknown": studentOTPVerificationReqBodyUnknown,
+    "any.required": studentOTPVerificationReqBodyRequired,
+  });
+
+const validateAccountNamePostSchema = Joi.object({
+  account_name: Joi.string()
+    .trim()
+    .min(accountNameMinChar)
+    .max(accountNameMaxChar)
+    .required()
+    .messages({
+      "string.base": accountNameInvalid,
+      "string.empty": accountNameEmpty,
+      "string.min": accountNameMinLength,
+      "string.max": accountNameMaxLength,
+      "any.required": accountNameRequired,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": accountNameReqBodyBase,
+    "object.empty": accountNameReqBodyEmpty,
+    "object.unknown": accountNameReqBodyUnknown,
+    "any.required": accountNameReqBodyRequired,
+  });
+
+const validateChangePasswordPostSchema = Joi.object({
+  user_id: Joi.string()
+    .trim()
+    .required()
+    .empty()
+    .custom(checkValidObjectId)
+    .messages({
+      "string.base": userIdInvalid,
+      "string.empty": userIdEmpty,
+      "any.required": userIdRequired,
+      "any.invalid": userIdInvalid,
+    }),
+  reset_password_token: Joi.string()
+    .trim()
+    .min(verificationTokenMinChar)
+    .max(verificationTokenMaxChar)
+    .required()
+    .messages({
+      "string.base": verificationTokenInvalid,
+      "string.empty": verificationTokenEmpty,
+      "string.min": verificationTokenLength,
+      "string.max": verificationTokenLength,
+      "any.required": verificationTokenRequired,
+    }),
+  password: Joi.string()
+    .required()
+    .empty()
+    .trim()
+    .min(passwordMinChar)
+    .max(passwordMaxCharWithoutEncryption)
+    .messages({
+      "string.empty": passwordEmpty,
+      "string.base": passwordBase,
+      "any.required": passwordRequired,
+      "string.min": passwordMinLength,
+      "string.max": passwordMaxLengthWithoutEncryption,
+    }),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": changePasswordReqBodyBase,
+    "object.empty": changePasswordReqBodyEmpty,
+    "object.unknown": changePasswordReqBodyUnknown,
+    "any.required": changePasswordReqBodyRequired,
+  });
+
 const validateStudentSignupPostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
       await validateStudentSignupPostSchema.validateAsync(req.body);
       next();
     } catch (err) {
-      next(new ErrorResponse(setValidationMessage(err), 400));
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+const validateStudentSigninPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentSigninPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+const validateStudentOTPVerificationPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentOTPVerificationPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+const validateStudentSignupSendOTPPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentSignupSendOTPPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+const validateStudentForgottenPasswordSendOTPPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateStudentForgottenPasswordSendOTPPostSchema.validateAsync(
+        req.body
+      );
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+const validateAccountNamePostReqBody = asyncHandler(async (req, res, next) => {
+  try {
+    await validateAccountNamePostSchema.validateAsync(req.body);
+    next();
+  } catch (err) {
+    next(
+      new ErrorResponse(setValidationMessage(err), HTTP_STATUS_CODES.STATUS_400)
+    );
+  }
+});
+
+const validateChangePasswordPostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validateChangePasswordPostSchema.validateAsync(req.body);
+      next();
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(err),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
     }
   }
 );
 
 module.exports = {
+  validateAccountNamePostReqBody,
   validateStudentSignupPostReqBody,
+  validateStudentSigninPostReqBody,
+  validateChangePasswordPostReqBody,
+  validateStudentSignupSendOTPPostReqBody,
+  validateStudentOTPVerificationPostReqBody,
+  validateStudentForgottenPasswordSendOTPPostReqBody,
 };

@@ -1,0 +1,29 @@
+### Scenario 001 (Valid credentials)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload001.json
+
+### Scenario 002 (Invalid credentials: missing username)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload002.json
+
+### Scenario 003 (Invalid credentials: empty username)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload003.json
+
+### Scenario 004 (Invalid credentials: empty payload)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload004.json
+
+### Scenario 005 (Invalid credentials: missing username field)
+POST {{studentLocalhostBaseUrl}}{{studentSigninRoute}}
+Content-Type: application/json
+
+< ./payload/payload005.json
