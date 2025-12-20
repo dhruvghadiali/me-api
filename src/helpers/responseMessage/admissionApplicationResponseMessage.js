@@ -24,6 +24,10 @@ const admissionApplicationResponseMessage = {
   admissionApplicationFeeAppointmentScheduleFail: `Facing issue while booking fee payment appointment`,
   admissionApplicationFeeAppointmentRescheduleSuccess: `Fee payment appointment rescheduled successfully`,
   admissionApplicationFeeAppointmentRescheduleFail: `Facing issue while rescheduling fee payment appointment`,
+  admissionApplicationsInvalidUserType: `Invalid user to access this admission applications resource please login again`,
+  admissionApplicationsGetRequestFail: `No admission applications found`,
+  admissionApplicationsGetRequestSuccess: `Admission applications retrieved successfully`,
+  admissionApplicationsInvalidUserInformation: `Invalid user information please login again`,
   admissionApplicationStatusChangeFail: (academicSession) =>
     `Student is already selected for another school in academic session ${academicSession}`,
   admissionApplicationStatusChangeNotAllowed: (

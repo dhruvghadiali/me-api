@@ -20,6 +20,11 @@ const ADMISSION_APPLICATION_STATUS = Object.freeze({
   CLOSED: "closed",
 });
 
+const ADMISSION_APPLICATION = Object.freeze({
+  ACADEMIC_SESSION_START_MONTH: 6,
+  STUDENT_ACADEMIC_YEARS_RANGE: 2,
+});
+
 /**
  * Admission Payment Methods enumeration
  */
@@ -35,4 +40,5 @@ const ADMISSION_PAYMENT_METHODS = Object.freeze({
 module.exports = {
   ADMISSION_APPLICATION_STATUS,
   ADMISSION_PAYMENT_METHODS,
+  ADMISSION_APPLICATION,
 };

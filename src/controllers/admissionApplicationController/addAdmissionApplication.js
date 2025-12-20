@@ -4,8 +4,9 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
-  ADMISSION_APPLICATION_STATUS,
   HTTP_STATUS_CODES,
+  ADMISSION_APPLICATION,
+  ADMISSION_APPLICATION_STATUS,
 } = require("@MEHelpers/enums");
 const {
   admissionApplicationPostRequestFail,
@@ -40,7 +41,7 @@ const addAdmissionApplication = asyncHandler(async (req, res, next) => {
   const changed_at = new Date();
   const application_number = generateUniqueStringNumber({ prefix: "ADM" });
   const academic_session =
-    moment().month() > 6
+    moment().month() > ADMISSION_APPLICATION.ACADEMIC_SESSION_START_MONTH
       ? `${moment().format("YYYY")}-${moment().add(1, "year").format("YYYY")}`
       : `${moment().subtract(1, "year").format("YYYY")}-${moment().format(
           "YYYY"
