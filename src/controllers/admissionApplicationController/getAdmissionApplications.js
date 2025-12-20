@@ -67,9 +67,21 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
     }
 
     // Query admission applications
-    const admissionApplications = await AdmissionApplication.find(query).sort({
-      created_at: -1,
-    });
+    const admissionApplications = await AdmissionApplication.find(query)
+      .populate("created_by updated_by")
+      .populate([
+        {
+          path: "school_academic_class",
+          select: ["_id", "education_board", "academic_class"],
+          populate: [
+            { path: "academic_class", select: ["academic_class", "_id"] },
+            { path: "education_board", select: ["education_board", "_id"] },
+          ],
+        },
+      ])
+      .sort({
+        created_at: -1,
+      });
 
     if (!admissionApplications) {
       // No applications found
