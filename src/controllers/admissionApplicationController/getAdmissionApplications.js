@@ -72,10 +72,11 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
       .populate([
         {
           path: "school_academic_class",
-          select: ["_id", "education_board", "academic_class"],
+          select: ["_id", "education_board", "academic_class", "school"],
           populate: [
             { path: "academic_class", select: ["academic_class", "_id"] },
             { path: "education_board", select: ["education_board", "_id"] },
+            { path: "school", select: ["name", "_id"] },
           ],
         },
       ])
