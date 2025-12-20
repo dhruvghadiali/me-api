@@ -22,13 +22,18 @@ const { generateUniqueStringNumber } = require("@MEUtils/utility");
  * @access  Student
  */
 const addAdmissionApplication = asyncHandler(async (req, res, next) => {
-  const { school_academic_class, status } = req.body;
   const { id } = req.user;
 
+  let { school_academic_class, status } = req.body;
   let remarks;
 
   if (status && _.toLower(status) === ADMISSION_APPLICATION_STATUS.DRAFT) {
     remarks = `Application created on ${ADMISSION_APPLICATION_STATUS.DRAFT} mode`;
+  } else if (
+    status &&
+    _.toLower(status) === ADMISSION_APPLICATION_STATUS.SUBMITTED
+  ) {
+    remarks = `Application created on ${ADMISSION_APPLICATION_STATUS.SUBMITTED} mode`;
   } else {
     status = ADMISSION_APPLICATION_STATUS.SUBMITTED;
     remarks = `Application created on ${ADMISSION_APPLICATION_STATUS.SUBMITTED} mode`;
