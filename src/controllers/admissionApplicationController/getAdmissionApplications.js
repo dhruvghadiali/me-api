@@ -82,6 +82,7 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         {
           path: "status_history.changed_by",
           select: ["_id", "username", "first_name", "last_name"],
+          options: { sort: { changed_at: -1 } },
         },
       ])
       .sort({
