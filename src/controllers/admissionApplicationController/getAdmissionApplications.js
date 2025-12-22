@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const moment = require("moment");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const AdmissionApplication = require("@MEModels/admissionApplicationModel");
@@ -82,7 +83,6 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         {
           path: "status_history.changed_by",
           select: ["_id", "username", "first_name", "last_name"],
-          options: { sort: { changed_at: -1 } },
         },
       ])
       .sort({
@@ -98,6 +98,20 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         )
       );
     } else {
+      // Sort status_history by changed_at in descending order (latest first) using lodash
+      admissionApplications.forEach((application) => {
+        if (
+          application.status_history &&
+          Array.isArray(application.status_history)
+        ) {
+          application.status_history = _.orderBy(
+            application.status_history,
+            ["changed_at"],
+            ["desc"]
+          );
+        }
+      });
+
       // Send response
       return res.status(HTTP_STATUS_CODES.STATUS_200).json({
         data: admissionApplications,
