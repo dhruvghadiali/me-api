@@ -79,6 +79,10 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
             { path: "school", select: ["name", "_id"] },
           ],
         },
+        {
+          path: "status_history.changed_by",
+          select: ["_id", "username", "first_name", "last_name"],
+        },
       ])
       .sort({
         created_at: -1,
