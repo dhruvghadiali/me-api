@@ -49,6 +49,7 @@
     "@MEHelpers": "./src/helpers",
     "@MEControllers": "./src/controllers",
     "@MEMiddleware": "./src/middleware",
+    "@MEControllerValidators": "./src/controllerValidators",
     "@ME": "./src"
   }
 }
