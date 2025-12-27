@@ -21,6 +21,7 @@ const schoolAddressValidationMessage = require("@MEHelpers/validationMessage/sch
 const schoolFeeTypeValidationMessage = require("@MEHelpers/validationMessage/schoolFeeTypeValidationMessage");
 const academicClassValidationMessage = require("@MEHelpers/validationMessage/academicClassValidationMessage");
 const parentProfileValidationMessage = require("@MEHelpers/validationMessage/parentProfileValidationMessage");
+const siblingProfileValidationMessage = require("@MEHelpers/validationMessage/siblingProfileValidationMessage");
 const educationBoardValidationMessage = require("@MEHelpers/validationMessage/educationBoardValidationMessage");
 const schoolFacilityValidationMessage = require("@MEHelpers/validationMessage/schoolFacilityValidationMessage");
 const studentProfileValidationMessage = require("@MEHelpers/validationMessage/studentProfileValidationMessage");
@@ -54,6 +55,7 @@ const validationMessage = {
   ...schoolFeeTypeValidationMessage,
   ...academicClassValidationMessage,
   ...parentProfileValidationMessage,
+  ...siblingProfileValidationMessage,
   ...educationBoardValidationMessage,
   ...schoolFacilityValidationMessage,
   ...studentProfileValidationMessage,
