@@ -37,6 +37,15 @@ const {
 
 const emergencyContactSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: [true, usernameRequired],
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
     name: {
       type: String,
       trim: true,

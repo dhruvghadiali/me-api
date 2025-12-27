@@ -3,6 +3,7 @@ const moment = require("moment");
 
 const { Schema } = mongoose;
 
+const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const { GENDERS } = require("@ME/helpers/enums/studentEnums");
 const {
   firstNameMinChar,
@@ -17,6 +18,8 @@ const {
   siblingProfileDateOfBirthMaxAge,
 } = require("@MEHelpers/validationConst");
 const {
+  usernameInvalid,
+  usernameRequired,
   firstNameRequired,
   firstNameMaxLength,
   firstNameMinLength,
@@ -31,11 +34,19 @@ const {
   siblingProfileSchoolNameMaxLength,
   siblingProfileAdmissionNumberMinLength,
   siblingProfileAdmissionNumberMaxLength,
-  siblingProfileAdmissionNumberInvalid,
 } = require("@MEHelpers/validationMessage");
 
 const siblingProfileSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: [true, usernameRequired],
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
     first_name: {
       type: String,
       trim: true,
@@ -111,8 +122,52 @@ const siblingProfileSchema = new Schema(
         siblingProfileAdmissionNumberMaxLength,
       ],
     },
+    is_active: { type: Boolean, default: true },
+    created_by: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: [true, usernameRequired],
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
+    updated_by: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: [true, usernameRequired],
+      validate: {
+        validator: isActiveUserValidator,
+        message: usernameInvalid,
+      },
+    },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
+
+siblingProfileSchema.set("toJSON", {
+  virtuals: true,
+  transform: function (_, response) {
+    if (
+      _.get(response, "created_by.first_name") &&
+      _.get(response, "created_by.last_name")
+    ) {
+      response.created_by = `${response.created_by.first_name} ${response.created_by.last_name}`;
+    } else {
+      delete response.created_by;
+    }
+
+    if (
+      _.get(response, "updated_by.first_name") &&
+      _.get(response, "updated_by.last_name")
+    ) {
+      response.updated_by = `${response.updated_by.first_name} ${response.updated_by.last_name}`;
+    } else {
+      delete response.updated_by;
+    }
+    return response;
+  },
+});
+siblingProfileSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("sibling_profile", siblingProfileSchema);
