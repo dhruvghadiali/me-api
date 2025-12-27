@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { Schema } = mongoose;
+
 const {
   isActiveCityExistsValidator,
   isActiveStateExistsValidator,
@@ -7,12 +9,10 @@ const {
   isActiveDistrictExistsValidator,
   isActiveAreaNameExistsValidator,
 } = require("@MEUtils/dbQuery");
-
 const {
   addressMaxChar,
   addressMinChar,
 } = require("@MEHelpers/validationConst");
-
 const {
   zipcodeInvalid,
   zipcodeRequired,
@@ -28,8 +28,6 @@ const {
   districtNameInvalid,
   districtNameRequired,
 } = require("@MEHelpers/validationMessage");
-
-const { Schema } = mongoose;
 
 const addressSchema = new Schema({
   address: {
