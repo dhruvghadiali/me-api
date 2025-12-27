@@ -4,6 +4,8 @@ const {
 const {
   emergencyContactNameMinChar,
   emergencyContactNameMaxChar,
+  addressMinChar,
+  addressMaxChar,
 } = require("@MEHelpers/validationConst");
 
 const emergencyContactProfileValidationMessage = {
@@ -12,6 +14,8 @@ const emergencyContactProfileValidationMessage = {
   emergencyContactNameMaxLength: `Name cannot exceed ${emergencyContactNameMaxChar} characters`,
   emergencyContactRelationRequired: `Relation is required`,
   emergencyContactRelationInvalid: `Relation must be one of: ${Object.values(EMERGENCY_CONTACT_RELATIONS).join(", ")}`,
+  addressMinLength: `Address must be at least ${addressMinChar} characters long`,
+  addressMaxLength: `Address cannot exceed ${addressMaxChar} characters`,
 };
 
 module.exports = emergencyContactProfileValidationMessage;
