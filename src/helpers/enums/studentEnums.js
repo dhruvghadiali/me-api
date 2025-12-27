@@ -3,8 +3,6 @@
  */
 
 const EMERGENCY_CONTACT_RELATIONS = Object.freeze({
-  FATHER: "father",
-  MOTHER: "mother",
   GUARDIAN: "guardian",
   BROTHER: "brother",
   SISTER: "sister",

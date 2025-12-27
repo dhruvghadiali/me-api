@@ -30,9 +30,9 @@ const {
   phoneNumberEmpty,
   phoneNumberRequired,
   phoneNumberInvalid,
-  alternatePhoneBase,
-  alternatePhoneEmpty,
-  alternatePhoneInvalid,
+  emergencyContactAlternatePhoneBase,
+  emergencyContactAlternatePhoneEmpty,
+  emergencyContactAlternatePhoneInvalid,
   emailBase,
   emailEmpty,
   emailMinLength,
@@ -91,10 +91,10 @@ const validationPostSchema = Joi.object({
     .length(phoneNumberChar)
     .pattern(phoneRegex)
     .messages({
-      "string.base": alternatePhoneBase,
-      "string.empty": alternatePhoneEmpty,
+      "string.base": emergencyContactAlternatePhoneBase,
+      "string.empty": emergencyContactAlternatePhoneEmpty,
       "string.length": phoneNumberMaxLength,
-      "string.pattern.base": alternatePhoneInvalid,
+      "string.pattern.base": emergencyContactAlternatePhoneInvalid,
     }),
   email: Joi.string()
     .trim()
