@@ -13,8 +13,8 @@ const {
   phoneNumberChar,
   emergencyContactNameMinChar,
   emergencyContactNameMaxChar,
-  addressMinChar,
-  addressMaxChar,
+  emergencyContactAddressMinLength,
+  emergencyContactAddressMaxLength,
 } = require("@MEHelpers/validationConst");
 const {
   emailInvalid,
@@ -31,8 +31,8 @@ const {
   emergencyContactRelationInvalid,
   usernameRequired,
   usernameInvalid,
-  addressMinLength,
-  addressMaxLength,
+  emergencyContactAddressMaxLength,
+  emergencyContactAddressMinLength,
 } = require("@MEHelpers/validationMessage");
 
 const emergencyContactSchema = new Schema(
@@ -80,8 +80,8 @@ const emergencyContactSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      maxlength: [addressMaxChar, addressMaxLength],
-      minlength: [addressMinChar, addressMinLength],
+      maxlength: [addressMaxChar, emergencyContactAddressMaxLength],
+      minlength: [addressMinChar, emergencyContactAddressMinLength],
     },
     is_active: { type: Boolean, default: true },
     created_by: {

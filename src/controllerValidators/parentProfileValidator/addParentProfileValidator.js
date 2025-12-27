@@ -1,0 +1,250 @@
+const Joi = require("joi");
+const moment = require("moment");
+
+const ErrorResponse = require("@MEUtils/errorResponse");
+
+const { phoneRegex } = require("@MEHelpers/regex");
+const { asyncHandler } = require("@MEMiddleware/async");
+const {
+  HTTP_STATUS_CODES,
+  PARENT_OCCUPATIONS_IN,
+  EDUCATION_LEVELS_IN,
+} = require("@ME/helpers/enums");
+const {
+  checkValidObjectId,
+  isActiveAddressExists,
+} = require("@MEUtils/reqBodyValidator");
+const {
+  emailMaxChar,
+  emailMinChar,
+  lastNameMaxChar,
+  lastNameMinChar,
+  phoneNumberChar,
+  firstNameMaxChar,
+  firstNameMinChar,
+  aadhaarNumberChar,
+  parentProfileAnnualIncomeMinValue,
+  parentProfileAnnualIncomeMaxValue,
+  parentProfileCaringChildByMinChar,
+  parentProfileCaringChildByMaxChar,
+} = require("@MEHelpers/validationConst");
+const {
+  emailInvalid,
+  emailRequired,
+  emailMaxLength,
+  emailMinLength,
+  lastNameRequired,
+  lastNameMaxLength,
+  lastNameMinLength,
+  firstNameRequired,
+  firstNameMaxLength,
+  firstNameMinLength,
+  phoneNumberInvalid,
+  phoneNumberRequired,
+  aadhaarNumberRequired,
+  parentProfileAnnualIncomeInvalid,
+  parentProfileOccupationInvalid,
+  parentProfileEducationInvalid,
+  parentProfileDateOfDeathInvalid,
+  parentProfileCaringChildByMinLength,
+  parentProfileCaringChildByMaxLength,
+  parentProfileCaringChildByRequired,
+  firstNameBase,
+  firstNameEmpty,
+  lastNameBase,
+  lastNameEmpty,
+  phoneNumberBase,
+  phoneNumberEmpty,
+  phoneNumberMaxLength,
+  emailBase,
+  emailEmpty,
+  aadhaarNumberBase,
+  aadhaarNumberEmpty,
+  aadhaarNumberMaxLength,
+  parentProfileOccupationBase,
+  parentProfileOccupationEmpty,
+  parentProfileOccupationInvalid,
+  parentProfileOccupationRequired,
+  parentProfileEducationBase,
+  parentProfileEducationEmpty,
+  parentProfileEducationInvalid,
+  parentProfileEducationRequired,
+  parentProfileAnnualIncomeBase,
+  parentProfileAnnualIncomeInvalid,
+  parentProfileAnnualIncomeRequired,
+  addressOverrideBase,
+  addressOverrideEmpty,
+  addressOverrideInvalid,
+  dateOfDeathBase,
+  dateOfDeathInvalid,
+  caringChildByBase,
+  caringChildByEmpty,
+  reqBodyBase,
+  reqBodyEmpty,
+  reqBodyUnknown,
+  reqBodyRequired,
+} = require("@MEHelpers/validationMessage");
+
+const validationPostSchema = Joi.object({
+  first_name: Joi.string()
+    .trim()
+    .required()
+    .min(firstNameMinChar)
+    .max(firstNameMaxChar)
+    .messages({
+      "string.base": firstNameBase,
+      "string.empty": firstNameEmpty,
+      "string.min": firstNameMinLength,
+      "string.max": firstNameMaxLength,
+      "any.required": firstNameRequired,
+    }),
+  last_name: Joi.string()
+    .trim()
+    .required()
+    .min(lastNameMinChar)
+    .max(lastNameMaxChar)
+    .messages({
+      "string.base": lastNameBase,
+      "string.empty": lastNameEmpty,
+      "string.min": lastNameMinLength,
+      "string.max": lastNameMaxLength,
+      "any.required": lastNameRequired,
+    }),
+  phone_number: Joi.string()
+    .trim()
+    .required()
+    .length(phoneNumberChar)
+    .pattern(phoneRegex)
+    .messages({
+      "string.base": phoneNumberBase,
+      "string.empty": phoneNumberEmpty,
+      "string.length": phoneNumberMaxLength,
+      "string.pattern.base": phoneNumberInvalid,
+      "any.required": phoneNumberRequired,
+    }),
+  email: Joi.string()
+    .trim()
+    .required()
+    .min(emailMinChar)
+    .max(emailMaxChar)
+    .email()
+    .messages({
+      "string.base": emailBase,
+      "string.empty": emailEmpty,
+      "string.min": emailMinLength,
+      "string.max": emailMaxLength,
+      "string.email": emailInvalid,
+      "any.required": emailRequired,
+    }),
+  aadhaar_number: Joi.string()
+    .trim()
+    .lowercase()
+    .required()
+    .length(aadhaarNumberChar)
+    .messages({
+      "string.base": aadhaarNumberBase,
+      "string.empty": aadhaarNumberEmpty,
+      "string.length": aadhaarNumberMaxLength,
+      "any.required": aadhaarNumberRequired,
+    }),
+  occupation: Joi.string()
+    .trim()
+    .lowercase()
+    .optional()
+    .valid(...Object.values(PARENT_OCCUPATIONS_IN))
+    .messages({
+      "string.base": parentProfileOccupationBase,
+      "string.empty": parentProfileOccupationEmpty,
+      "any.only": parentProfileOccupationInvalid,
+      "any.required": parentProfileOccupationRequired,
+    }),
+  education: Joi.string()
+    .trim()
+    .lowercase()
+    .optional()
+    .valid(...Object.values(EDUCATION_LEVELS_IN))
+    .messages({
+      "string.base": parentProfileEducationBase,
+      "string.empty": parentProfileEducationEmpty,
+      "any.only": parentProfileEducationInvalid,
+      "any.required": parentProfileEducationRequired,
+    }),
+  annual_income: Joi.number()
+    .required()
+    .greater(parentProfileAnnualIncomeMinValue)
+    .less(parentProfileAnnualIncomeMaxValue)
+    .messages({
+      "number.base": parentProfileAnnualIncomeBase,
+      "number.greater": parentProfileAnnualIncomeInvalid,
+      "number.less": parentProfileAnnualIncomeInvalid,
+      "any.required": parentProfileAnnualIncomeRequired,
+    }),
+  same_address_as_student: Joi.boolean().optional().default(true),
+  address_override: Joi.string()
+    .trim()
+    .optional()
+    .custom(checkValidObjectId)
+    .external(isActiveAddressExists)
+    .messages({
+      "string.base": addressOverrideBase,
+      "string.empty": addressOverrideEmpty,
+      "any.invalid": addressOverrideInvalid,
+    }),
+  alive: Joi.object({
+    status: Joi.boolean().optional().default(true),
+    date_of_death: Joi.when("status", {
+      is: false,
+      then: Joi.date().required().max("now").messages({
+        "date.base": dateOfDeathBase,
+        "date.max": dateOfDeathInvalid,
+        "any.required": dateOfDeathInvalid,
+      }),
+      otherwise: Joi.date().optional(),
+    }),
+    caring_child_by: Joi.when("status", {
+      is: false,
+      then: Joi.string()
+        .trim()
+        .required()
+        .min(parentProfileCaringChildByMinChar)
+        .max(parentProfileCaringChildByMaxChar)
+        .messages({
+          "string.base": caringChildByBase,
+          "string.empty": caringChildByEmpty,
+          "string.min": parentProfileCaringChildByMinLength,
+          "string.max": parentProfileCaringChildByMaxLength,
+          "any.required": parentProfileCaringChildByRequired,
+        }),
+      otherwise: Joi.string().trim().optional(),
+    }),
+  }).optional(),
+})
+  .empty({})
+  .required()
+  .unknown(false)
+  .messages({
+    "object.base": parentProfileReqBodyBase,
+    "object.empty": parentProfileReqBodyEmpty,
+    "object.unknown": parentProfileReqBodyUnknown,
+    "any.required": parentProfileReqBodyRequired,
+  });
+
+const validateAddParentProfilePostReqBody = asyncHandler(
+  async (req, res, next) => {
+    try {
+      await validationPostSchema.validateAsync(req.body);
+      next();
+    } catch (error) {
+      next(
+        new ErrorResponse(
+          setValidationMessage(error),
+          HTTP_STATUS_CODES.STATUS_400
+        )
+      );
+    }
+  }
+);
+
+module.exports = {
+  validateAddParentProfilePostReqBody,
+};

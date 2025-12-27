@@ -18,6 +18,9 @@ const SchoolFacility = require("@MEModels/schoolFacilityModel");
 const AdmissionDocument = require("@MEModels/admissionDocumentModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const SchoolAdmissionDocument = require("@MEModels/schoolAdmissionDocumentModel");
+const Address = require("@MEModels/addressModel");
+const ParentProfile = require("@MEModels/parentProfileModel");
+const EmergencyContact = require("@MEModels/emergencyContactModel");
 
 const {
   usernameFound,
@@ -282,6 +285,41 @@ const checkStudentForForgottenPasswordSendOTP = async (value) => {
   return value;
 };
 
+const isActiveUserExists = async (value) => {
+  const response = await User.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error("User not found or inactive");
+  }
+  return value;
+};
+
+const isActiveAddressExists = async (value) => {
+  const response = await Address.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error("Address not found or inactive");
+  }
+  return value;
+};
+
+const isActiveParentProfileExists = async (value) => {
+  const response = await ParentProfile.exists({ _id: value, is_active: true });
+  if (!response) {
+    throw new Error("Parent profile not found or inactive");
+  }
+  return value;
+};
+
+const isActiveEmergencyContactExists = async (value) => {
+  const response = await EmergencyContact.exists({
+    _id: value,
+    is_active: true,
+  });
+  if (!response) {
+    throw new Error("Emergency contact not found or inactive");
+  }
+  return value;
+};
+
 module.exports = {
   isUserNameExists,
   isActiveCityExists,
@@ -305,4 +343,8 @@ module.exports = {
   isSchoolHasActiveEducationBoardExists,
   isActiveSchoolAdmissionDocumentExists,
   checkStudentForForgottenPasswordSendOTP,
+  isActiveUserExists,
+  isActiveAddressExists,
+  isActiveParentProfileExists,
+  isActiveEmergencyContactExists,
 };

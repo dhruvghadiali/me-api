@@ -9,6 +9,28 @@ const {
 const { GENDERS } = require("@ME/helpers/enums/studentEnums");
 
 const siblingProfileValidationMessage = {
+  genderBase: `Gender must be a valid string`,
+  genderEmpty: `Gender cannot be empty`,
+  genderRequired: `Gender is required`,
+  genderInvalid: `Gender must be one of: ${Object.values(GENDERS).join(", ")}`,
+  dateOfBirthBase: `Date of birth must be a valid date`,
+  dateOfBirthEmpty: `Date of birth cannot be empty`,
+  dateOfBirthRequired: `Date of birth is required`,
+  dateOfBirthInvalid: `Date of birth must result in age between ${siblingProfileDateOfBirthMinAge} and ${siblingProfileDateOfBirthMaxAge} years`,
+  studyingInClassBase: `Academic class must be a valid string`,
+  studyingInClassEmpty: `Academic class cannot be empty`,
+  studyingInClassRequired: `Academic class is required`,
+  studyingInClassInvalid: `Academic class must be a valid ObjectId`,
+  sameSchoolBase: `Same school must be a boolean`,
+  schoolNameBase: `School name must be a valid string`,
+  schoolNameEmpty: `School name cannot be empty`,
+  schoolNameRequired: `School name is required when same_school is false`,
+  schoolNameMinLength: `School name must be at least ${siblingProfileSchoolNameMinChar} characters long`,
+  schoolNameMaxLength: `School name cannot exceed ${siblingProfileSchoolNameMaxChar} characters`,
+  admissionNumberBase: `Admission number must be a valid string`,
+  admissionNumberMinLength: `Admission number must be at least ${siblingProfileAdmissionNumberMinChar} characters long`,
+  admissionNumberMaxLength: `Admission number cannot exceed ${siblingProfileAdmissionNumberMaxChar} characters`,
+  admissionNumberInvalid: `Admission number can only contain alphanumeric characters, hyphens, underscores, and forward slashes`,
   siblingProfileGenderRequired: `Gender is required`,
   siblingProfileGenderInvalid: `Gender must be one of: ${Object.values(GENDERS).join(", ")}`,
   siblingProfileDateOfBirthRequired: `Date of birth is required`,
@@ -18,6 +40,10 @@ const siblingProfileValidationMessage = {
   siblingProfileAdmissionNumberMinLength: `Admission number must be at least ${siblingProfileAdmissionNumberMinChar} characters long`,
   siblingProfileAdmissionNumberMaxLength: `Admission number cannot exceed ${siblingProfileAdmissionNumberMaxChar} characters`,
   siblingProfileAdmissionNumberInvalid: `Admission number can only contain alphanumeric characters, hyphens, underscores, and forward slashes`,
+  reqBodyBase: `Request body must be an object`,
+  reqBodyEmpty: `Request body cannot be empty`,
+  reqBodyUnknown: `Unknown field in request body`,
+  reqBodyRequired: `Request body is required`,
 };
 
 module.exports = siblingProfileValidationMessage;
