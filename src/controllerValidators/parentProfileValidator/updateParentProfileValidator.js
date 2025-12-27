@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
 
+const { phoneRegex } = require("@MEHelpers/regex");
 const { asyncHandler } = require("@MEMiddleware/async");
 const {
   HTTP_STATUS_CODES,
@@ -43,16 +44,17 @@ const {
   phoneNumberInvalid,
   phoneNumberBase,
   phoneNumberEmpty,
-  phoneNumberLength,
+  phoneNumberMaxLength,
   aadhaarNumberRequired,
   aadhaarNumberBase,
   aadhaarNumberEmpty,
-  occupationBase,
-  occupationInvalid,
-  educationBase,
-  educationInvalid,
   parentProfileAnnualIncomeInvalid,
+  parentProfileAnnualIncomeBase,
+  parentProfileOccupationBase,
+  parentProfileOccupationEmpty,
   parentProfileOccupationInvalid,
+  parentProfileEducationBase,
+  parentProfileEducationEmpty,
   parentProfileEducationInvalid,
   parentProfileDateOfDeathInvalid,
   addressBase,
@@ -63,11 +65,13 @@ const {
   parentProfileCaringChildByRequired,
   parentProfileCaringChildByBase,
   parentProfileCaringChildByEmpty,
-  dateOfDeathBase,
-  dateOfDeathRequired,
-  reqBodyBase,
-  reqBodyUnknown,
-  annualIncomeBase,
+  parentProfileDateOfDeathBase,
+  parentProfileCaringChildByBase,
+  parentProfileCaringChildByEmpty,
+  parentProfileReqBodyBase,
+  parentProfileReqBodyEmpty,
+  parentProfileReqBodyUnknown,
+  parentProfileReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
 
 const validationPutSchema = Joi.object({
@@ -97,11 +101,11 @@ const validationPutSchema = Joi.object({
     .trim()
     .optional()
     .length(phoneNumberChar)
-    .pattern(/^[0-9]{10}$/)
+    .pattern(phoneRegex)
     .messages({
       "string.base": phoneNumberBase,
       "string.empty": phoneNumberEmpty,
-      "string.length": phoneNumberLength,
+      "string.length": phoneNumberMaxLength,
       "string.pattern.base": phoneNumberInvalid,
     }),
   email: Joi.string()
@@ -133,7 +137,8 @@ const validationPutSchema = Joi.object({
     .optional()
     .valid(...Object.values(PARENT_OCCUPATIONS_IN))
     .messages({
-      "string.base": occupationBase,
+      "string.base": parentProfileOccupationBase,
+      "string.empty": parentProfileOccupationEmpty,
       "any.only": parentProfileOccupationInvalid,
     }),
   education: Joi.string()
@@ -142,7 +147,8 @@ const validationPutSchema = Joi.object({
     .optional()
     .valid(...Object.values(EDUCATION_LEVELS_IN))
     .messages({
-      "string.base": educationBase,
+      "string.base": parentProfileEducationBase,
+      "string.empty": parentProfileEducationEmpty,
       "any.only": parentProfileEducationInvalid,
     }),
   annual_income: Joi.number()
@@ -150,7 +156,7 @@ const validationPutSchema = Joi.object({
     .greater(parentProfileAnnualIncomeMinValue)
     .less(parentProfileAnnualIncomeMaxValue)
     .messages({
-      "number.base": annualIncomeBase,
+      "number.base": parentProfileAnnualIncomeBase,
       "number.greater": parentProfileAnnualIncomeInvalid,
       "number.less": parentProfileAnnualIncomeInvalid,
     }),
@@ -170,9 +176,8 @@ const validationPutSchema = Joi.object({
     date_of_death: Joi.when("status", {
       is: false,
       then: Joi.date().required().max("now").messages({
-        "date.base": dateOfDeathBase,
+        "date.base": parentProfileDateOfDeathBase,
         "date.max": parentProfileDateOfDeathInvalid,
-        "any.required": dateOfDeathRequired,
       }),
       otherwise: Joi.date().optional(),
     }),
@@ -194,10 +199,14 @@ const validationPutSchema = Joi.object({
     }),
   }).optional(),
 })
+  .empty({})
+  .required()
   .unknown(false)
   .messages({
-    "object.base": reqBodyBase,
-    "object.unknown": reqBodyUnknown,
+    "object.base": parentProfileReqBodyBase,
+    "object.empty": parentProfileReqBodyEmpty,
+    "object.unknown": parentProfileReqBodyUnknown,
+    "any.required": parentProfileReqBodyRequired,
   });
 
 const validateUpdateParentProfilePutReqBody = asyncHandler(

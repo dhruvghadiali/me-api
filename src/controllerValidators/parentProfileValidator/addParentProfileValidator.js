@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const moment = require("moment");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
 
@@ -45,7 +44,6 @@ const {
   parentProfileAnnualIncomeInvalid,
   parentProfileOccupationInvalid,
   parentProfileEducationInvalid,
-  parentProfileDateOfDeathInvalid,
   parentProfileCaringChildByMinLength,
   parentProfileCaringChildByMaxLength,
   parentProfileCaringChildByRequired,
@@ -75,14 +73,15 @@ const {
   addressOverrideBase,
   addressOverrideEmpty,
   addressOverrideInvalid,
-  dateOfDeathBase,
-  dateOfDeathInvalid,
-  caringChildByBase,
-  caringChildByEmpty,
-  reqBodyBase,
-  reqBodyEmpty,
-  reqBodyUnknown,
-  reqBodyRequired,
+  parentProfileDateOfDeathBase,
+  parentProfileDateOfDeathInvalid,
+  parentProfileDateOfDeathRequired,
+  parentProfileCaringChildByBase,
+  parentProfileCaringChildByEmpty,
+  parentProfileReqBodyBase,
+  parentProfileReqBodyEmpty,
+  parentProfileReqBodyUnknown,
+  parentProfileReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
@@ -195,9 +194,9 @@ const validationPostSchema = Joi.object({
     date_of_death: Joi.when("status", {
       is: false,
       then: Joi.date().required().max("now").messages({
-        "date.base": dateOfDeathBase,
-        "date.max": dateOfDeathInvalid,
-        "any.required": dateOfDeathInvalid,
+        "date.base": parentProfileDateOfDeathBase,
+        "date.max": parentProfileDateOfDeathInvalid,
+        "any.required": parentProfileDateOfDeathRequired,
       }),
       otherwise: Joi.date().optional(),
     }),
@@ -209,8 +208,8 @@ const validationPostSchema = Joi.object({
         .min(parentProfileCaringChildByMinChar)
         .max(parentProfileCaringChildByMaxChar)
         .messages({
-          "string.base": caringChildByBase,
-          "string.empty": caringChildByEmpty,
+          "string.base": parentProfileCaringChildByBase,
+          "string.empty": parentProfileCaringChildByEmpty,
           "string.min": parentProfileCaringChildByMinLength,
           "string.max": parentProfileCaringChildByMaxLength,
           "any.required": parentProfileCaringChildByRequired,
