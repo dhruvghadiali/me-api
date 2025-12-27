@@ -5,6 +5,10 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 const { asyncHandler } = require("@MEMiddleware/async");
 const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
 const {
+  addressMinChar,
+  addressMaxChar,
+} = require("@MEHelpers/validationConst");
+const {
   checkValidObjectId,
   isActiveCityExists,
   isActiveStateExists,
@@ -43,10 +47,6 @@ const {
   addressProfileReqBodyUnknown,
   addressProfileReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
-const {
-  addressMinChar,
-  addressMaxChar,
-} = require("@MEHelpers/validationConst");
 
 const validationPostSchema = Joi.object({
   address: Joi.string()
