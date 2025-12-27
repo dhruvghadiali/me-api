@@ -1,5 +1,6 @@
 const addressProfileResponseMessage = {
   addressDetailsRequired: "Address details are required",
+  addressDetailsIdRequired: "Address ID is required",
   addressDetailsPostRequestSuccess: "Address details added successfully",
   addressDetailsPostRequestFail: "Facing issue while adding address details",
   addressDetailsPutRequestSuccess: "Address details updated successfully",
