@@ -33,35 +33,30 @@ const {
   lastNameBase,
   lastNameEmpty,
   siblingProfileGenderRequired,
+  siblingProfileGenderBase,
+  siblingProfileGenderEmpty,
   siblingProfileGenderInvalid,
-  genderBase,
-  genderEmpty,
-  genderInvalid,
   siblingProfileDateOfBirthRequired,
   siblingProfileDateOfBirthInvalid,
-  dateOfBirthBase,
-  dateOfBirthEmpty,
-  dateOfBirthInvalid,
-  dateOfBirthRequired,
-  studyingInClassBase,
-  studyingInClassEmpty,
-  studyingInClassInvalid,
+  siblingProfileDateOfBirthBase,
+  siblingProfileDateOfBirthEmpty,
+  siblingProfileStudyingInClassBase,
+  siblingProfileStudyingInClassEmpty,
+  siblingProfileStudyingInClassInvalid,
+  siblingProfileSchoolNameBase,
+  siblingProfileSchoolNameEmpty,
+  siblingProfileSchoolNameRequired,
   siblingProfileSchoolNameMinLength,
   siblingProfileSchoolNameMaxLength,
-  schoolNameBase,
-  schoolNameEmpty,
-  schoolNameRequired,
-  schoolNameMinLength,
-  schoolNameMaxLength,
+  siblingProfileAdmissionNumberBase,
   siblingProfileAdmissionNumberMinLength,
   siblingProfileAdmissionNumberMaxLength,
-  siblingProfileAdmissionNumberInvalid,
-  admissionNumberBase,
-  admissionNumberMinLength,
-  admissionNumberMaxLength,
-  admissionNumberInvalid,
-  reqBodyBase,
-  reqBodyUnknown,
+  siblingProfileAdmissionNumberEmpty,
+  siblingProfileAdmissionNumberRequired,
+  siblingProfileReqBodyBase,
+  siblingProfileReqBodyEmpty,
+  siblingProfileReqBodyUnknown,
+  siblingProfileReqBodyRequired,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
@@ -95,9 +90,9 @@ const validationPostSchema = Joi.object({
     .required()
     .valid(...Object.values(GENDERS))
     .messages({
-      "string.base": genderBase,
-      "string.empty": genderEmpty,
-      "any.only": genderInvalid,
+      "string.base": siblingProfileGenderBase,
+      "string.empty": siblingProfileGenderEmpty,
+      "any.only": siblingProfileGenderInvalid,
       "any.required": siblingProfileGenderRequired,
     }),
   date_of_birth: Joi.date()
@@ -119,8 +114,8 @@ const validationPostSchema = Joi.object({
       return value;
     })
     .messages({
-      "date.base": dateOfBirthBase,
-      "date.empty": dateOfBirthEmpty,
+      "date.base": siblingProfileDateOfBirthBase,
+      "date.empty": siblingProfileDateOfBirthEmpty,
       "any.invalid": siblingProfileDateOfBirthInvalid,
       "any.required": siblingProfileDateOfBirthRequired,
     }),
@@ -130,9 +125,9 @@ const validationPostSchema = Joi.object({
     .custom(checkValidObjectId)
     .external(isActiveAcademicClassExists)
     .messages({
-      "string.base": studyingInClassBase,
-      "string.empty": studyingInClassEmpty,
-      "any.invalid": studyingInClassInvalid,
+      "string.base": siblingProfileStudyingInClassBase,
+      "string.empty": siblingProfileStudyingInClassEmpty,
+      "any.invalid": siblingProfileStudyingInClassInvalid,
     }),
   same_school: Joi.boolean().optional().default(false),
   school_name: Joi.when("same_school", {
@@ -144,134 +139,41 @@ const validationPostSchema = Joi.object({
       .min(siblingProfileSchoolNameMinChar)
       .max(siblingProfileSchoolNameMaxChar)
       .messages({
-        "string.base": schoolNameBase,
-        "string.empty": schoolNameEmpty,
-        "string.min": schoolNameMinLength,
-        "string.max": schoolNameMaxLength,
-        "any.required": schoolNameRequired,
+        "string.base": siblingProfileSchoolNameBase,
+        "string.empty": siblingProfileSchoolNameEmpty,
+        "string.min": siblingProfileSchoolNameMinLength,
+        "string.max": siblingProfileSchoolNameMaxLength,
+        "any.required": siblingProfileSchoolNameRequired,
       }),
     otherwise: Joi.string().trim().lowercase().optional(),
   }),
-  admission_number: Joi.string()
-    .trim()
-    .optional()
-    .min(siblingProfileAdmissionNumberMinChar)
-    .max(siblingProfileAdmissionNumberMaxChar)
-    .pattern(/^[a-zA-Z0-9\-_/]+$/)
-    .messages({
-      "string.base": admissionNumberBase,
-      "string.min": admissionNumberMinLength,
-      "string.max": admissionNumberMaxLength,
-      "string.pattern.base": admissionNumberInvalid,
-    }),
+  admission_number: Joi.when("same_school", {
+    is: true,
+    then: Joi.string()
+      .trim()
+      .required()
+      .min(siblingProfileAdmissionNumberMinChar)
+      .max(siblingProfileAdmissionNumberMaxChar)
+      .messages({
+        "string.base": siblingProfileAdmissionNumberBase,
+        "string.empty": siblingProfileAdmissionNumberEmpty,
+        "string.min": siblingProfileAdmissionNumberMinLength,
+        "string.max": siblingProfileAdmissionNumberMaxLength,
+        "any.required": siblingProfileAdmissionNumberRequired,
+      }),
+    otherwise: Joi.string().trim().lowercase().optional(),
+  }),
 })
   .empty({})
   .required()
   .unknown(false)
   .messages({
-    "object.base": reqBodyBase,
-    "object.empty": `Request body cannot be empty`,
-    "object.unknown": reqBodyUnknown,
-    "any.required": `Request body is required`,
+    "object.base": siblingProfileReqBodyBase,
+    "object.empty": siblingProfileReqBodyEmpty,
+    "object.unknown": siblingProfileReqBodyUnknown,
+    "any.required": siblingProfileReqBodyRequired,
   });
 
-const validationPutSchema = Joi.object({
-  first_name: Joi.string()
-    .trim()
-    .optional()
-    .min(firstNameMinChar)
-    .max(firstNameMaxChar)
-    .messages({
-      "string.base": firstNameBase,
-      "string.empty": firstNameEmpty,
-      "string.min": firstNameMinLength,
-      "string.max": firstNameMaxLength,
-    }),
-  last_name: Joi.string()
-    .trim()
-    .optional()
-    .min(lastNameMinChar)
-    .max(lastNameMaxChar)
-    .messages({
-      "string.base": lastNameBase,
-      "string.empty": lastNameEmpty,
-      "string.min": lastNameMinLength,
-      "string.max": lastNameMaxLength,
-    }),
-  gender: Joi.string()
-    .trim()
-    .lowercase()
-    .optional()
-    .valid(...Object.values(GENDERS))
-    .messages({
-      "string.base": genderBase,
-      "string.empty": genderEmpty,
-      "any.only": genderInvalid,
-    }),
-  date_of_birth: Joi.date()
-    .optional()
-    .custom((value, helpers) => {
-      if (!value) return value;
-
-      const today = moment().startOf("day");
-      const birthDate = moment(value).startOf("day");
-      const age = today.diff(birthDate, "years");
-
-      if (
-        age < siblingProfileDateOfBirthMinAge ||
-        age > siblingProfileDateOfBirthMaxAge
-      ) {
-        return helpers.error("any.invalid");
-      }
-
-      return value;
-    })
-    .messages({
-      "date.base": dateOfBirthBase,
-      "date.empty": dateOfBirthEmpty,
-      "any.invalid": siblingProfileDateOfBirthInvalid,
-    }),
-  studying_in_class: Joi.string()
-    .trim()
-    .optional()
-    .custom(checkValidObjectId)
-    .external(isActiveAcademicClassExists)
-    .messages({
-      "string.base": studyingInClassBase,
-      "string.empty": studyingInClassEmpty,
-      "any.invalid": studyingInClassInvalid,
-    }),
-  same_school: Joi.boolean().optional(),
-  school_name: Joi.when("same_school", {
-    is: false,
-    then: Joi.string()
-      .trim()
-      .lowercase()
-      .required()
-      .min(siblingProfileSchoolNameMinChar)
-      .max(siblingProfileSchoolNameMaxChar)
-      .messages({
-        "string.base": schoolNameBase,
-        "string.empty": schoolNameEmpty,
-        "string.min": schoolNameMinLength,
-        "string.max": schoolNameMaxLength,
-        "any.required": schoolNameRequired,
-      }),
-    otherwise: Joi.string().trim().lowercase().optional(),
-  }),
-  admission_number: Joi.string()
-    .trim()
-    .optional()
-    .min(siblingProfileAdmissionNumberMinChar)
-    .max(siblingProfileAdmissionNumberMaxChar)
-    .pattern(/^[a-zA-Z0-9\-_/]+$/)
-    .messages({
-      "string.base": admissionNumberBase,
-      "string.min": admissionNumberMinLength,
-      "string.max": admissionNumberMaxLength,
-      "string.pattern.base": admissionNumberInvalid,
-    }),
-});
 const validateAddSiblingProfilePostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
