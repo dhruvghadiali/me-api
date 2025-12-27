@@ -1,7 +1,14 @@
+const _ = require("lodash");
+const moment = require("moment");
 const mongoose = require("mongoose");
 
-const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
+const { Schema } = mongoose;
 
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
+const {
+  PARENT_OCCUPATIONS_IN,
+  EDUCATION_LEVELS_IN,
+} = require("@ME/helpers/enums/studentEnums");
 const {
   emailMaxChar,
   emailMinChar,
@@ -11,10 +18,14 @@ const {
   firstNameMaxChar,
   firstNameMinChar,
   aadhaarNumberChar,
+  parentProfileAnnualIncomeMinValue,
+  parentProfileAnnualIncomeMaxValue,
+  parentProfileCaringChildByMinChar,
+  parentProfileCaringChildByMaxChar,
 } = require("@MEHelpers/validationConst");
-
 const {
   emailInvalid,
+  emailRequired,
   emailMaxLength,
   emailMinLength,
   lastNameRequired,
@@ -27,15 +38,19 @@ const {
   phoneNumberRequired,
   phoneNumberMaxLength,
   phoneNumberMinLength,
+  aadhaarNumberRequired,
   aadhaarNumberMaxLength,
   aadhaarNumberMinLength,
+  parentProfileAnnualIncomeRequired,
+  parentProfileAnnualIncomeInvalid,
+  parentProfileOccupationInvalid,
+  parentProfileEducationInvalid,
+  parentProfileDateOfDeathInvalid,
+  parentProfileCaringChildByMinLength,
+  parentProfileCaringChildByMaxLength,
+  parentProfileCaringChildByRequired,
 } = require("@MEHelpers/validationMessage");
-
-const { Schema } = mongoose;
-const {
-  PARENT_OCCUPATIONS_IN,
-  EDUCATION_LEVELS_IN,
-} = require("@ME/helpers/enums/studentEnums");
+const { required } = require("joi");
 
 const parentProfileSchema = new Schema(
   {
@@ -64,6 +79,7 @@ const parentProfileSchema = new Schema(
     email: {
       type: String,
       trim: true,
+      required: [true, emailRequired],
       maxlength: [emailMaxChar, emailMaxLength],
       minlength: [emailMinChar, emailMinLength],
       match: [emailRegex, emailInvalid],
@@ -72,6 +88,7 @@ const parentProfileSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
+      required: [true, aadhaarNumberRequired],
       maxlength: [aadhaarNumberChar, aadhaarNumberMaxLength],
       minlength: [aadhaarNumberChar, aadhaarNumberMinLength],
     },
@@ -79,16 +96,71 @@ const parentProfileSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      enum: Object.values(PARENT_OCCUPATIONS_IN),
+      enum: {
+        values: Object.values(PARENT_OCCUPATIONS_IN),
+        message: parentProfileOccupationInvalid,
+      },
     },
     education: {
       type: String,
       trim: true,
       lowercase: true,
-      enum: Object.values(EDUCATION_LEVELS_IN),
+      enum: {
+        values: Object.values(EDUCATION_LEVELS_IN),
+        message: parentProfileEducationInvalid,
+      },
     },
-    annual_income: { type: Number },
-    alive: { type: Boolean, default: true },
+    annual_income: {
+      type: Number,
+      required: [true, parentProfileAnnualIncomeRequired],
+      validate: {
+        validator: function (val) {
+          if (val === null || val === undefined) return false;
+          return (
+            val > parentProfileAnnualIncomeMinValue &&
+            val < parentProfileAnnualIncomeMaxValue
+          );
+        },
+        message: parentProfileAnnualIncomeInvalid,
+      },
+    },
+    alive: {
+      status: { type: Boolean, default: true },
+      date_of_death: {
+        type: Date,
+        required: false,
+        validate: {
+          validator: function (val) {
+            if (!this || this.alive.status === true) return true;
+            if (!val) return false;
+            const deathDate = moment(val).startOf("day");
+            const today = moment().startOf("day");
+            return deathDate.isBefore(today);
+          },
+          message: parentProfileDateOfDeathInvalid,
+        },
+      },
+      caring_child_by: {
+        type: String,
+        trim: true,
+        required: false,
+        minlength: [
+          parentProfileCaringChildByMinChar,
+          parentProfileCaringChildByMinLength,
+        ],
+        maxlength: [
+          parentProfileCaringChildByMaxChar,
+          parentProfileCaringChildByMaxLength,
+        ],
+        validate: {
+          validator: function (val) {
+            if (!this || this.alive.status === true) return true;
+            return _.isString(val) && !_.isEmpty(val.trim());
+          },
+          message: parentProfileCaringChildByRequired,
+        },
+      },
+    },
     same_address_as_student: { type: Boolean, default: true },
     address_override: {
       type: mongoose.Schema.Types.ObjectId,
