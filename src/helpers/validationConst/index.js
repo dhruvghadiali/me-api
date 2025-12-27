@@ -23,6 +23,7 @@ const siblingProfileValidationConst = require("@MEHelpers/validationConst/siblin
 const educationBoardValidationConst = require("@MEHelpers/validationConst/educationBoardValidationConst");
 const studentProfileValidationConst = require("@MEHelpers/validationConst/studentProfileValidationConst");
 const organizationMemberValidationConst = require("@MEHelpers/validationConst/organizationMemberValidationConst");
+const emergencyContactProfileValidationConst = require("@MEHelpers/validationConst/emergencyContactProfileValidationConst");
 const schoolAdmissionDocumentValidationConst = require("@MEHelpers/validationConst/schoolAdmissionDocumentValidationConst");
 
 const validationConst = {
@@ -51,6 +52,7 @@ const validationConst = {
   ...educationBoardValidationConst,
   ...studentProfileValidationConst,
   ...organizationMemberValidationConst,
+  ...emergencyContactProfileValidationConst,
   ...schoolAdmissionDocumentValidationConst,
 };
 

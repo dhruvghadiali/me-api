@@ -29,6 +29,7 @@ const admissionDocumentValidationMessage = require("@MEHelpers/validationMessage
 const organizationMemberValidationMessage = require("@MEHelpers/validationMessage/organizationMemberValidationMessage");
 const schoolAcademicClassValidationMessage = require("@MEHelpers/validationMessage/schoolAcademicClassValidationMessage");
 const admissionApplicationValidationMessage = require("@MEHelpers/validationMessage/admissionApplicationValidationMessage");
+const emergencyContactProfileValidationMessage = require("@MEHelpers/validationMessage/emergencyContactProfileValidationMessage");
 const schoolAdmissionDocumentValidationMessage = require("@MEHelpers/validationMessage/schoolAdmissionDocumentValidationMessage");
 
 const validationMessage = {
@@ -63,6 +64,7 @@ const validationMessage = {
   ...organizationMemberValidationMessage,
   ...schoolAcademicClassValidationMessage,
   ...admissionApplicationValidationMessage,
+  ...emergencyContactProfileValidationMessage,
   ...schoolAdmissionDocumentValidationMessage,
 };
 

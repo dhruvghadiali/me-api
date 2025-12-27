@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 
-const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
+const { Schema } = mongoose;
 
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
+const {
+  EMERGENCY_CONTACT_RELATIONS,
+} = require("@ME/helpers/enums/studentEnums");
 const {
   emailMaxChar,
   emailMinChar,
   phoneNumberChar,
+  emergencyContactNameMinChar,
+  emergencyContactNameMaxChar,
 } = require("@MEHelpers/validationConst");
-
 const {
   emailInvalid,
   emailMaxLength,
@@ -16,22 +21,31 @@ const {
   phoneNumberRequired,
   phoneNumberMaxLength,
   phoneNumberMinLength,
+  emergencyContactNameRequired,
+  emergencyContactNameMinLength,
+  emergencyContactNameMaxLength,
+  emergencyContactRelationRequired,
+  emergencyContactRelationInvalid,
 } = require("@MEHelpers/validationMessage");
-
-const { Schema } = mongoose;
-const {
-  EMERGENCY_CONTACT_RELATIONS,
-} = require("@ME/helpers/enums/studentEnums");
 
 const emergencyContactSchema = new Schema(
   {
-    name: { type: String, trim: true, required: true },
+    name: {
+      type: String,
+      trim: true,
+      required: [true, emergencyContactNameRequired],
+      minlength: [emergencyContactNameMinChar, emergencyContactNameMinLength],
+      maxlength: [emergencyContactNameMaxChar, emergencyContactNameMaxLength],
+    },
     relation: {
       type: String,
       trim: true,
-      required: true,
+      required: [true, emergencyContactRelationRequired],
       lowercase: true,
-      enum: Object.values(EMERGENCY_CONTACT_RELATIONS),
+      enum: {
+        values: Object.values(EMERGENCY_CONTACT_RELATIONS),
+        message: emergencyContactRelationInvalid,
+      },
     },
     phone_number: {
       type: String,
