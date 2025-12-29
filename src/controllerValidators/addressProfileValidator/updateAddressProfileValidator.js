@@ -3,7 +3,10 @@ const Joi = require("joi");
 const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
-const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
+const {
+  HTTP_STATUS_CODES,
+  USER_TYPES_FOR_ADDRESS,
+} = require("@ME/helpers/enums");
 const {
   addressMinChar,
   addressMaxChar,
@@ -17,6 +20,12 @@ const {
   isActiveAreaNameExists,
 } = require("@MEUtils/reqBodyValidator");
 const {
+  addressProfileUserBase,
+  addressProfileUserEmpty,
+  addressProfileUserInvalid,
+  addressProfileUserTypeBase,
+  addressProfileUserTypeEmpty,
+  addressProfileUserTypeInvalid,
   addressProfileAddressBase,
   addressProfileAddressEmpty,
   addressProfileAddressMinLength,
@@ -43,6 +52,21 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 const validationPutSchema = Joi.object({
+  user: Joi.string().trim().optional().custom(checkValidObjectId).messages({
+    "string.base": addressProfileUserBase,
+    "string.empty": addressProfileUserEmpty,
+    "any.invalid": addressProfileUserInvalid,
+  }),
+  user_type: Joi.string()
+    .trim()
+    .lowercase()
+    .optional()
+    .valid(...Object.values(USER_TYPES_FOR_ADDRESS))
+    .messages({
+      "string.base": addressProfileUserTypeBase,
+      "string.empty": addressProfileUserTypeEmpty,
+      "any.only": addressProfileUserTypeInvalid,
+    }),
   address: Joi.string()
     .trim()
     .lowercase()

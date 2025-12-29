@@ -130,6 +130,9 @@ const addressSchema = new Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
+// Unique compound index for user and user_type combination
+addressSchema.index({ user: 1, user_type: 1 }, { unique: true });
+
 addressSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

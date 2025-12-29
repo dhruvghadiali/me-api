@@ -4,6 +4,14 @@ const {
 } = require("@MEHelpers/validationConst");
 
 const addressProfileValidationMessage = {
+  addressProfileUserBase: `User must be a valid string`,
+  addressProfileUserEmpty: `User cannot be empty`,
+  addressProfileUserInvalid: `User must be a valid ObjectId`,
+  addressProfileUserRequired: `User is required`,
+  addressProfileUserTypeBase: `User type must be a valid string`,
+  addressProfileUserTypeEmpty: `User type cannot be empty`,
+  addressProfileUserTypeInvalid: `User type must be a valid user type (STUDENT, FATHER, MOTHER)`,
+  addressProfileUserTypeRequired: `User type is required`,
   addressProfileAddressBase: `Address must be a valid string`,
   addressProfileAddressEmpty: `Address cannot be empty`,
   addressProfileAddressRequired: `Address is required`,
