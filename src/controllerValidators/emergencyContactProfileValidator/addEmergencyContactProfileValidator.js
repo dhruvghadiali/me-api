@@ -3,6 +3,8 @@ const Joi = require("joi");
 const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const { phoneRegex } = require("@MEHelpers/regex");
+const { checkValidObjectId } = require("@MEUtils/reqBodyValidator");
 const {
   HTTP_STATUS_CODES,
   EMERGENCY_CONTACT_RELATIONS,
@@ -17,6 +19,8 @@ const {
   emergencyContactAddressMaxChar,
 } = require("@MEHelpers/validationConst");
 const {
+  usernameInvalid,
+  usernameRequired,
   emergencyContactNameBase,
   emergencyContactNameEmpty,
   emergencyContactNameRequired,
@@ -50,6 +54,12 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
+  user: Joi.string().trim().required().custom(checkValidObjectId).messages({
+    "string.base": usernameInvalid,
+    "string.empty": usernameInvalid,
+    "any.invalid": usernameInvalid,
+    "any.required": usernameRequired,
+  }),
   name: Joi.string()
     .trim()
     .required()
