@@ -143,7 +143,6 @@ const validateAddEmergencyContactProfilePostReqBody = asyncHandler(
       // Check if user already has 2 emergency contacts
       const contactCount = await EmergencyContact.countDocuments({
         user: req.user?.id,
-        is_active: true,
       });
 
       if (contactCount >= 2) {

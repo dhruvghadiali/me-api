@@ -11,10 +11,6 @@ const {
   EDUCATION_LEVELS_IN,
 } = require("@ME/helpers/enums");
 const {
-  checkValidObjectId,
-  isActiveAddressExists,
-} = require("@MEUtils/reqBodyValidator");
-const {
   emailMaxChar,
   emailMinChar,
   lastNameMaxChar,
@@ -71,18 +67,12 @@ const {
   parentProfileReqBodyEmpty,
   parentProfileReqBodyUnknown,
   parentProfileReqBodyRequired,
-  usernameInvalid,
   parentProfileParentTypeBase,
   parentProfileParentTypeEmpty,
   parentProfileParentTypeInvalid,
 } = require("@MEHelpers/validationMessage");
 
 const validationPutSchema = Joi.object({
-  user: Joi.string().trim().optional().custom(checkValidObjectId).messages({
-    "string.base": usernameInvalid,
-    "string.empty": usernameInvalid,
-    "any.invalid": usernameInvalid,
-  }),
   first_name: Joi.string()
     .trim()
     .optional()

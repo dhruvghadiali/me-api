@@ -158,7 +158,6 @@ const validateAddAddressProfilePostReqBody = asyncHandler(
       const duplicateAddress = await Address.findOne({
         user: req.user?.id,
         user_type: _.lowerCase(req.body?.user_type || ""),
-        is_active: true,
       });
 
       if (duplicateAddress) {

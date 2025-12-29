@@ -49,6 +49,7 @@ const parentProfileValidationMessage = {
   parentProfileParentTypeBase: `Parent type must be a valid string`,
   parentProfileParentTypeEmpty: `Parent type cannot be empty`,
   parentProfileParentTypeInvalid: `Parent type must be one of: ${Object.values(PARENT_TYPES).join(", ")}`,
+  parentProfileParentTypeDuplicate: `Parent profile with this parent type already exists for this user`,
 };
 
 module.exports = parentProfileValidationMessage;

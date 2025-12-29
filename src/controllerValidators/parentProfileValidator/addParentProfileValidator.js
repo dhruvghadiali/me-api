@@ -1,6 +1,8 @@
+const _ = require("lodash");
 const Joi = require("joi");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
+const ParentProfile = require("@MEModels/parentProfileModel");
 
 const { phoneRegex } = require("@MEHelpers/regex");
 const { asyncHandler } = require("@MEMiddleware/async");
@@ -10,10 +12,6 @@ const {
   PARENT_OCCUPATIONS_IN,
   EDUCATION_LEVELS_IN,
 } = require("@ME/helpers/enums");
-const {
-  checkValidObjectId,
-  isActiveAddressExists,
-} = require("@MEUtils/reqBodyValidator");
 const {
   emailMaxChar,
   emailMinChar,
@@ -84,17 +82,10 @@ const {
   parentProfileReqBodyEmpty,
   parentProfileReqBodyUnknown,
   parentProfileReqBodyRequired,
-  usernameInvalid,
-  usernameRequired,
+  parentProfileParentTypeDuplicate,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
-  user: Joi.string().trim().required().custom(checkValidObjectId).messages({
-    "string.base": usernameInvalid,
-    "string.empty": usernameInvalid,
-    "any.invalid": usernameInvalid,
-    "any.required": usernameRequired,
-  }),
   first_name: Joi.string()
     .trim()
     .required()
@@ -243,6 +234,22 @@ const validateAddParentProfilePostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
       await validationPostSchema.validateAsync(req.body);
+
+      // Check for duplicate parent profile entry with same parent_type
+      const duplicateProfile = await ParentProfile.findOne({
+        user: req.user?.id,
+        parent_type: _.lowerCase(req.body?.parent_type || ""),
+      });
+
+      if (duplicateProfile) {
+        return next(
+          new ErrorResponse(
+            parentProfileParentTypeDuplicate,
+            HTTP_STATUS_CODES.STATUS_400
+          )
+        );
+      }
+
       next();
     } catch (error) {
       next(
