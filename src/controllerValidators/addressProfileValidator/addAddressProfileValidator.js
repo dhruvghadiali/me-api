@@ -1,5 +1,6 @@
 const Joi = require("joi");
 
+const Address = require("@MEModels/addressModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
@@ -20,10 +21,6 @@ const {
   isActiveAreaNameExists,
 } = require("@MEUtils/reqBodyValidator");
 const {
-  addressProfileUserBase,
-  addressProfileUserEmpty,
-  addressProfileUserInvalid,
-  addressProfileUserRequired,
   addressProfileUserTypeBase,
   addressProfileUserTypeEmpty,
   addressProfileUserTypeInvalid,
@@ -57,15 +54,10 @@ const {
   addressProfileReqBodyEmpty,
   addressProfileReqBodyUnknown,
   addressProfileReqBodyRequired,
+  addressProfileUserTypeDuplicate,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
-  user: Joi.string().trim().required().custom(checkValidObjectId).messages({
-    "string.base": addressProfileUserBase,
-    "string.empty": addressProfileUserEmpty,
-    "any.invalid": addressProfileUserInvalid,
-    "any.required": addressProfileUserRequired,
-  }),
   user_type: Joi.string()
     .trim()
     .lowercase()
@@ -160,6 +152,23 @@ const validateAddAddressProfilePostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
       await validationPostSchema.validateAsync(req.body);
+
+      // Check for duplicate address entry with same user_type
+      const duplicateAddress = await Address.findOne({
+        user: req.user?._id,
+        user_type: req.body.user_type,
+        is_active: true,
+      });
+
+      if (duplicateAddress) {
+        return next(
+          new ErrorResponse(
+            addressProfileUserTypeDuplicate,
+            HTTP_STATUS_CODES.STATUS_400
+          )
+        );
+      }
+
       next();
     } catch (error) {
       next(

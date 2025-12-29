@@ -17,6 +17,8 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @access  Student
  */
 const addAddress = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Validate request body is not empty
   if (!req.body || Object.keys(req.body).length === 0) {
     return next(
@@ -26,13 +28,10 @@ const addAddress = asyncHandler(async (req, res, next) => {
 
   // Create new address document with data from req.body
   const newAddress = await Address.create({
-    user: req.user._id, // Assuming user is attached to request by auth middleware
-    address: req.body.address,
-    state: req.body.state,
-    district: req.body.district,
-    city: req.body.city,
-    area_name: req.body.area_name,
-    zipcode: req.body.zipcode,
+    ...req.body,
+    user: id, // Assuming user is attached to request by auth middleware
+    created_by: id,
+    updated_by: id,
   });
 
   // Populate references for response

@@ -40,6 +40,7 @@ const updateAddress = asyncHandler(async (req, res, next) => {
     ...(req.body.city && { city: req.body.city }),
     ...(req.body.area_name && { area_name: req.body.area_name }),
     ...(req.body.zipcode && { zipcode: req.body.zipcode }),
+    updated_by: req.user.id,
   };
 
   // Update address document

@@ -20,9 +20,6 @@ const {
   isActiveAreaNameExists,
 } = require("@MEUtils/reqBodyValidator");
 const {
-  addressProfileUserBase,
-  addressProfileUserEmpty,
-  addressProfileUserInvalid,
   addressProfileUserTypeBase,
   addressProfileUserTypeEmpty,
   addressProfileUserTypeInvalid,
@@ -52,11 +49,6 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 const validationPutSchema = Joi.object({
-  user: Joi.string().trim().optional().custom(checkValidObjectId).messages({
-    "string.base": addressProfileUserBase,
-    "string.empty": addressProfileUserEmpty,
-    "any.invalid": addressProfileUserInvalid,
-  }),
   user_type: Joi.string()
     .trim()
     .lowercase()

@@ -41,6 +41,7 @@ const addressProfileValidationMessage = {
   addressProfileReqBodyEmpty: `address profile request body cannot be empty`,
   addressProfileReqBodyUnknown: `Unknown field in address profile request body`,
   addressProfileReqBodyRequired: `address profile request body is required`,
+  addressProfileUserTypeDuplicate: `Address with this user type already exists for this user`,
 };
 
 module.exports = addressProfileValidationMessage;
