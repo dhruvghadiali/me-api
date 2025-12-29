@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const Joi = require("joi");
 
 const Address = require("@MEModels/addressModel");
@@ -155,8 +156,8 @@ const validateAddAddressProfilePostReqBody = asyncHandler(
 
       // Check for duplicate address entry with same user_type
       const duplicateAddress = await Address.findOne({
-        user: req.user?._id,
-        user_type: req.body.user_type,
+        user: req.user?.id,
+        user_type: _.lowerCase(req.body?.user_type || ""),
         is_active: true,
       });
 
