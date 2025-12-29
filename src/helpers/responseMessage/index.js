@@ -14,6 +14,7 @@ const organizationResponseMessage = require("@MEHelpers/responseMessage/organiza
 const facilityTypeResponseMessage = require("@MEHelpers/responseMessage/facilityTypeResponseMessage");
 const schoolAddressResponseMessage = require("@MEHelpers/responseMessage/schoolAddressResponseMessage");
 const academicClassResponseMessage = require("@MEHelpers/responseMessage/academicClassResponseMessage");
+const parentProfileResponseMessage = require("@MEHelpers/responseMessage/parentProfileResponseMessage");
 const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educationBoardResponseMessage");
 const schoolFacilityResponseMessage = require("@MEHelpers/responseMessage/schoolFacilityResponseMessage");
 const addressProfileResponseMessage = require("@MEHelpers/responseMessage/addressProfileResponseMessage");
@@ -41,6 +42,7 @@ const responseMessage = {
   ...facilityTypeResponseMessage,
   ...schoolAddressResponseMessage,
   ...academicClassResponseMessage,
+  ...parentProfileResponseMessage,
   ...educationBoardResponseMessage,
   ...addressProfileResponseMessage,
   ...schoolFacilityResponseMessage,
