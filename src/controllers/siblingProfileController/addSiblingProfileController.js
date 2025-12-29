@@ -7,7 +7,7 @@ const {
   siblingProfileDetailsRequired,
   siblingProfileDetailsPostRequestFail,
   siblingProfileDetailsPostRequestSuccess,
-} = require("@MEHelpers/responseMessage/siblingProfileResponseMessage");
+} = require("@MEHelpers/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 

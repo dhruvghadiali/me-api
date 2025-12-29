@@ -8,7 +8,7 @@ const {
   parentProfileDetailsIDRequired,
   parentProfileDetailsPutRequestFail,
   parentProfileDetailsPutRequestSuccess,
-} = require("@MEHelpers/responseMessage/parentProfileResponseMessage");
+} = require("@MEHelpers/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 

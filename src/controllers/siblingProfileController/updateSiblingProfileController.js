@@ -9,7 +9,7 @@ const {
   siblingProfileDetailsIDRequired,
   siblingProfileDetailsPutRequestFail,
   siblingProfileDetailsPutRequestSuccess,
-} = require("@MEHelpers/responseMessage/siblingProfileResponseMessage");
+} = require("@MEHelpers/responseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 

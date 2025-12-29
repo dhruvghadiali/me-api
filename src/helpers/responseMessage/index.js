@@ -18,6 +18,8 @@ const parentProfileResponseMessage = require("@MEHelpers/responseMessage/parentP
 const educationBoardResponseMessage = require("@MEHelpers/responseMessage/educationBoardResponseMessage");
 const schoolFacilityResponseMessage = require("@MEHelpers/responseMessage/schoolFacilityResponseMessage");
 const addressProfileResponseMessage = require("@MEHelpers/responseMessage/addressProfileResponseMessage");
+const siblingProfileResponseMessage = require("@MEHelpers/responseMessage/siblingProfileResponseMessage");
+const studentProfileResponseMessage = require("@MEHelpers/responseMessage/studentProfileResponseMessage");
 const admissionDocumentResponseMessage = require("@MEHelpers/responseMessage/admissionDocumentResponseMessage");
 const organizationMemberResponseMessage = require("@MEHelpers/responseMessage/organizationMemberResponseMessage");
 const schoolAcademicClassResponseMessage = require("@MEHelpers/responseMessage/schoolAcademicClassResponseMessage");
@@ -46,6 +48,8 @@ const responseMessage = {
   ...educationBoardResponseMessage,
   ...addressProfileResponseMessage,
   ...schoolFacilityResponseMessage,
+  ...siblingProfileResponseMessage,
+  ...studentProfileResponseMessage,
   ...admissionDocumentResponseMessage,
   ...organizationMemberResponseMessage,
   ...schoolAcademicClassResponseMessage,

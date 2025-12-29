@@ -64,6 +64,7 @@ const studentProfileValidationMessage = {
   studentProfileHasAllergiesBase: `Has allergies must be a boolean`,
   studentProfileAllergiesBase: `Allergies must be an array`,
   studentProfileAllergiesItemBase: `Each allergy must be a valid string`,
+  studentProfileDuplicate: `Student profile already exists for this user`,
 };
 
 module.exports = studentProfileValidationMessage;

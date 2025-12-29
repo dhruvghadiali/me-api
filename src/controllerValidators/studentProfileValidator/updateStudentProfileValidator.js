@@ -10,10 +10,6 @@ const {
   HTTP_STATUS_CODES,
 } = require("@ME/helpers/enums");
 const {
-  checkValidObjectId,
-  isActiveUserExists,
-} = require("@MEUtils/reqBodyValidator");
-const {
   aadhaarNumberChar,
   studentProfileDateOfBirthMaxAge,
   studentProfileDateOfBirthMinAge,
@@ -25,9 +21,6 @@ const {
   studentProfileMedicalAllergiesMaxItems,
 } = require("@MEHelpers/validationConst");
 const {
-  studentProfileUserBase,
-  studentProfileUserEmpty,
-  studentProfileUserInvalid,
   studentProfileDateOfBirthBase,
   studentProfileDateOfBirthEmpty,
   studentProfileInvalidDateOfBirth,
@@ -73,16 +66,6 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 const validationPutSchema = Joi.object({
-  user: Joi.string()
-    .trim()
-    .optional()
-    .custom(checkValidObjectId)
-    .external(isActiveUserExists)
-    .messages({
-      "string.base": studentProfileUserBase,
-      "string.empty": studentProfileUserEmpty,
-      "any.invalid": studentProfileUserInvalid,
-    }),
   date_of_birth: Joi.date()
     .optional()
     .custom((value, helpers) => {

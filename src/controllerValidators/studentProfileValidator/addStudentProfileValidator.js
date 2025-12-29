@@ -2,6 +2,7 @@ const Joi = require("joi");
 const moment = require("moment");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
+const StudentProfile = require("@MEModels/studentProfileModel");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const {
@@ -9,10 +10,6 @@ const {
   BLOOD_GROUPS,
   HTTP_STATUS_CODES,
 } = require("@ME/helpers/enums");
-const {
-  checkValidObjectId,
-  isActiveUserExists,
-} = require("@MEUtils/reqBodyValidator");
 const {
   aadhaarNumberChar,
   studentProfileDateOfBirthMaxAge,
@@ -25,10 +22,6 @@ const {
   studentProfileMedicalAllergiesMaxItems,
 } = require("@MEHelpers/validationConst");
 const {
-  studentProfileUserBase,
-  studentProfileUserEmpty,
-  studentProfileUserInvalid,
-  studentProfileUserRequired,
   studentProfileDateOfBirthRequired,
   studentProfileDateOfBirthBase,
   studentProfileDateOfBirthEmpty,
@@ -76,20 +69,10 @@ const {
   studentProfileReqBodyEmpty,
   studentProfileReqBodyUnknown,
   studentProfileReqBodyRequired,
+  studentProfileDuplicate,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
-  user: Joi.string()
-    .trim()
-    .required()
-    .custom(checkValidObjectId)
-    .external(isActiveUserExists)
-    .messages({
-      "string.base": studentProfileUserBase,
-      "string.empty": studentProfileUserEmpty,
-      "any.invalid": studentProfileUserInvalid,
-      "any.required": studentProfileUserRequired,
-    }),
   date_of_birth: Joi.date()
     .required()
     .custom((value, helpers) => {
@@ -276,6 +259,22 @@ const validateAddStudentProfilePostReqBody = asyncHandler(
     try {
       // Validate request body schema
       await validationPostSchema.validateAsync(req.body);
+
+      // Check for duplicate student profile for the same user
+      if (req.user && req.user.id) {
+        const existingProfile = await StudentProfile.findOne({
+          user: req.user.id,
+        });
+
+        if (existingProfile) {
+          return next(
+            new ErrorResponse(
+              studentProfileDuplicate,
+              HTTP_STATUS_CODES.STATUS_400
+            )
+          );
+        }
+      }
 
       // If validation passes, move to next middleware
       next();
