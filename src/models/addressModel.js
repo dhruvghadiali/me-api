@@ -31,6 +31,8 @@ const {
   stateNameRequired,
   districtNameInvalid,
   districtNameRequired,
+  parentProfileParentTypeInvalid,
+  parentProfileParentTypeRequired,
 } = require("@MEHelpers/validationMessage");
 
 const addressSchema = new Schema(
