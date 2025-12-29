@@ -213,6 +213,9 @@ const parentProfileSchema = new Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
+// Unique compound index for user and parent_type combination
+parentProfileSchema.index({ user: 1, parent_type: 1 }, { unique: true });
+
 parentProfileSchema.set("toJSON", {
   virtuals: true,
   transform: function (_, response) {

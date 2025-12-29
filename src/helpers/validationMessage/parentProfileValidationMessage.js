@@ -46,6 +46,8 @@ const parentProfileValidationMessage = {
   parentProfileReqBodyUnknown: `Unknown field in parent profile request body`,
   parentProfileReqBodyRequired: `Parent profile request body is required`,
   parentProfileParentTypeRequired: `Parent type is required`,
+  parentProfileParentTypeBase: `Parent type must be a valid string`,
+  parentProfileParentTypeEmpty: `Parent type cannot be empty`,
   parentProfileParentTypeInvalid: `Parent type must be one of: ${Object.values(PARENT_TYPES).join(", ")}`,
 };
 

@@ -6,6 +6,7 @@ const { phoneRegex } = require("@MEHelpers/regex");
 const { asyncHandler } = require("@MEMiddleware/async");
 const {
   HTTP_STATUS_CODES,
+  PARENT_TYPES,
   PARENT_OCCUPATIONS_IN,
   EDUCATION_LEVELS_IN,
 } = require("@ME/helpers/enums");
@@ -67,12 +68,13 @@ const {
   parentProfileEducationEmpty,
   parentProfileEducationInvalid,
   parentProfileEducationRequired,
+  parentProfileParentTypeBase,
+  parentProfileParentTypeEmpty,
+  parentProfileParentTypeInvalid,
+  parentProfileParentTypeRequired,
   parentProfileAnnualIncomeBase,
   parentProfileAnnualIncomeInvalid,
   parentProfileAnnualIncomeRequired,
-  addressOverrideBase,
-  addressOverrideEmpty,
-  addressOverrideInvalid,
   parentProfileDateOfDeathBase,
   parentProfileDateOfDeathInvalid,
   parentProfileDateOfDeathRequired,
@@ -82,9 +84,17 @@ const {
   parentProfileReqBodyEmpty,
   parentProfileReqBodyUnknown,
   parentProfileReqBodyRequired,
+  usernameInvalid,
+  usernameRequired,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
+  user: Joi.string().trim().required().custom(checkValidObjectId).messages({
+    "string.base": usernameInvalid,
+    "string.empty": usernameInvalid,
+    "any.invalid": usernameInvalid,
+    "any.required": usernameRequired,
+  }),
   first_name: Joi.string()
     .trim()
     .required()
@@ -149,7 +159,7 @@ const validationPostSchema = Joi.object({
   occupation: Joi.string()
     .trim()
     .lowercase()
-    .optional()
+    .required()
     .valid(...Object.values(PARENT_OCCUPATIONS_IN))
     .messages({
       "string.base": parentProfileOccupationBase,
@@ -160,13 +170,24 @@ const validationPostSchema = Joi.object({
   education: Joi.string()
     .trim()
     .lowercase()
-    .optional()
+    .required()
     .valid(...Object.values(EDUCATION_LEVELS_IN))
     .messages({
       "string.base": parentProfileEducationBase,
       "string.empty": parentProfileEducationEmpty,
       "any.only": parentProfileEducationInvalid,
       "any.required": parentProfileEducationRequired,
+    }),
+  parent_type: Joi.string()
+    .trim()
+    .lowercase()
+    .required()
+    .valid(...Object.values(PARENT_TYPES))
+    .messages({
+      "string.base": parentProfileParentTypeBase,
+      "string.empty": parentProfileParentTypeEmpty,
+      "any.only": parentProfileParentTypeInvalid,
+      "any.required": parentProfileParentTypeRequired,
     }),
   annual_income: Joi.number()
     .required()
@@ -179,16 +200,6 @@ const validationPostSchema = Joi.object({
       "any.required": parentProfileAnnualIncomeRequired,
     }),
   same_address_as_student: Joi.boolean().optional().default(true),
-  address_override: Joi.string()
-    .trim()
-    .optional()
-    .custom(checkValidObjectId)
-    .external(isActiveAddressExists)
-    .messages({
-      "string.base": addressOverrideBase,
-      "string.empty": addressOverrideEmpty,
-      "any.invalid": addressOverrideInvalid,
-    }),
   alive: Joi.object({
     status: Joi.boolean().optional().default(true),
     date_of_death: Joi.when("status", {
