@@ -12,9 +12,6 @@ const {
 const {
   checkValidObjectId,
   isActiveUserExists,
-  isActiveAddressExists,
-  isActiveParentProfileExists,
-  isActiveEmergencyContactExists,
 } = require("@MEUtils/reqBodyValidator");
 const {
   aadhaarNumberChar,
@@ -49,24 +46,10 @@ const {
   studentProfileAadhaarNumberEmpty,
   studentProfileAadhaarNumberMinLength,
   studentProfileNationalityRequired,
+  studentProfileNationalityBase,
+  studentProfileNationalityEmpty,
   studentProfileNationalityMinLength,
   studentProfileNationalityMaxLength,
-  studentProfileAddressRequired,
-  studentProfileAddressBase,
-  studentProfileAddressEmpty,
-  studentProfileAddressInvalid,
-  studentProfileFatherRequired,
-  studentProfileFatherBase,
-  studentProfileFatherEmpty,
-  studentProfileFatherInvalid,
-  studentProfileMotherRequired,
-  studentProfileMotherBase,
-  studentProfileMotherEmpty,
-  studentProfileMotherInvalid,
-  studentProfileEmergencyContactsRequired,
-  studentProfileEmergencyContactsBase,
-  studentProfileEmergencyContactsEmpty,
-  studentProfileEmergencyContactsInvalid,
   studentProfilePhotoUrlBase,
   studentProfileHasHearingIssueBase,
   hearingIssueDetailsMinLength,
@@ -184,53 +167,6 @@ const validationPostSchema = Joi.object({
       "string.min": studentProfileNationalityMinLength,
       "string.max": studentProfileNationalityMaxLength,
       "any.required": studentProfileNationalityRequired,
-    }),
-  address: Joi.string()
-    .trim()
-    .required()
-    .custom(checkValidObjectId)
-    .external(isActiveAddressExists)
-    .messages({
-      "string.base": studentProfileAddressBase,
-      "string.empty": studentProfileAddressEmpty,
-      "any.invalid": studentProfileAddressInvalid,
-      "any.required": studentProfileAddressRequired,
-    }),
-  father: Joi.string()
-    .trim()
-    .required()
-    .custom(checkValidObjectId)
-    .external(isActiveParentProfileExists)
-    .messages({
-      "string.base": studentProfileFatherBase,
-      "string.empty": studentProfileFatherEmpty,
-      "any.invalid": studentProfileFatherInvalid,
-      "any.required": studentProfileFatherRequired,
-    }),
-  mother: Joi.string()
-    .trim()
-    .required()
-    .custom(checkValidObjectId)
-    .external(isActiveParentProfileExists)
-    .messages({
-      "string.base": studentProfileMotherBase,
-      "string.empty": studentProfileMotherEmpty,
-      "any.invalid": studentProfileMotherInvalid,
-      "any.required": studentProfileMotherRequired,
-    }),
-  siblings: Joi.array()
-    .items(Joi.string().trim().custom(checkValidObjectId))
-    .default([]),
-  emergency_contacts: Joi.string()
-    .trim()
-    .required()
-    .custom(checkValidObjectId)
-    .external(isActiveEmergencyContactExists)
-    .messages({
-      "string.base": studentProfileEmergencyContactsBase,
-      "string.empty": studentProfileEmergencyContactsEmpty,
-      "any.invalid": studentProfileEmergencyContactsInvalid,
-      "any.required": studentProfileEmergencyContactsRequired,
     }),
   photo_url: Joi.string().trim().optional().messages({
     "string.base": studentProfilePhotoUrlBase,
