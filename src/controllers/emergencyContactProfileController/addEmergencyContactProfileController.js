@@ -17,6 +17,8 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @access  Student
  */
 const addEmergencyContact = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+
   // Validate request body is not empty
   if (!req.body || Object.keys(req.body).length === 0) {
     return next(
@@ -30,7 +32,9 @@ const addEmergencyContact = asyncHandler(async (req, res, next) => {
   // Create new emergency contact document with data from req.body
   const newEmergencyContact = await EmergencyContact.create({
     ...req.body,
-    user: req.user.id,
+    user: id, // Assuming user is attached to request by auth middleware
+    created_by: id,
+    updated_by: id,
   });
 
   // Populate references for response

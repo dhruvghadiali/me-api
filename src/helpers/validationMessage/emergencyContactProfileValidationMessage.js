@@ -30,6 +30,7 @@ const emergencyContactProfileValidationMessage = {
   emergencyContactReqBodyEmpty: `Emergency contact request body cannot be empty`,
   emergencyContactReqBodyUnknown: `Unknown field in emergency contact request body`,
   emergencyContactReqBodyRequired: `Emergency contact request body is required`,
+  emergencyContactUserMaxLimit: `User can have maximum 2 emergency contacts`,
 };
 
 module.exports = emergencyContactProfileValidationMessage;

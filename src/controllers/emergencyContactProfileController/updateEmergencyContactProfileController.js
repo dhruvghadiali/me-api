@@ -48,6 +48,7 @@ const updateEmergencyContact = asyncHandler(async (req, res, next) => {
     }),
     ...(req.body.email && { email: req.body.email }),
     ...(req.body.address && { address: req.body.address }),
+    updated_by: req.user.id,
   };
 
   // Update emergency contact document

@@ -1,10 +1,10 @@
 const Joi = require("joi");
 
 const ErrorResponse = require("@MEUtils/errorResponse");
+const EmergencyContact = require("@MEModels/emergencyContactModel");
 
-const { asyncHandler } = require("@MEMiddleware/async");
 const { phoneRegex } = require("@MEHelpers/regex");
-const { checkValidObjectId } = require("@MEUtils/reqBodyValidator");
+const { asyncHandler } = require("@MEMiddleware/async");
 const {
   HTTP_STATUS_CODES,
   EMERGENCY_CONTACT_RELATIONS,
@@ -19,8 +19,6 @@ const {
   emergencyContactAddressMaxChar,
 } = require("@MEHelpers/validationConst");
 const {
-  usernameInvalid,
-  usernameRequired,
   emergencyContactNameBase,
   emergencyContactNameEmpty,
   emergencyContactNameRequired,
@@ -51,15 +49,10 @@ const {
   emergencyContactReqBodyUnknown,
   emergencyContactReqBodyRequired,
   phoneNumberMaxLength,
+  emergencyContactUserMaxLimit,
 } = require("@MEHelpers/validationMessage");
 
 const validationPostSchema = Joi.object({
-  user: Joi.string().trim().required().custom(checkValidObjectId).messages({
-    "string.base": usernameInvalid,
-    "string.empty": usernameInvalid,
-    "any.invalid": usernameInvalid,
-    "any.required": usernameRequired,
-  }),
   name: Joi.string()
     .trim()
     .required()
@@ -146,6 +139,22 @@ const validateAddEmergencyContactProfilePostReqBody = asyncHandler(
   async (req, res, next) => {
     try {
       await validationPostSchema.validateAsync(req.body);
+
+      // Check if user already has 2 emergency contacts
+      const contactCount = await EmergencyContact.countDocuments({
+        user: req.user?.id,
+        is_active: true,
+      });
+
+      if (contactCount >= 2) {
+        return next(
+          new ErrorResponse(
+            emergencyContactUserMaxLimit,
+            HTTP_STATUS_CODES.STATUS_400
+          )
+        );
+      }
+
       next();
     } catch (error) {
       next(
