@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
+const { USER_TYPES_FOR_ADDRESS } = require("@ME/helpers/enums");
 const {
   isActiveCityExistsValidator,
   isActiveStateExistsValidator,
@@ -41,6 +42,16 @@ const addressSchema = new Schema(
       validate: {
         validator: isActiveUserValidator,
         message: usernameInvalid,
+      },
+    },
+    user_type: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: [true, parentProfileParentTypeRequired],
+      enum: {
+        values: Object.values(USER_TYPES_FOR_ADDRESS),
+        message: parentProfileParentTypeInvalid,
       },
     },
     address: {

@@ -136,27 +136,6 @@ const studentProfileSchema = new Schema(
         studentProfileNationalityMaxLength,
       ],
     },
-    address: { type: Schema.Types.ObjectId, ref: "address", required: true },
-    father: {
-      type: Schema.Types.ObjectId,
-      ref: "parent_profile",
-      required: true,
-    },
-    mother: {
-      type: Schema.Types.ObjectId,
-      ref: "parent_profile",
-      required: true,
-    },
-    siblings: {
-      type: [Schema.Types.ObjectId],
-      ref: "sibling_profile",
-      default: [],
-    },
-    emergency_contacts: {
-      type: Schema.Types.ObjectId,
-      ref: "emergency_contact",
-      required: true,
-    },
     medical_info: {
       has_hearing_issue: { type: Boolean, default: false },
       hearing_issue_details: {

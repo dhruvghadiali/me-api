@@ -25,8 +25,15 @@ const ACCOUNT_VERIFICATION_STATUS = Object.freeze({
   UNVERIFIED: false,
 });
 
+const USER_TYPES_FOR_ADDRESS = Object.freeze({
+  STUDENT: "STUDENT",
+  FATHER: "FATHER",
+  MOTHER: "MOTHER",
+});
+
 module.exports = {
   USER_TYPES,
   USER_STATUS,
   ACCOUNT_VERIFICATION_STATUS,
+  USER_TYPES_FOR_ADDRESS,
 };

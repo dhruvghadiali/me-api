@@ -1,6 +1,7 @@
 const {
-  PARENT_OCCUPATIONS_IN,
+  PARENT_TYPES,
   EDUCATION_LEVELS_IN,
+  PARENT_OCCUPATIONS_IN,
 } = require("@ME/helpers/enums/studentEnums");
 const {
   parentProfileAnnualIncomeMinValue,
@@ -44,6 +45,8 @@ const parentProfileValidationMessage = {
   parentProfileReqBodyEmpty: `Parent profile request body cannot be empty`,
   parentProfileReqBodyUnknown: `Unknown field in parent profile request body`,
   parentProfileReqBodyRequired: `Parent profile request body is required`,
+  parentProfileParentTypeRequired: `Parent type is required`,
+  parentProfileParentTypeInvalid: `Parent type must be one of: ${Object.values(PARENT_TYPES).join(", ")}`,
 };
 
 module.exports = parentProfileValidationMessage;

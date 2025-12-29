@@ -16,6 +16,12 @@ const EMERGENCY_CONTACT_RELATIONS = Object.freeze({
   OTHER: "other",
 });
 
+// parent types
+const PARENT_TYPES = Object.freeze({
+  FATHER: "father",
+  MOTHER: "mother",
+});
+
 // Gender enumeration for students (keep in sync with schema)
 const GENDERS = Object.freeze({
   MALE: "male",
@@ -81,6 +87,7 @@ module.exports = {
   EMERGENCY_CONTACT_RELATIONS,
   GENDERS,
   BLOOD_GROUPS,
+  PARENT_TYPES,
   PARENT_OCCUPATIONS_IN,
   EDUCATION_LEVELS_IN,
 };

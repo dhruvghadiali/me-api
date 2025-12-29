@@ -7,9 +7,10 @@ const { Schema } = mongoose;
 const { isActiveUserValidator } = require("@MEUtils/dbQuery");
 const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
-  PARENT_OCCUPATIONS_IN,
+  PARENT_TYPES,
   EDUCATION_LEVELS_IN,
-} = require("@ME/helpers/enums/studentEnums");
+  PARENT_OCCUPATIONS_IN,
+} = require("@ME/helpers/enums");
 const {
   emailMaxChar,
   emailMinChar,
@@ -52,6 +53,10 @@ const {
   parentProfileCaringChildByMinLength,
   parentProfileCaringChildByMaxLength,
   parentProfileCaringChildByRequired,
+  parentProfileParentTypeRequired,
+  parentProfileParentTypeInvalid,
+  parentProfileOccupationRequired,
+  parentProfileEducationRequired,
 } = require("@MEHelpers/validationMessage");
 
 const parentProfileSchema = new Schema(
@@ -107,6 +112,7 @@ const parentProfileSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
+      required: [true, parentProfileOccupationRequired],
       enum: {
         values: Object.values(PARENT_OCCUPATIONS_IN),
         message: parentProfileOccupationInvalid,
@@ -116,9 +122,20 @@ const parentProfileSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
+      required: [true, parentProfileEducationRequired],
       enum: {
         values: Object.values(EDUCATION_LEVELS_IN),
         message: parentProfileEducationInvalid,
+      },
+    },
+    parent_type: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: [true, parentProfileParentTypeRequired],
+      enum: {
+        values: Object.values(PARENT_TYPES),
+        message: parentProfileParentTypeInvalid,
       },
     },
     annual_income: {
@@ -173,11 +190,6 @@ const parentProfileSchema = new Schema(
       },
     },
     same_address_as_student: { type: Boolean, default: true },
-    address_override: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "address",
-      required: false,
-    },
     is_active: { type: Boolean, default: true },
     created_by: {
       type: Schema.Types.ObjectId,
