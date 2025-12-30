@@ -22,7 +22,9 @@ const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
   // Fetch student profile
   const studentProfile = await StudentProfile.findOne({
     user: userId,
-  }).populate([{ path: "user" }]);
+  })
+    .populate([{ path: "user" }])
+    .populate("created_by updated_by");
 
   // Fetch parent profiles (father and mother)
   const parentProfiles = await ParentProfile.find({
