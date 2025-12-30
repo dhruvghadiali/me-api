@@ -19,12 +19,18 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
 
+  // Fetch user information
+  const user = await User.findById(userId).select([
+    "first_name",
+    "last_name",
+    "email",
+    "phone_number",
+  ]);
+
   // Fetch student profile
   const studentProfile = await StudentProfile.findOne({
     user: userId,
-  })
-    .populate([{ path: "user" }])
-    .populate("created_by updated_by");
+  }).populate("created_by updated_by");
 
   // Fetch parent profiles (father and mother)
   const parentProfiles = await ParentProfile.find({
@@ -82,9 +88,8 @@ const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
     motherProfile.address = motherAddress;
   }
 
-  // Build response object
   const responseData = {
-    student: studentProfile || {},
+    student: { ...studentProfile.toObject(), ...user.toObject() } || {},
     father: fatherProfile || {},
     mother: motherProfile || {},
     siblings: siblingProfiles || [],
