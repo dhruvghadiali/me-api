@@ -20,12 +20,16 @@ const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
 
   // Fetch user information
-  const user = await User.findById(userId).select([
+  let user = await User.findById(userId).select([
     "first_name",
     "last_name",
     "email",
     "phone_number",
   ]);
+
+  if (user) {
+    user = _.omit(user.toObject(), ["__v", "id", "_id"]);
+  }
 
   // Fetch student profile
   const studentProfile = await StudentProfile.findOne({
@@ -92,9 +96,7 @@ const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
   }
 
   const responseData = {
-    student:
-      { ...(studentProfile?.toObject() || {}), ...(user?.toObject() || {}) } ||
-      {},
+    student: { ...(studentProfile?.toObject() || {}), ...(user || {}) } || {},
     father: fatherProfile || {},
     mother: motherProfile || {},
     siblings: siblingProfiles || [],
