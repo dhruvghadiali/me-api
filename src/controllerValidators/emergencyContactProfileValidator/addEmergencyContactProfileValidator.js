@@ -5,6 +5,7 @@ const EmergencyContact = require("@MEModels/emergencyContactModel");
 
 const { phoneRegex } = require("@MEHelpers/regex");
 const { asyncHandler } = require("@MEMiddleware/async");
+const { setValidationMessage } = require("@MEUtils/utility");
 const {
   HTTP_STATUS_CODES,
   EMERGENCY_CONTACT_RELATIONS,

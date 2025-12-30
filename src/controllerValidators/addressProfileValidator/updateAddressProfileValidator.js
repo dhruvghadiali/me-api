@@ -3,6 +3,7 @@ const Joi = require("joi");
 const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const { setValidationMessage } = require("@MEUtils/utility");
 const {
   HTTP_STATUS_CODES,
   USER_TYPES_FOR_ADDRESS,
