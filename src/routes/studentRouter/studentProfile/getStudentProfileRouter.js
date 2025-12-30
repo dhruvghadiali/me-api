@@ -7,6 +7,6 @@ const {
 
 const router = express.Router();
 
-router.route("/profile").post(studentProtect, getStudentProfileInfo);
+router.route("/profile").get(studentProtect, getStudentProfileInfo);
 
 module.exports = router;
