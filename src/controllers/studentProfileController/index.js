@@ -1,7 +1,8 @@
 const {
   getStudentProfileInfo,
 } = require("@MEControllers/studentProfileController/getStudentProfileController");
+const {
+  addStudentProfile,
+} = require("@MEControllers/studentProfileController/addStudentProfileController");
 
-module.exports = {
-  getStudentProfileInfo,
-};
+module.exports = { addStudentProfile, getStudentProfileInfo };

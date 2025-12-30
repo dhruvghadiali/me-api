@@ -1,0 +1,3 @@
+GET {{studentLocalhostBaseUrl}}{{studentProfileRoute}}
+Content-Type: application/json
+Authorization: {{studentAuthToken}}
