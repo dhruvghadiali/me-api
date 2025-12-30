@@ -17,7 +17,7 @@ const { asyncHandler } = require("@MEMiddleware/async");
  * @access  Student
  */
 const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
 
   // Fetch student profile
   const studentProfile = await StudentProfile.findOne({
