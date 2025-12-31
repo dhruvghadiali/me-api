@@ -5,6 +5,7 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const { setValidationMessage } = require("@MEUtils/utility");
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
   GENDERS,
   BLOOD_GROUPS,
@@ -20,6 +21,13 @@ const {
   studentProfileMedicalIssueDetailMaxChar,
   studentProfileMedicalAllergiesMinItems,
   studentProfileMedicalAllergiesMaxItems,
+  firstNameMinChar,
+  firstNameMaxChar,
+  lastNameMinChar,
+  lastNameMaxChar,
+  emailMinChar,
+  emailMaxChar,
+  phoneNumberChar,
 } = require("@MEHelpers/validationConst");
 const {
   studentProfileDateOfBirthBase,
@@ -64,9 +72,71 @@ const {
   studentProfileReqBodyEmpty,
   studentProfileReqBodyUnknown,
   studentProfileReqBodyRequired,
+  firstNameInvalidFormate,
+  firstNameEmpty,
+  firstNameMinLength,
+  firstNameMaxLength,
+  lastNameInvalidFormate,
+  lastNameEmpty,
+  lastNameMinLength,
+  lastNameMaxLength,
+  emailInvalidFormate,
+  emailEmpty,
+  emailInvalid,
+  emailMinLength,
+  emailMaxLength,
+  phoneNumberInvalidFormate,
+  phoneNumberEmpty,
+  phoneNumberInvalid,
+  phoneNumberMinLength,
+  phoneNumberMaxLength,
 } = require("@MEHelpers/validationMessage");
 
 const validationPutSchema = Joi.object({
+  first_name: Joi.string()
+    .trim()
+    .min(firstNameMinChar)
+    .max(firstNameMaxChar)
+    .messages({
+      "string.base": firstNameInvalidFormate,
+      "string.empty": firstNameEmpty,
+      "string.min": firstNameMinLength,
+      "string.max": firstNameMaxLength,
+    }),
+  last_name: Joi.string()
+    .trim()
+    .min(lastNameMinChar)
+    .max(lastNameMaxChar)
+    .messages({
+      "string.base": lastNameInvalidFormate,
+      "string.empty": lastNameEmpty,
+      "string.min": lastNameMinLength,
+      "string.max": lastNameMaxLength,
+    }),
+  email: Joi.string()
+    .trim()
+    .pattern(emailRegex)
+    .min(emailMinChar)
+    .max(emailMaxChar)
+    .messages({
+      "string.base": emailInvalidFormate,
+      "string.empty": emailEmpty,
+      "string.pattern.base": emailInvalid,
+      "string.min": emailMinLength,
+      "string.max": emailMaxLength,
+    }),
+  phone_number: Joi.string()
+    .trim()
+    .pattern(phoneRegex)
+    .min(phoneNumberChar)
+    .max(phoneNumberChar)
+    .messages({
+      "string.base": phoneNumberInvalidFormate,
+      "string.empty": phoneNumberEmpty,
+      "string.pattern.base": phoneNumberInvalid,
+      "string.min": phoneNumberMinLength,
+      "string.max": phoneNumberMaxLength,
+    }),
   date_of_birth: Joi.date()
     .optional()
     .custom((value, helpers) => {

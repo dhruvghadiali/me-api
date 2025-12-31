@@ -5,8 +5,8 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 const StudentProfile = require("@MEModels/studentProfileModel");
 
 const { asyncHandler } = require("@MEMiddleware/async");
-const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const { setValidationMessage } = require("@MEUtils/utility");
+const { emailRegex, phoneRegex } = require("@MEHelpers/regex");
 const {
   GENDERS,
   BLOOD_GROUPS,

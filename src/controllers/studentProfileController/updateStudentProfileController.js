@@ -1,8 +1,10 @@
 const _ = require("lodash");
 
+const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
 const StudentProfile = require("@MEModels/studentProfileModel");
 
+const { asyncHandler } = require("@MEMiddleware/async");
 const { HTTP_STATUS_CODES } = require("@MEHelpers/enums");
 const {
   studentProfileDetailsRequired,
@@ -10,8 +12,6 @@ const {
   studentProfileDetailsPutRequestFail,
   studentProfileDetailsPutRequestSuccess,
 } = require("@MEHelpers/responseMessage");
-
-const { asyncHandler } = require("@MEMiddleware/async");
 
 /**
  * @desc    Update student profile for user
@@ -39,7 +39,23 @@ const updateStudentProfile = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Build update object with only provided fields
+  // Build User update object with user-related fields
+  const userUpdateData = {
+    ...(req.body.first_name && { first_name: req.body.first_name }),
+    ...(req.body.last_name && { last_name: req.body.last_name }),
+    ...(req.body.email && { email: req.body.email }),
+    ...(req.body.phone_number && { phone_number: req.body.phone_number }),
+  };
+
+  // Update User model if user-related fields are provided
+  if (Object.keys(userUpdateData).length > 0) {
+    await User.findByIdAndUpdate(req.user.id, userUpdateData, {
+      new: true,
+      runValidators: true,
+    });
+  }
+
+  // Build update object with StudentProfile-specific fields
   const updateData = {
     ...(req.body.date_of_birth && { date_of_birth: req.body.date_of_birth }),
     ...(req.body.gender && { gender: req.body.gender }),
