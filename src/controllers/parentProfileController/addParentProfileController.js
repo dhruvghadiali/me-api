@@ -38,9 +38,7 @@ const addParentProfile = asyncHandler(async (req, res, next) => {
   });
 
   // Populate references for response
-  const populatedParentProfile = await newParentProfile.populate([
-    { path: "user" },
-  ]);
+  const populatedParentProfile = await newParentProfile;
 
   if (!populatedParentProfile) {
     // Send failure response

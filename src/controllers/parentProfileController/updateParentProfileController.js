@@ -88,16 +88,14 @@ const updateParentProfile = asyncHandler(async (req, res, next) => {
   }
 
   // Populate references for response
-  const populatedParentProfile = await updatedParentProfile.populate([
-    { path: "user" },
-  ]);
+  const populatedParentProfile = await updatedParentProfile;
 
   if (!populatedParentProfile) {
     // Send failure response
     return next(
       new ErrorResponse(
         parentProfileDetailsPutRequestFail,
-        HTTP_STATUS_CODES.STATUS_500
+        HTTP_STATUS_CODES.STATUS_400
       )
     );
   } else {
