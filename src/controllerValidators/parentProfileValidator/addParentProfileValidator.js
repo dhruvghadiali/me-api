@@ -43,7 +43,6 @@ const {
   aadhaarNumberRequired,
   parentProfileAnnualIncomeInvalid,
   parentProfileOccupationInvalid,
-  parentProfileEducationInvalid,
   parentProfileCaringChildByMinLength,
   parentProfileCaringChildByMaxLength,
   parentProfileCaringChildByRequired,
