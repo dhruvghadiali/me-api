@@ -61,7 +61,6 @@ const {
   aadhaarNumberMaxLength,
   parentProfileOccupationBase,
   parentProfileOccupationEmpty,
-  parentProfileOccupationInvalid,
   parentProfileOccupationRequired,
   parentProfileEducationBase,
   parentProfileEducationEmpty,
