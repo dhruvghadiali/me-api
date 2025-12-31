@@ -70,7 +70,6 @@ const {
   parentProfileParentTypeInvalid,
   parentProfileParentTypeRequired,
   parentProfileAnnualIncomeBase,
-  parentProfileAnnualIncomeInvalid,
   parentProfileAnnualIncomeRequired,
   parentProfileDateOfDeathBase,
   parentProfileDateOfDeathInvalid,
