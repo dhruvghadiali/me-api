@@ -46,9 +46,9 @@ const BLOOD_GROUPS = Object.freeze({
 
 // Common occupation categories in India (normalized, lowercase)
 const PARENT_OCCUPATIONS_IN = Object.freeze({
-  GOVERNMENT_SERVICE: "government_service",
-  PRIVATE_SERVICE: "private_service",
-  SELF_EMPLOYED: "self_employed",
+  GOVERNMENT_SERVICE: "government service",
+  PRIVATE_SERVICE: "private service",
+  SELF_EMPLOYED: "self employed",
   BUSINESS: "business",
   FARMER: "farmer",
   LABOURER: "labourer",
@@ -59,11 +59,11 @@ const PARENT_OCCUPATIONS_IN = Object.freeze({
   TEACHER: "teacher",
   DOCTOR: "doctor",
   ENGINEER: "engineer",
-  DEFENCE: "defence",
+  DEFENSE: "defense",
   DRIVER: "driver",
   ARTISAN: "artisan",
   SHOPKEEPER: "shopkeeper",
-  DAILY_WAGE_WORKER: "daily_wage_worker",
+  DAILY_WAGE_WORKER: "daily wage worker",
   OTHER: "other",
 });
 
@@ -73,7 +73,7 @@ const EDUCATION_LEVELS_IN = Object.freeze({
   PRIMARY: "primary", // Class 1-5
   MIDDLE: "middle", // Class 6-8
   SECONDARY: "secondary", // Class 9-10
-  HIGHER_SECONDARY: "higher_secondary", // Class 11-12
+  HIGHER_SECONDARY: "higher secondary", // Class 11-12
   DIPLOMA: "diploma",
   UNDERGRADUATE: "undergraduate",
   POSTGRADUATE: "postgraduate",
