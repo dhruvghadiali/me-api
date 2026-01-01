@@ -3,6 +3,8 @@ const {
   addressMaxChar,
 } = require("@MEHelpers/validationConst");
 
+const { USER_TYPES_FOR_ADDRESS } = require("@ME/helpers/enums");
+
 const addressProfileValidationMessage = {
   addressProfileUserBase: `User must be a valid string`,
   addressProfileUserEmpty: `User cannot be empty`,
@@ -10,7 +12,9 @@ const addressProfileValidationMessage = {
   addressProfileUserRequired: `User is required`,
   addressProfileUserTypeBase: `User type must be a valid string`,
   addressProfileUserTypeEmpty: `User type cannot be empty`,
-  addressProfileUserTypeInvalid: `User type must be a valid user type (STUDENT, FATHER, MOTHER)`,
+  addressProfileUserTypeInvalid: `User type must be a valid user type ${Object.values(
+    USER_TYPES_FOR_ADDRESS
+  ).join(", ")}`,
   addressProfileUserTypeRequired: `User type is required`,
   addressProfileAddressBase: `Address must be a valid string`,
   addressProfileAddressEmpty: `Address cannot be empty`,

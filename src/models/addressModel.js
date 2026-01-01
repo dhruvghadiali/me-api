@@ -31,8 +31,8 @@ const {
   stateNameRequired,
   districtNameInvalid,
   districtNameRequired,
-  parentProfileParentTypeInvalid,
-  parentProfileParentTypeRequired,
+  addressProfileUserTypeInvalid,
+  addressProfileUserTypeRequired,
 } = require("@MEHelpers/validationMessage");
 
 const addressSchema = new Schema(
@@ -50,10 +50,10 @@ const addressSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      required: [true, parentProfileParentTypeRequired],
+      required: [true, addressProfileUserTypeRequired],
       enum: {
         values: Object.values(USER_TYPES_FOR_ADDRESS),
-        message: parentProfileParentTypeInvalid,
+        message: addressProfileUserTypeInvalid,
       },
     },
     address: {
@@ -137,24 +137,19 @@ addressSchema.index({ user: 1, user_type: 1 }, { unique: true });
 
 addressSchema.set("toJSON", {
   virtuals: true,
-  transform: function (_, response) {
-    if (
-      _.get(response, "created_by.first_name") &&
-      _.get(response, "created_by.last_name")
-    ) {
-      response.created_by = `${response.created_by.first_name} ${response.created_by.last_name}`;
+  transform: function (doc, response) {
+    if (response?.created_by?.username) {
+      response.created_by = response.created_by.username;
     } else {
       delete response.created_by;
     }
 
-    if (
-      _.get(response, "updated_by.first_name") &&
-      _.get(response, "updated_by.last_name")
-    ) {
-      response.updated_by = `${response.updated_by.first_name} ${response.updated_by.last_name}`;
+    if (response?.updated_by?.username) {
+      response.updated_by = response.updated_by.username;
     } else {
       delete response.updated_by;
     }
+
     return response;
   },
 });

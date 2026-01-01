@@ -26,9 +26,9 @@ const ACCOUNT_VERIFICATION_STATUS = Object.freeze({
 });
 
 const USER_TYPES_FOR_ADDRESS = Object.freeze({
-  STUDENT: "STUDENT",
-  FATHER: "FATHER",
-  MOTHER: "MOTHER",
+  STUDENT: "student",
+  FATHER: "father",
+  MOTHER: "mother",
 });
 
 module.exports = {

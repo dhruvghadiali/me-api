@@ -218,7 +218,7 @@ parentProfileSchema.index({ user: 1, parent_type: 1 }, { unique: true });
 
 parentProfileSchema.set("toJSON", {
   virtuals: true,
-  transform: function (_, response) {
+  transform: function (doc, response) {
     if (response?.created_by?.username) {
       response.created_by = response.created_by.username;
     } else {
@@ -230,6 +230,7 @@ parentProfileSchema.set("toJSON", {
     } else {
       delete response.updated_by;
     }
+
     return response;
   },
 });
