@@ -4,6 +4,9 @@ const {
   getSchool,
   getSchoolsSummary,
 } = require("@MEControllers/schoolController/schoolController");
+const {
+  getZipcodes,
+} = require("@MEControllers/zipcodeController/zipcodeController");
 
 const router = express.Router();
 
@@ -25,5 +28,6 @@ const router = express.Router();
  */
 router.route("/schools").get(getSchoolsSummary);
 router.route("/school/:id").get(getSchool);
+router.route("/zipcodes").get(getZipcodes);
 
 module.exports = router;
