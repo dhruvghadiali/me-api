@@ -169,16 +169,16 @@ const validationPutSchema = Joi.object({
   same_address_as_student: Joi.boolean().optional(),
   alive: Joi.object({
     status: Joi.boolean().optional(),
-    date_of_death: Joi.when("status", {
-      is: Joi.boolean().valid(false),
+    date_of_death: Joi.when("alive.status", {
+      is: false,
       then: Joi.date().required().max("now").messages({
         "date.base": parentProfileDateOfDeathBase,
         "date.max": parentProfileDateOfDeathInvalid,
       }),
       otherwise: Joi.date().optional(),
     }),
-    caring_child_by: Joi.when("status", {
-      is: Joi.boolean().valid(false),
+    caring_child_by: Joi.when("alive.status", {
+      is: false,
       then: Joi.string()
         .trim()
         .required()
