@@ -159,7 +159,7 @@ const parentProfileSchema = new Schema(
         required: false,
         validate: {
           validator: function (val) {
-            if (!this || this.alive.status === true) return true;
+            if (!this || !this.alive || this.alive.status === true) return true;
             if (!val) return false;
             const deathDate = moment(val).startOf("day");
             const today = moment().startOf("day");
@@ -182,7 +182,7 @@ const parentProfileSchema = new Schema(
         ],
         validate: {
           validator: function (val) {
-            if (!this || this.alive.status === true) return true;
+            if (!this || !this.alive || this.alive.status === true) return true;
             return _.isString(val) && !_.isEmpty(val.trim());
           },
           message: parentProfileCaringChildByRequired,
