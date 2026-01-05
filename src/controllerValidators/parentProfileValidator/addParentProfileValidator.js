@@ -192,7 +192,7 @@ const validationPostSchema = Joi.object({
   alive: Joi.object({
     status: Joi.boolean().optional().default(true),
     date_of_death: Joi.when("status", {
-      is: false,
+      is: Joi.boolean().valid(false),
       then: Joi.date().required().max("now").messages({
         "date.base": parentProfileDateOfDeathBase,
         "date.max": parentProfileDateOfDeathInvalid,
@@ -201,7 +201,7 @@ const validationPostSchema = Joi.object({
       otherwise: Joi.date().optional(),
     }),
     caring_child_by: Joi.when("status", {
-      is: false,
+      is: Joi.boolean().valid(false),
       then: Joi.string()
         .trim()
         .required()
