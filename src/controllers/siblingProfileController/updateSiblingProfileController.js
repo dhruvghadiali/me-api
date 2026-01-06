@@ -76,10 +76,7 @@ const updateSiblingProfile = asyncHandler(async (req, res, next) => {
   }
 
   // Populate references for response
-  const populatedSiblingProfile = await updatedSiblingProfile.populate([
-    { path: "user" },
-    { path: "studying_in_class" },
-  ]);
+  const populatedSiblingProfile = await updatedSiblingProfile;
 
   if (!populatedSiblingProfile) {
     // Send failure response
