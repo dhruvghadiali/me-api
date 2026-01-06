@@ -84,7 +84,7 @@ const getStudentProfileInfo = asyncHandler(async (req, res, next) => {
   // Fetch sibling profiles
   const siblingProfiles = await SiblingProfile.find({
     user: userId,
-  }).populate([{ path: "user" }, { path: "studying_in_class" }]);
+  });
 
   // Fetch emergency contacts
   const emergencyContacts = await EmergencyContact.find({
