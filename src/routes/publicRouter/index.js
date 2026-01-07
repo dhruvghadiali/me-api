@@ -5,6 +5,9 @@ const {
   getSchoolsSummary,
 } = require("@MEControllers/schoolController/schoolController");
 const { getStates } = require("@MEControllers/stateController/stateController");
+const {
+  getAcademicClasses,
+} = require("@MEControllers/academicClassController/academicClassController");
 
 const router = express.Router();
 
@@ -27,5 +30,6 @@ const router = express.Router();
 router.route("/schools").get(getSchoolsSummary);
 router.route("/school/:id").get(getSchool);
 router.route("/states").get(getStates);
+router.route("/academic-classes").get(getAcademicClasses);
 
 module.exports = router;

@@ -15,8 +15,9 @@ const {
 
 /**
  * @desc    Get all academic classes
- * @route   GET /super-admin/academic-grades
+ * @route   GET /super-admin/academic-classes
  * @access  Super Admin
+ *          Public
  */
 const getAcademicClasses = asyncHandler(async (req, res, next) => {
   // Find academic classes that are is_active status value is true and sort them by academic_class
