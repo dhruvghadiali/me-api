@@ -33,7 +33,6 @@ const {
   emergencyContactRelationEmpty,
   phoneNumberBase,
   phoneNumberEmpty,
-  phoneNumberChar,
   emergencyContactAlternatePhoneBase,
   emergencyContactAlternatePhoneEmpty,
   emergencyContactAlternatePhoneInvalid,
@@ -79,7 +78,7 @@ const validationPutSchema = Joi.object({
     .messages({
       "string.base": phoneNumberBase,
       "string.empty": phoneNumberEmpty,
-      "string.length": phoneNumberChar,
+      "string.length": phoneNumberMaxLength,
       "string.pattern.base": phoneNumberInvalid,
     }),
   alternate_phone: Joi.string()
