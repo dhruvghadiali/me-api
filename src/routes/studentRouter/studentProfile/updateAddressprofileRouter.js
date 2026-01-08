@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 router
-  .route("/profile/address")
+  .route("/profile/address/:id")
   .put(studentProtect, validateUpdateAddressProfilePutReqBody, updateAddress);
 
 module.exports = router;
