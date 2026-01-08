@@ -43,13 +43,9 @@ const updateEmergencyContact = asyncHandler(async (req, res, next) => {
     ...(req.body.name && { name: req.body.name }),
     ...(req.body.relation && { relation: req.body.relation }),
     ...(req.body.phone_number && { phone_number: req.body.phone_number }),
-    ...(req.body.hasOwnProperty("alternate_phone") && {
-      alternate_phone: req.body.alternate_phone || null,
-    }),
-    ...(req.body.hasOwnProperty("email") && { email: req.body.email || null }),
-    ...(req.body.hasOwnProperty("address") && {
-      address: req.body.address || null,
-    }),
+    alternate_phone: req.body.alternate_phone || null,
+    email: req.body.email || null,
+    address: req.body.address || null,
     updated_by: req.user.id,
   };
 
