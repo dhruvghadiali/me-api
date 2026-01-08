@@ -74,6 +74,7 @@ const emergencyContactSchema = new Schema(
     alternate_phone: {
       type: String,
       trim: true,
+      sparse: true,
       maxlength: [phoneNumberChar, phoneNumberMaxLength],
       minlength: [phoneNumberChar, phoneNumberMinLength],
       match: [phoneRegex, phoneNumberInvalid],
@@ -81,6 +82,7 @@ const emergencyContactSchema = new Schema(
     email: {
       type: String,
       trim: true,
+      sparse: true,
       maxlength: [emailMaxChar, emailMaxLength],
       minlength: [emailMinChar, emailMinLength],
       match: [emailRegex, emailInvalid],
@@ -89,6 +91,7 @@ const emergencyContactSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
+      sparse: true,
       maxlength: [
         emergencyContactAddressMaxChar,
         emergencyContactAddressMaxLength,
