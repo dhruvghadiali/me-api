@@ -9,6 +9,8 @@ const updateParentProfileRouter = require("@MERoutes/studentRouter/studentProfil
 const updateStudentProfileRouter = require("@MERoutes/studentRouter/studentProfile/updateStudentProfileRouter");
 const updateSiblingProfileRouter = require("@MERoutes/studentRouter/studentProfile/updateSiblingProfileRouter");
 const updateAddressProfileRouter = require("@MERoutes/studentRouter/studentProfile/updateAddressprofileRouter");
+const addEmergencyContactProfileRouter = require("@MERoutes/studentRouter/studentProfile/addEmergencyContactProfileRouter");
+const updateEmergencyContactProfileRouter = require("@MERoutes/studentRouter/studentProfile/updateEmergencyContactProfileRouter");
 
 const router = express.Router();
 
@@ -21,5 +23,7 @@ router.use("/", updateParentProfileRouter);
 router.use("/", updateStudentProfileRouter);
 router.use("/", updateSiblingProfileRouter);
 router.use("/", updateAddressProfileRouter);
+router.use("/", addEmergencyContactProfileRouter);
+router.use("/", updateEmergencyContactProfileRouter);
 
 module.exports = router;
