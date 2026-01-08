@@ -132,12 +132,9 @@ const addressSchema = new Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-// Unique compound index for user and user_type combination
-addressSchema.index({ user: 1, user_type: 1 }, { unique: true });
-
 addressSchema.set("toJSON", {
   virtuals: true,
-  transform: function (doc, response) {
+  transform: function (_, response) {
     if (response?.created_by?.username) {
       response.created_by = response.created_by.username;
     } else {
@@ -149,7 +146,6 @@ addressSchema.set("toJSON", {
     } else {
       delete response.updated_by;
     }
-
     return response;
   },
 });
