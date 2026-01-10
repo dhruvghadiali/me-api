@@ -74,7 +74,7 @@ const updateUsername = asyncHandler(async (req, res, next) => {
   }
 
   // Update username
-  user.username = newUsername;
+  user.username = new_username;
   await user.save();
 
   // Send success response
