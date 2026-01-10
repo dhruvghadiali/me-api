@@ -73,16 +73,27 @@ const updateUsername = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Update username
-  user.username = new_username;
-  await user.save();
+  // Build User update object with user-related fields
+  const userUpdateData = {
+    ...(req.body.new_username && { username: req.body.new_username }),
+  };
 
-  // Send success response
-  res.status(HTTP_STATUS_CODES.STATUS_200).json({
-    data: [user],
-    message: usernameUpdatedSuccess,
-    status: HTTP_STATUS_CODES.STATUS_200,
-  });
+  // Update User model if user-related fields are provided
+  if (Object.keys(userUpdateData).length > 0) {
+    await User.findByIdAndUpdate(req.user.id, userUpdateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    // Send success response
+    res.status(HTTP_STATUS_CODES.STATUS_200).json({
+      data: [],
+      message: usernameUpdatedSuccess,
+      status: HTTP_STATUS_CODES.STATUS_200,
+    });
+  } else {
+    return next(new ErrorResponse(invalidFormat, HTTP_STATUS_CODES.STATUS_400));
+  }
 });
 
 module.exports = {
