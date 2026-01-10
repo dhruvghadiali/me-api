@@ -30,6 +30,14 @@ const authResponseMessage = {
   schoolAdminChangePasswordError: `Facing issue while updating school admin password`,
   schoolAdminSignInSuccess: `School admin signin process successfully completed`,
   studentChangePasswordSuccess: `Student password updated successfully`,
+  existingPasswordAndNewPasswordSameError: `Existing password and new password cannot be the same`,
+  studentInformationNotFound: `Student information not found`,
+  existingPasswordInvalid: `Existing password is incorrect please try again`,
+  newPasswordUpdatedSuccess: `New password has been updated successfully`,
+  invalidPassword: `Invalid password please try again`,
+  existingUsernameAndNewUsernameSameError: `Existing username and new username cannot be the same`,
+  usernameIsAlreadyInUse: `Username is already taken by another user`,
+  usernameUpdatedSuccess: `Username has been updated successfully`,
 };
 
 module.exports = authResponseMessage;
