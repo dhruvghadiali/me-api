@@ -56,23 +56,30 @@ const updatePassword = asyncHandler(async (req, res, next) => {
 
   if (!isPasswordMatch) {
     return next(
-      new ErrorResponse(existingPasswordInvalid, HTTP_STATUS_CODES.STATUS_401)
+      new ErrorResponse(existingPasswordInvalid, HTTP_STATUS_CODES.STATUS_400)
     );
   }
 
-  // Update password
-  user.password = new_password;
-  await user.save();
+  // Build User update object with user-related fields
+  const userUpdateData = {
+    ...(req.body.new_password && { password: req.body.new_password }),
+  };
 
-  // Remove sensitive data from response
-  delete user._doc.password;
-
-  // Send success response
-  res.status(HTTP_STATUS_CODES.STATUS_200).json({
-    data: [user],
-    message: newPasswordUpdatedSuccess,
-    status: HTTP_STATUS_CODES.STATUS_200,
-  });
+  // Update User model if user-related fields are provided
+  if (Object.keys(userUpdateData).length > 0) {
+    await User.findByIdAndUpdate(req.user.id, userUpdateData, {
+      new: true,
+      runValidators: true,
+    });
+    // Send success response
+    res.status(HTTP_STATUS_CODES.STATUS_200).json({
+      data: [],
+      message: newPasswordUpdatedSuccess,
+      status: HTTP_STATUS_CODES.STATUS_200,
+    });
+  } else {
+    return next(new ErrorResponse(invalidFormat, HTTP_STATUS_CODES.STATUS_400));
+  }
 });
 
 module.exports = {

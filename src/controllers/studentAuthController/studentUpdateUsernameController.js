@@ -47,7 +47,7 @@ const updateUsername = asyncHandler(async (req, res, next) => {
 
   if (!isPasswordMatch) {
     return next(
-      new ErrorResponse(invalidPassword, HTTP_STATUS_CODES.STATUS_401)
+      new ErrorResponse(invalidPassword, HTTP_STATUS_CODES.STATUS_400)
     );
   }
 
