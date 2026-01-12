@@ -1,6 +1,9 @@
 const _ = require("lodash");
 const moment = require("moment");
+
+const User = require("@MEModels/userModel");
 const ErrorResponse = require("@MEUtils/errorResponse");
+const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
@@ -25,6 +28,8 @@ const { asyncHandler } = require("@MEMiddleware/async");
 const getAdmissionApplications = asyncHandler(async (req, res, next) => {
   if (req && req.user && req.user.user_type) {
     let query = {};
+    let admissionApplications = [];
+
     switch (req.user.user_type) {
       // Student - get applications from last 2 years
       case USER_TYPES.STUDENT:
@@ -57,6 +62,38 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
           },
         };
         break;
+      // School Admin - get applications for their school only
+      case USER_TYPES.SCHOOL_ADMIN:
+        // Get school ID from school_address
+        const schoolAddress = await User.findById(req.user.id)
+          .populate("school_address")
+          .select("school_address");
+
+        if (!schoolAddress || !schoolAddress.school_address) {
+          return next(
+            new ErrorResponse(
+              admissionApplicationsInvalidUserInformation,
+              HTTP_STATUS_CODES.STATUS_403
+            )
+          );
+        }
+
+        const schoolId = schoolAddress.school_address.school;
+
+        // Get all school academic classes for this school
+        const schoolAcademicClasses = await SchoolAcademicClass.find({
+          school: schoolId,
+        }).select("_id");
+
+        const schoolAcademicClassIds = schoolAcademicClasses.map(
+          (sac) => sac._id
+        );
+
+        // Filter applications by school academic classes
+        query = {
+          school_academic_class: { $in: schoolAcademicClassIds },
+        };
+        break;
       default:
         // Invalid user type
         return next(
@@ -67,27 +104,70 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         );
     }
 
-    // Query admission applications
-    const admissionApplications = await AdmissionApplication.find(query)
-      .populate("created_by updated_by")
-      .populate([
-        {
-          path: "school_academic_class",
-          select: ["_id", "education_board", "academic_class", "school"],
-          populate: [
-            { path: "academic_class", select: ["academic_class", "_id"] },
-            { path: "education_board", select: ["education_board", "_id"] },
-            { path: "school", select: ["name", "_id"] },
-          ],
-        },
-        {
-          path: "status_history.changed_by",
-          select: ["_id", "username", "first_name", "last_name"],
-        },
-      ])
-      .sort({
-        created_at: -1,
-      });
+    switch (req.user.user_type) {
+      case USER_TYPES.STUDENT:
+        // Query admission applications
+        admissionApplications = await AdmissionApplication.find(query)
+          .populate("created_by updated_by")
+          .populate([
+            {
+              path: "school_academic_class",
+              select: ["_id", "education_board", "academic_class", "school"],
+              populate: [
+                { path: "academic_class", select: ["academic_class", "_id"] },
+                { path: "education_board", select: ["education_board", "_id"] },
+                { path: "school", select: ["name", "_id"] },
+              ],
+            },
+            {
+              path: "status_history.changed_by",
+              select: ["_id", "username", "first_name", "last_name"],
+            },
+          ])
+          .sort({
+            created_at: -1,
+          });
+      case USER_TYPES.SCHOOL_ADMIN:
+        admissionApplications = await AdmissionApplication.find(query)
+          .populate("created_by updated_by")
+          .populate([
+            {
+              path: "school_academic_class",
+              select: ["_id", "education_board", "academic_class", "school"],
+              populate: [
+                { path: "academic_class", select: ["academic_class", "_id"] },
+                { path: "education_board", select: ["education_board", "_id"] },
+              ],
+            },
+            {
+              path: "status_history.changed_by",
+              select: ["_id", "username", "first_name", "last_name"],
+            },
+          ])
+          .populate([
+            {
+              path: "applicant_user",
+              select: [
+                "_id",
+                "username",
+                "first_name",
+                "last_name",
+                "email",
+                "phone_number",
+              ],
+              populate: [
+                { path: "student_profile" },
+                { path: "parent_profile" },
+                { path: "sibling_profile" },
+                { path: "address" },
+                { path: "emergency_contact" },
+              ],
+            },
+          ]);
+        break;
+      default:
+        break;
+    }
 
     if (!admissionApplications) {
       // No applications found

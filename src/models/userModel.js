@@ -174,6 +174,37 @@ userSchema.virtual("school_address", {
   justOne: true,
 });
 
+userSchema.virtual("student_profile", {
+  ref: "student_profile",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+
+userSchema.virtual("parent_profile", {
+  ref: "parent_profile",
+  localField: "_id",
+  foreignField: "user",
+});
+
+userSchema.virtual("sibling_profile", {
+  ref: "sibling_profile",
+  localField: "_id",
+  foreignField: "user",
+});
+
+userSchema.virtual("address", {
+  ref: "address",
+  localField: "_id",
+  foreignField: "user",
+});
+
+userSchema.virtual("emergency_contact", {
+  ref: "emergency_contact",
+  localField: "_id",
+  foreignField: "user",
+});
+
 userSchema.set("toObject", { virtuals: true });
 userSchema.set("toJSON", { virtuals: true });
 
