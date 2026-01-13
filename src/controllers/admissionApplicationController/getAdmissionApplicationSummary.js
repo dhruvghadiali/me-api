@@ -202,6 +202,15 @@ const getApplicationSummaryStats = async (classIds, academicYear) => {
  */
 const getAdmissionsByAcademicClass = async (classIds, academicYear) => {
   try {
+    const UNDER_REVIEW_STATUSES = [
+      ADMISSION_APPLICATION_STATUS.UNDER_REVIEW,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
+      ADMISSION_APPLICATION_STATUS.FEES_PENDING,
+      ADMISSION_APPLICATION_STATUS.FEES_PAID,
+    ];
+
     const pipeline = [
       {
         $match: {
@@ -213,6 +222,38 @@ const getAdmissionsByAcademicClass = async (classIds, academicYear) => {
         $group: {
           _id: "$school_academic_class",
           admission_application: { $sum: 1 },
+          approved_application: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.APPROVED] },
+                1,
+                0,
+              ],
+            },
+          },
+          rejected_application: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.REJECTED] },
+                1,
+                0,
+              ],
+            },
+          },
+          withdrawn_application: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.WITHDRAWN] },
+                1,
+                0,
+              ],
+            },
+          },
+          under_review_application: {
+            $sum: {
+              $cond: [{ $in: ["$status", UNDER_REVIEW_STATUSES] }, 1, 0],
+            },
+          },
         },
       },
       {
@@ -237,6 +278,12 @@ const getAdmissionsByAcademicClass = async (classIds, academicYear) => {
         $project: {
           academic_class: "$academic_class_details.academic_class",
           admission_application: { $ifNull: ["$admission_application", 0] },
+          approved_application: { $ifNull: ["$approved_application", 0] },
+          rejected_application: { $ifNull: ["$rejected_application", 0] },
+          withdrawn_application: { $ifNull: ["$withdrawn_application", 0] },
+          under_review_application: {
+            $ifNull: ["$under_review_application", 0],
+          },
           _id: 0,
         },
       },
@@ -246,6 +293,7 @@ const getAdmissionsByAcademicClass = async (classIds, academicYear) => {
     const result = await AdmissionApplication.aggregate(pipeline);
     return result || [];
   } catch (error) {
+    console.error("Error in getAdmissionsByAcademicClass:", error);
     return [];
   }
 };
@@ -256,6 +304,15 @@ const getAdmissionsByAcademicClass = async (classIds, academicYear) => {
  */
 const getAdmissionsByMonth = async (classIds, academicYear) => {
   try {
+    const UNDER_REVIEW_STATUSES = [
+      ADMISSION_APPLICATION_STATUS.UNDER_REVIEW,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
+      ADMISSION_APPLICATION_STATUS.FEES_PENDING,
+      ADMISSION_APPLICATION_STATUS.FEES_PAID,
+    ];
+
     const pipeline = [
       {
         $match: {
@@ -267,63 +324,10 @@ const getAdmissionsByMonth = async (classIds, academicYear) => {
         $group: {
           _id: { $month: "$created_at" },
           admission_application: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          month: "$_id",
-          admission_application: { $ifNull: ["$admission_application", 0] },
-          _id: 0,
-        },
-      },
-      { $sort: { month: 1 } },
-    ];
-
-    const result = await AdmissionApplication.aggregate(pipeline);
-
-    // Fill missing months with 0 to ensure all 12 months are present
-    const monthMap = new Map(result.map((item) => [item.month, item]));
-    const fullYear = [];
-
-    for (let month = 1; month <= 12; month++) {
-      fullYear.push(
-        monthMap.has(month)
-          ? monthMap.get(month)
-          : { month, admission_application: 0 }
-      );
-    }
-
-    return fullYear;
-  } catch (error) {
-    return [];
-  }
-};
-
-/**
- * Get admissions grouped by academic year with status breakdown
- * Includes current academic session and last 5 academic sessions
- */
-const getAdmissionsByAcademicYear = async (classIds) => {
-  try {
-    // Get current academic session and last 5 sessions
-    const currentSession = currentAcademicSession();
-    const academicSessions = getPreviousAcademicSessions(currentSession, 5);
-
-    const pipeline = [
-      {
-        $match: {
-          school_academic_class: { $in: classIds },
-          academic_session: { $in: academicSessions },
-        },
-      },
-      {
-        $group: {
-          _id: "$academic_session",
-          admission_application: { $sum: 1 },
-          selected_application: {
+          approved_application: {
             $sum: {
               $cond: [
-                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.SELECTED] },
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.APPROVED] },
                 1,
                 0,
               ],
@@ -347,15 +351,131 @@ const getAdmissionsByAcademicYear = async (classIds) => {
               ],
             },
           },
+          under_review_application: {
+            $sum: {
+              $cond: [{ $in: ["$status", UNDER_REVIEW_STATUSES] }, 1, 0],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          month: "$_id",
+          admission_application: { $ifNull: ["$admission_application", 0] },
+          approved_application: { $ifNull: ["$approved_application", 0] },
+          rejected_application: { $ifNull: ["$rejected_application", 0] },
+          withdrawn_application: { $ifNull: ["$withdrawn_application", 0] },
+          under_review_application: {
+            $ifNull: ["$under_review_application", 0],
+          },
+          _id: 0,
+        },
+      },
+      { $sort: { month: 1 } },
+    ];
+
+    const result = await AdmissionApplication.aggregate(pipeline);
+
+    // Fill missing months with 0 to ensure all 12 months are present
+    const monthMap = new Map(result.map((item) => [item.month, item]));
+    const fullYear = [];
+
+    for (let month = 1; month <= 12; month++) {
+      fullYear.push(
+        monthMap.has(month)
+          ? monthMap.get(month)
+          : {
+              month,
+              admission_application: 0,
+              approved_application: 0,
+              rejected_application: 0,
+              withdrawn_application: 0,
+              under_review_application: 0,
+            }
+      );
+    }
+
+    return fullYear;
+  } catch (error) {
+    console.error("Error in getAdmissionsByMonth:", error);
+    return [];
+  }
+};
+
+/**
+ * Get admissions grouped by academic year with status breakdown
+ * Includes current academic session and last 5 academic sessions
+ */
+const getAdmissionsByAcademicYear = async (classIds) => {
+  try {
+    // Get current academic session and last 5 sessions
+    const currentSession = currentAcademicSession();
+    const academicSessions = getPreviousAcademicSessions(currentSession, 5);
+
+    const UNDER_REVIEW_STATUSES = [
+      ADMISSION_APPLICATION_STATUS.UNDER_REVIEW,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
+      ADMISSION_APPLICATION_STATUS.FEES_PENDING,
+      ADMISSION_APPLICATION_STATUS.FEES_PAID,
+    ];
+
+    const pipeline = [
+      {
+        $match: {
+          school_academic_class: { $in: classIds },
+          academic_session: { $in: academicSessions },
+        },
+      },
+      {
+        $group: {
+          _id: "$academic_session",
+          admission_application: { $sum: 1 },
+          approved_application: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.APPROVED] },
+                1,
+                0,
+              ],
+            },
+          },
+          rejected_application: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.REJECTED] },
+                1,
+                0,
+              ],
+            },
+          },
+          withdrawn_application: {
+            $sum: {
+              $cond: [
+                { $eq: ["$status", ADMISSION_APPLICATION_STATUS.WITHDRAWN] },
+                1,
+                0,
+              ],
+            },
+          },
+          under_review_application: {
+            $sum: {
+              $cond: [{ $in: ["$status", UNDER_REVIEW_STATUSES] }, 1, 0],
+            },
+          },
         },
       },
       {
         $project: {
           academic_year: "$_id",
           admission_application: { $ifNull: ["$admission_application", 0] },
-          selected_application: { $ifNull: ["$selected_application", 0] },
+          approved_application: { $ifNull: ["$approved_application", 0] },
           rejected_application: { $ifNull: ["$rejected_application", 0] },
           withdrawn_application: { $ifNull: ["$withdrawn_application", 0] },
+          under_review_application: {
+            $ifNull: ["$under_review_application", 0],
+          },
           _id: 0,
         },
       },
@@ -375,15 +495,17 @@ const getAdmissionsByAcademicYear = async (classIds) => {
           : {
               academic_year: session,
               admission_application: 0,
-              selected_application: 0,
+              approved_application: 0,
               rejected_application: 0,
               withdrawn_application: 0,
+              under_review_application: 0,
             }
       );
     }
 
     return fullYears;
   } catch (error) {
+    console.error("Error in getAdmissionsByAcademicYear:", error);
     return [];
   }
 };
