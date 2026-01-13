@@ -1,3 +1,3 @@
 GET {{studentLocalhostBaseUrl}}{{studentProfileRoute}}
 Content-Type: application/json
-Authorization: {{studentAuthToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MjE4MDAzYTU2ZTJiZDFkYWQ3ZmRiYiIsImlhdCI6MTc2NzI5MzU5OSwiZXhwIjoxNzY3Mjk3MTk5fQ.2Ig6RgJ05nZAvCfvO0lA0vps-BV4HIwLj4A_1_1_9z8

@@ -1,0 +1,16 @@
+
+
+### Scenario 001 (Valid payload)
+POST http://localhost:3000/student/profile/addresses
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MjE4MDAzYTU2ZTJiZDFkYWQ3ZmRiYiIsImlhdCI6MTc2NzI4OTg5OCwiZXhwIjoxNzY3MjkzNDk4fQ.e_eT5voYH0xKygH8ntetOp_a4NEimB5AqwUh6SdOCe4
+
+{
+    "state": "690f8d622aa85002393cead4",
+    "district": "690f8d712aa85002393ceae9",
+    "city": "690f8d882aa85002393ceb24",
+    "area_name": "690f8da32aa85002393ceb61",
+    "zipcode": "690f8dbb2aa85002393cebbc",
+    "address": "7-Nilkanth Villa, Near Neel Madhav Society, Ankleshwar, Gujarat 393001",
+    "user_type": "father"
+}

@@ -1,0 +1,20 @@
+### Scenario 001 (Valid payload)
+PUT http://localhost:3000/student/profile/parent/695574db6d563d97e8a10270
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MjE4MDAzYTU2ZTJiZDFkYWQ3ZmRiYiIsImlhdCI6MTc2NzYzNzE5MywiZXhwIjoxNzY3NjQwNzkzfQ.nckoKJPth3yShsOxDczZ77WHMRQX_kOdL0-fF1pv9fM
+
+{
+    "first_name": "yogesh",
+    "last_name": "ghadiali",
+    "phone_number": "8141466162",
+    "email": "yogeshghadiali4@gmail.com",
+    "aadhaar_number": "123456789012",
+    "occupation": "teacher",
+    "education": "diploma",
+    "annual_income": 50000,
+    "alive": {
+        "status": true
+    },
+    "same_address_as_student": false,
+    "parent_type": "father"
+}

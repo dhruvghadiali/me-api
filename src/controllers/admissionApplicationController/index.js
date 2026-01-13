@@ -29,6 +29,10 @@ const {
   getAdmissionApplications,
 } = require("@MEControllers/admissionApplicationController/getAdmissionApplications");
 
+const {
+  getAdmissionApplicationSummary,
+} = require("@MEControllers/admissionApplicationController/getAdmissionApplicationSummary");
+
 // Re-export all controller methods
 module.exports = {
   addAdmissionApplication,
@@ -40,4 +44,5 @@ module.exports = {
   addPaymentMethod,
   addFeePaymentAppointment,
   getAdmissionApplications,
+  getAdmissionApplicationSummary,
 };

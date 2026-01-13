@@ -28,6 +28,8 @@ const admissionApplicationResponseMessage = {
   admissionApplicationsGetRequestFail: `No admission applications found`,
   admissionApplicationsGetRequestSuccess: `Admission applications retrieved successfully`,
   admissionApplicationsInvalidUserInformation: `Invalid user information please login again`,
+  admissionApplicationSummaryGetRequestSuccess: `Admission application summary retrieved successfully`,
+  admissionApplicationSummaryGetRequestFail: `Facing issue while retrieving admission application summary`,
   admissionApplicationStatusChangeFail: (academicSession) =>
     `Student is already selected for another school in academic session ${academicSession}`,
   admissionApplicationStatusChangeNotAllowed: (

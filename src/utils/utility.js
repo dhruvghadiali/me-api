@@ -96,7 +96,8 @@ const generateUniqueStringNumber = (affixes = {}) => {
  * @example
  * currentAcademicSession() // returns "2025-2026" if current month > ACADEMIC_SESSION_START_MONTH
  * currentAcademicSession() // returns "2024-2025" if current month <= ACADEMIC_SESSION_START_MONTH
- */ const currentAcademicSession = () => {
+ */
+const currentAcademicSession = () => {
   return moment().month() > ADMISSION_APPLICATION.ACADEMIC_SESSION_START_MONTH
     ? `${moment().format("YYYY")}-${moment().add(1, "year").format("YYYY")}`
     : `${moment().subtract(1, "year").format("YYYY")}-${moment().format(
