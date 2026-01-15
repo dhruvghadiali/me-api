@@ -81,9 +81,18 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         const schoolId = schoolAddress.school_address.school;
 
         // Get all school academic classes for this school
-        const schoolAcademicClasses = await SchoolAcademicClass.find({
+        let schoolAcademicClassesQuery = {
           school: schoolId,
-        }).select("_id");
+        };
+
+        // Apply academic_class filter if provided
+        if (req.query.academic_class) {
+          schoolAcademicClassesQuery.academic_class = req.query.academic_class;
+        }
+
+        const schoolAcademicClasses = await SchoolAcademicClass.find(
+          schoolAcademicClassesQuery
+        ).select("_id");
 
         const schoolAcademicClassIds = schoolAcademicClasses.map(
           (sac) => sac._id
@@ -93,6 +102,22 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         query = {
           school_academic_class: { $in: schoolAcademicClassIds },
         };
+
+        // Apply academic_year filter if provided
+        // Validate format: YYYY-YYYY (e.g., 2025-2026)
+        if (req.query.academic_year) {
+          const academicYearRegex = /^\d{4}-\d{4}$/;
+          if (academicYearRegex.test(req.query.academic_year)) {
+            query.academic_session = {
+              $regex: `^${req.query.academic_year}`,
+            };
+          }
+        }
+
+        // Apply status filter if provided
+        if (req.query.status) {
+          query.status = req.query.status;
+        }
         break;
       default:
         // Invalid user type
