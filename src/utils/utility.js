@@ -99,10 +99,8 @@ const generateUniqueStringNumber = (affixes = {}) => {
  */
 const currentAcademicSession = () => {
   return moment().month() > ADMISSION_APPLICATION.ACADEMIC_SESSION_START_MONTH
-    ? `${moment().format("YYYY")}-${moment().add(1, "year").format("YYYY")}`
-    : `${moment().subtract(1, "year").format("YYYY")}-${moment().format(
-        "YYYY"
-      )}`;
+    ? `${moment().add(1, "year").format("YYYY")}-${moment().add(2, "year").format("YYYY")}`
+    : `${moment().format("YYYY")}-${moment().add(1, "year").format("YYYY")}`;
 };
 
 module.exports = {

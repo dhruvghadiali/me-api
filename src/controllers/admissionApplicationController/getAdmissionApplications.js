@@ -80,23 +80,18 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
 
         const schoolId = schoolAddress.school_address.school;
 
-        // Get all school academic classes for this school
-        let schoolAcademicClassesQuery = {
-          school: schoolId,
-        };
+        let schoolAcademicClassIds = [];
 
         // Apply academic_class filter if provided
         if (req.query.academic_class) {
-          schoolAcademicClassesQuery.academic_class = req.query.academic_class;
+          schoolAcademicClassIds = [req.query.academic_class];
+        } else {
+          const schoolAcademicClasses = await SchoolAcademicClass.find({
+            school: schoolId,
+          }).select("_id");
+
+          schoolAcademicClassIds = schoolAcademicClasses.map((sac) => sac._id);
         }
-
-        const schoolAcademicClasses = await SchoolAcademicClass.find(
-          schoolAcademicClassesQuery
-        ).select("_id");
-
-        const schoolAcademicClassIds = schoolAcademicClasses.map(
-          (sac) => sac._id
-        );
 
         // Filter applications by school academic classes
         query = {
