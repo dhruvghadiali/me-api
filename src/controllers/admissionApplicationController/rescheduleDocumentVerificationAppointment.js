@@ -7,7 +7,7 @@ const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 const {
   HTTP_STATUS_CODES,
   ADMISSION_APPLICATION_STATUS,
-} = require("@ME/helpers/enums/admissionEnums");
+} = require("@MEHelpers/enums");
 const {
   admissionApplicationNotFound,
   admissionApplicationNotAuthorizedToChangeStatus,
@@ -33,8 +33,8 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotFound,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -46,22 +46,22 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationStatusMustBeDocumentsUnverified,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
     // Verify school admin's school matches the application's school
     const schoolAcademicClass = await SchoolAcademicClass.findById(
-      application.school_academic_class
+      application.school_academic_class,
     ).select("school");
 
     if (!schoolAcademicClass) {
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -74,8 +74,8 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -87,8 +87,8 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_403
-        )
+          HTTP_STATUS_CODES.STATUS_403,
+        ),
       );
     }
 
@@ -109,8 +109,8 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationDocumentVerificationAppointmentRescheduleFail,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -129,7 +129,7 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
         admissionApplicationDocumentVerificationAppointmentRescheduleSuccess,
       status: HTTP_STATUS_CODES.STATUS_200,
     });
-  }
+  },
 );
 
 module.exports = { rescheduleDocumentVerificationAppointment };

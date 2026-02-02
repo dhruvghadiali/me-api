@@ -69,6 +69,9 @@ const SCHOOL_ADMIN_ALLOWED_TRANSITIONS = {
     ADMISSION_APPLICATION_STATUS.UNDER_REVIEW,
     ADMISSION_APPLICATION_STATUS.REJECTED,
   ],
+  [ADMISSION_APPLICATION_STATUS.UNDER_REVIEW]: [
+    ADMISSION_APPLICATION_STATUS.REJECTED,
+  ],
   [ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING]: [
     ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
   ],
@@ -110,8 +113,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotFound,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -125,8 +128,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -146,8 +149,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
         return next(
           new ErrorResponse(
             admissionApplicationNotAuthorizedToChangeStatus,
-            HTTP_STATUS_CODES.STATUS_400
-          )
+            HTTP_STATUS_CODES.STATUS_400,
+          ),
         );
       }
       allowedTransitions = STUDENT_ALLOWED_TRANSITIONS[currentStatus] || [];
@@ -160,15 +163,15 @@ const updateAdmissionApplicationStatus = asyncHandler(
     ) {
       // Verify school admin's school matches the application's school
       const schoolAcademicClass = await SchoolAcademicClass.findById(
-        application.school_academic_class
+        application.school_academic_class,
       ).select("school");
 
       if (!schoolAcademicClass) {
         return next(
           new ErrorResponse(
             admissionApplicationNotAuthorizedToChangeStatus,
-            HTTP_STATUS_CODES.STATUS_400
-          )
+            HTTP_STATUS_CODES.STATUS_400,
+          ),
         );
       }
 
@@ -181,8 +184,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
         return next(
           new ErrorResponse(
             admissionApplicationNotAuthorizedToChangeStatus,
-            HTTP_STATUS_CODES.STATUS_400
-          )
+            HTTP_STATUS_CODES.STATUS_400,
+          ),
         );
       }
 
@@ -194,8 +197,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
         return next(
           new ErrorResponse(
             admissionApplicationNotAuthorizedToChangeStatus,
-            HTTP_STATUS_CODES.STATUS_403
-          )
+            HTTP_STATUS_CODES.STATUS_403,
+          ),
         );
       }
 
@@ -208,8 +211,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationStatusChangeNotAllowed(currentStatus, status),
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -229,8 +232,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
         return next(
           new ErrorResponse(
             admissionApplicationStatusChangeFail(application.academic_session),
-            HTTP_STATUS_CODES.STATUS_400
-          )
+            HTTP_STATUS_CODES.STATUS_400,
+          ),
         );
       }
     }
@@ -251,8 +254,8 @@ const updateAdmissionApplicationStatus = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationPutRequestFail,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -262,7 +265,7 @@ const updateAdmissionApplicationStatus = asyncHandler(
       message: admissionApplicationPutRequestSuccess,
       status: HTTP_STATUS_CODES.STATUS_200,
     });
-  }
+  },
 );
 
 module.exports = { updateAdmissionApplicationStatus };
