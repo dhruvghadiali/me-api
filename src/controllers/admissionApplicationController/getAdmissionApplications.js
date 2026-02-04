@@ -42,16 +42,14 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
           ADMISSION_APPLICATION.ACADEMIC_SESSION_START_MONTH;
         const currentAcademicYear =
           currentMonth > academicSessionStartMonth
-            ? currentYear
-            : currentYear - 1;
-        const academicYearEnd =
-          currentAcademicYear -
-          ADMISSION_APPLICATION.STUDENT_ACADEMIC_YEARS_RANGE;
+            ? currentYear + 1
+            : currentYear;
 
-        // Build regex pattern for valid academic session years (e.g., "2023-", "2024-", "2025-")
+        // Build regex pattern for valid academic session years from last 2 years (e.g., "2024-", "2025-")
+        // Generate starting years for last 2 academic sessions
         const validYears = Array.from(
-          { length: currentAcademicYear - academicYearEnd + 1 },
-          (_, i) => academicYearEnd + i
+          { length: 2 },
+          (_, i) => currentAcademicYear - 2 + i,
         );
         const yearPattern = validYears.join("|");
 
@@ -73,8 +71,8 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
           return next(
             new ErrorResponse(
               admissionApplicationsInvalidUserInformation,
-              HTTP_STATUS_CODES.STATUS_403
-            )
+              HTTP_STATUS_CODES.STATUS_403,
+            ),
           );
         }
 
@@ -119,8 +117,8 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
         return next(
           new ErrorResponse(
             admissionApplicationsInvalidUserType,
-            HTTP_STATUS_CODES.STATUS_403
-          )
+            HTTP_STATUS_CODES.STATUS_403,
+          ),
         );
     }
 
@@ -194,8 +192,8 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
       return next(
         new ErrorResponse(
           admissionApplicationsGetRequestFail,
-          HTTP_STATUS_CODES.STATUS_404
-        )
+          HTTP_STATUS_CODES.STATUS_404,
+        ),
       );
     } else {
       // Sort status_history by changed_at in descending order (latest first) using lodash
@@ -207,7 +205,7 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
           application.status_history = _.orderBy(
             application.status_history,
             ["changed_at"],
-            ["desc"]
+            ["desc"],
           );
         }
       });
@@ -224,8 +222,8 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         admissionApplicationsInvalidUserInformation,
-        HTTP_STATUS_CODES.STATUS_403
-      )
+        HTTP_STATUS_CODES.STATUS_403,
+      ),
     );
   }
 });
