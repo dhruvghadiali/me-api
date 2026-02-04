@@ -133,6 +133,7 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
           .sort({
             created_at: -1,
           });
+        break;
       case USER_TYPES.SCHOOL_ADMIN:
         admissionApplications = await AdmissionApplication.find(query)
           .populate("created_by updated_by")
