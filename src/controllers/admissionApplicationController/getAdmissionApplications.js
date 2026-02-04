@@ -19,6 +19,7 @@ const {
 } = require("@MEHelpers/responseMessage/admissionApplicationResponseMessage");
 
 const { asyncHandler } = require("@MEMiddleware/async");
+const { currentAcademicSession } = require("@MEUtils/utility");
 
 /**
  * @desc    Create new admission application
@@ -33,32 +34,19 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
     switch (req.user.user_type) {
       // Student - get applications from last 2 years
       case USER_TYPES.STUDENT:
-        // Calculate date range for last 2 years from current academic session
-        const currentYear = moment().year();
-        const currentMonth = moment().month();
-
-        // Typically academic session starts in April/June, adjust as per your requirement
-        const academicSessionStartMonth =
-          ADMISSION_APPLICATION.ACADEMIC_SESSION_START_MONTH;
-        const currentAcademicYear =
-          currentMonth > academicSessionStartMonth
-            ? currentYear + 1
-            : currentYear;
-
-        // Build regex pattern for valid academic session years from last 2 years (e.g., "2024-", "2025-")
-        // Generate starting years for last 2 academic sessions
-        const validYears = Array.from(
-          { length: 2 },
-          (_, i) => currentAcademicYear - 2 + i,
-        );
-        const yearPattern = validYears.join("|");
+        let currentSession = currentAcademicSession();
 
         query = {
           applicant_user: req.user.id,
-          academic_session: {
-            $regex: `^(${yearPattern})-`,
-          },
         };
+
+        const academicYearRegex = /^\d{4}-\d{4}$/;
+        if (academicYearRegex.test(currentSession)) {
+          query.academic_session = {
+            $regex: `^${currentSession}`,
+          };
+        }
+
         break;
       // School Admin - get applications for their school only
       case USER_TYPES.SCHOOL_ADMIN:
