@@ -254,6 +254,7 @@ const updateAdmissionApplicationStatus = asyncHandler(
 
     // Save application
     const response = await application.save();
+
     if (!response) {
       return next(
         new ErrorResponse(
@@ -262,6 +263,11 @@ const updateAdmissionApplicationStatus = asyncHandler(
         ),
       );
     }
+
+    await response.populate({
+      path: "status_history.changed_by",
+      select: ["_id", "username", "first_name", "last_name"],
+    });
 
     // Send success response
     return res.status(HTTP_STATUS_CODES.STATUS_200).json({
