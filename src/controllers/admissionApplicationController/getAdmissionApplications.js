@@ -142,6 +142,13 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
                 },
               ],
             },
+            {
+              path: "document_verification_appointment",
+              populate: {
+                path: "booked_by",
+                select: ["_id", "username", "first_name", "last_name"],
+              },
+            }
           ])
           .sort({
             created_at: -1,
@@ -176,6 +183,13 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
                 },
               ],
             },
+            {
+              path: "document_verification_appointment",
+              populate: {
+                path: "booked_by",
+                select: ["_id", "username", "first_name", "last_name"],
+              },
+            }
           ])
           .populate([
             {
