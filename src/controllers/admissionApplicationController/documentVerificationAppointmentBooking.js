@@ -180,6 +180,10 @@ const documentVerificationAppointmentBooking = asyncHandler(
           select: ["_id", "username", "first_name", "last_name"],
         },
       },
+      {
+        path: "status_history.changed_by",
+        select: ["_id", "username", "first_name", "last_name"],
+      },
     ]);
 
     // Send success response
