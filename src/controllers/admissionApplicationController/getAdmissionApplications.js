@@ -148,6 +148,13 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
                 path: "booked_by",
                 select: ["_id", "username", "first_name", "last_name"],
               },
+            },
+            {
+              path: "fee_payment_appointment",
+              populate: {
+                path: "booked_by",
+                select: ["_id", "username", "first_name", "last_name"],
+              },
             }
           ])
           .sort({
@@ -185,6 +192,13 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
             },
             {
               path: "document_verification_appointment",
+              populate: {
+                path: "booked_by",
+                select: ["_id", "username", "first_name", "last_name"],
+              },
+            },
+            {
+              path: "fee_payment_appointment",
               populate: {
                 path: "booked_by",
                 select: ["_id", "username", "first_name", "last_name"],
