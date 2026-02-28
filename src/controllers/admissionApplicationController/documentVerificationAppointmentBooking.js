@@ -35,35 +35,37 @@ const documentVerificationAppointmentBooking = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotFound,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
-    // Check if application status is UNDER_REVIEW
+    // Check if application status is UNDER_REVIEW or APPROVED
     if (
       _.toLower(_.toString(application.status)) !==
-      _.toLower(_.toString(ADMISSION_APPLICATION_STATUS.UNDER_REVIEW))
+      _.toLower(_.toString(ADMISSION_APPLICATION_STATUS.UNDER_REVIEW)) &&
+      _.toLower(_.toString(application.status)) !==
+        _.toLower(_.toString(ADMISSION_APPLICATION_STATUS.APPROVED))
     ) {
       return next(
         new ErrorResponse(
           admissionApplicationStatusMustBeUnderReview,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
     // Verify school admin's school matches the application's school
     const schoolAcademicClass = await SchoolAcademicClass.findById(
-      application.school_academic_class
+      application.school_academic_class,
     ).select("school");
 
     if (!schoolAcademicClass) {
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -76,8 +78,8 @@ const documentVerificationAppointmentBooking = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -89,8 +91,8 @@ const documentVerificationAppointmentBooking = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationNotAuthorizedToChangeStatus,
-          HTTP_STATUS_CODES.STATUS_403
-        )
+          HTTP_STATUS_CODES.STATUS_403,
+        ),
       );
     }
 
@@ -104,8 +106,8 @@ const documentVerificationAppointmentBooking = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationVerificationDocumentListNotFound,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
@@ -151,25 +153,34 @@ const documentVerificationAppointmentBooking = asyncHandler(
       return next(
         new ErrorResponse(
           admissionApplicationDocumentVerificationAppointmentBookingFail,
-          HTTP_STATUS_CODES.STATUS_400
-        )
+          HTTP_STATUS_CODES.STATUS_400,
+        ),
       );
     }
 
     // Populate the response with document details
-    // await response.populate([
-    //   {
-    //     path: "verified_documents.school_admission_document",
-    //     populate: {
-    //       path: "admission_document",
-    //       select: "document_name",
-    //     },
-    //   },
-    //   {
-    //     path: "document_verification_appointment.booked_by",
-    //     select: "first_name last_name",
-    //   },
-    // ]);
+    await response.populate([
+      {
+        path: "verified_documents",
+        populate: [
+          {
+            path: "school_admission_document",
+            populate: {
+              path: "admission_document",
+              select: ["_id", "admission_document"],
+            },
+            select: ["_id", "admission_document", "is_required"],
+          },
+        ],
+      },
+      {
+        path: "document_verification_appointment",
+        populate: {
+          path: "booked_by",
+          select: ["_id", "username", "first_name", "last_name"],
+        },
+      },
+    ]);
 
     // Send success response
     res.status(HTTP_STATUS_CODES.STATUS_200).json({
@@ -178,7 +189,7 @@ const documentVerificationAppointmentBooking = asyncHandler(
         admissionApplicationDocumentVerificationAppointmentBookingSuccess,
       status: HTTP_STATUS_CODES.STATUS_200,
     });
-  }
+  },
 );
 
 module.exports = { documentVerificationAppointmentBooking };
