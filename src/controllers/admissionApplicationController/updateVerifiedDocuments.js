@@ -32,8 +32,8 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         admissionApplicationNotFound,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
@@ -46,30 +46,30 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
   if (
     !_.includes(
       _.map(allowedStatuses, (allowedStatus) =>
-        _.toLower(_.toString(allowedStatus))
+        _.toLower(_.toString(allowedStatus)),
       ),
-      _.toLower(_.toString(application.status))
+      _.toLower(_.toString(application.status)),
     )
   ) {
     return next(
       new ErrorResponse(
         admissionApplicationDocumentVerificationStatusInvalid,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
   // Verify school admin's school matches the application's school
   const schoolAcademicClass = await SchoolAcademicClass.findById(
-    application.school_academic_class
+    application.school_academic_class,
   ).select("school");
 
   if (!schoolAcademicClass) {
     return next(
       new ErrorResponse(
         admissionApplicationNotAuthorizedToChangeStatus,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
@@ -82,8 +82,8 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         admissionApplicationNotAuthorizedToChangeStatus,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
@@ -95,33 +95,33 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         admissionApplicationNotAuthorizedToChangeStatus,
-        HTTP_STATUS_CODES.STATUS_403
-      )
+        HTTP_STATUS_CODES.STATUS_403,
+      ),
     );
   }
 
   // Get all school_admission_document IDs from application's verified_documents
   const existingDocumentIds = _.map(application.verified_documents, (doc) =>
-    _.toString(doc.school_admission_document)
+    _.toString(doc.school_admission_document),
   );
 
   // Get all school_admission_document IDs from request
   const requestDocumentIds = _.map(verified_documents, (doc) =>
-    _.toString(doc.school_admission_document)
+    _.toString(doc.school_admission_document),
   );
 
   // Check if all existing document IDs are present in request
   const missingDocumentIds = _.difference(
     existingDocumentIds,
-    requestDocumentIds
+    requestDocumentIds,
   );
 
   if (!_.isEmpty(missingDocumentIds)) {
     return next(
       new ErrorResponse(
         admissionApplicationVerifiedDocumentListMissing,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
@@ -147,25 +147,30 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         admissionApplicationVerifiedDocumentFail,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
-  // Populate and send response
-  // const populatedResponse = await AdmissionApplication.findById(response._id)
-  //   .populate({
-  //     path: "school_academic_class",
-  //     populate: [
-  //       { path: "school" },
-  //       { path: "academic_class" },
-  //       { path: "education_board" },
-  //     ],
-  //   })
-  //   .populate({
-  //     path: "verified_documents.school_admission_document",
-  //   })
-  //   .populate("applicant_user");
+  await response.populate([
+    {
+      path: "status_history.changed_by",
+      select: ["_id", "username", "first_name", "last_name"],
+    },
+    {
+      path: "verified_documents",
+      populate: [
+        {
+          path: "school_admission_document",
+          populate: {
+            path: "admission_document",
+            select: ["_id", "admission_document"],
+          },
+          select: ["_id", "admission_document", "is_required"],
+        },
+      ],
+    },
+  ]);
 
   return res.status(HTTP_STATUS_CODES.STATUS_200).json({
     data: [response],
