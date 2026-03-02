@@ -38,10 +38,19 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       );
     }
 
-    // Check if application status is DOCUMENTS_UNVERIFIED
+    // Check if application status is DOCUMENTS_UNVERIFIED or DOCUMENTS_VERIFICATION_PENDING
+    const allowedStatuses = [
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
+    ];
+
     if (
-      _.toLower(_.toString(application.status)) !==
-      _.toLower(_.toString(ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED))
+      !_.includes(
+        _.map(allowedStatuses, (allowedStatus) =>
+          _.toLower(_.toString(allowedStatus)),
+        ),
+        _.toLower(_.toString(application.status)),
+      )
     ) {
       return next(
         new ErrorResponse(
@@ -101,6 +110,22 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       remarks: remarks || "Document verification appointment rescheduled",
     });
 
+    // Update status to DOCUMENTS_UNVERIFIED
+    const previousStatus = application.status;
+    const newStatus =
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED;
+    application.status = newStatus;
+
+    // Add to status history
+    application.status_history.push({
+      status: newStatus,
+      changed_by: req.user.id,
+      changed_at: new Date(),
+      remarks:
+        remarks ||
+        `Status changed from ${previousStatus} to ${newStatus} - Document verification appointment scheduled`,
+    });
+
     application.updated_by = req.user._id;
 
     // Save application
@@ -114,13 +139,33 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       );
     }
 
-    // Populate the response with booked_by details
-    // await response.populate([
-    //   {
-    //     path: "document_verification_appointment.booked_by",
-    //     select: "first_name last_name",
-    //   },
-    // ]);
+    // Populate the response with document details
+    await response.populate([
+      {
+        path: "verified_documents",
+        populate: [
+          {
+            path: "school_admission_document",
+            populate: {
+              path: "admission_document",
+              select: ["_id", "admission_document"],
+            },
+            select: ["_id", "admission_document", "is_required"],
+          },
+        ],
+      },
+      {
+        path: "document_verification_appointment",
+        populate: {
+          path: "booked_by",
+          select: ["_id", "username", "first_name", "last_name"],
+        },
+      },
+      {
+        path: "status_history.changed_by",
+        select: ["_id", "username", "first_name", "last_name"],
+      },
+    ]);
 
     // Send success response
     res.status(HTTP_STATUS_CODES.STATUS_200).json({
