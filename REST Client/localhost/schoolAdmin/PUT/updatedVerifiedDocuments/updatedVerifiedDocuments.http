@@ -1,0 +1,20 @@
+PUT  http://localhost:3001/school-admin/admission-applications/69a32c5efcd95a3bfcec483b/verified-documents
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY5MzMzMmFhODUwMDIzOTNjZWUwNSIsImlhdCI6MTc3MjQ2NjYyMywiZXhwIjoxNzcyNDcwMjIzfQ.ys6YZjcT_MIu5eZ3t6h8ZwHFyFOTU1xDYmxWlP2Cr5k
+
+{
+    "verified_documents": [
+        {
+            "school_admission_document": "693af549e9d528dbb53737b1",
+            "is_verified": true,
+            "notes": "Document verified via admin",
+            "id": "690f8f9a2aa85002393ceca1"
+        },
+        {
+            "school_admission_document": "693af6a5e9d528dbb5373846",
+            "is_verified": true,
+            "notes": "Document verified via admin",
+            "id": "690f8ffd2aa85002393cecdd"
+        }
+    ]
+}

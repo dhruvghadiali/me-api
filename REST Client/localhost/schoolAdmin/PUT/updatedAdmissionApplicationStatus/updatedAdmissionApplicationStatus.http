@@ -1,6 +1,8 @@
-### Scenario 001 (Valid payload)
-PUT {{schoolAdminLocalhostBaseUrl}}{{schoolAdminUpdateAdmissionApplicationStatusRoute}}
+PUT  http://localhost:3001/school-admin/admission-applications/69a32c5efcd95a3bfcec483b/status
 Content-Type: application/json
-Authorization: {{schoolAdminAuthToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY5MzMzMmFhODUwMDIzOTNjZWUwNSIsImlhdCI6MTc3MjMwMDUzOSwiZXhwIjoxNzcyMzA0MTM5fQ.MyS4805iCHRLRMJAAEMO_YoSRratsZfR8GTf5XO3RDg
 
-< ./payload/payload001.json
+{
+    "status": "rejected",
+    "remarks": ""
+}

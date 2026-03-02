@@ -1,3 +1,3 @@
-GET {{schoolAdminLocalhostBaseUrl}}{{schoolAdminAdmissionApplicationsRoute}}
+GET http://localhost:3001/school-admin/admission-applications?academic_year=2026-2027
 Content-Type: application/json
-Authorization: {{schoolAdminAuthToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY5MzMzMmFhODUwMDIzOTNjZWUwNSIsImlhdCI6MTc3MjIxMDMxMSwiZXhwIjoxNzcyMjEzOTExfQ.h5HtL5cAAw0HGtI_FCF2OiUE4y1bzaV3v61DFP6fh9Q

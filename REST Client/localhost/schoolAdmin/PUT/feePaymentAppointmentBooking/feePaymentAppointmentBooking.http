@@ -1,0 +1,3 @@
+PUT  http://localhost:3001/school-admin/admission-applications/696b55efcb1c599847ae386b/fee-payment-appointment-booking
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY5MzMzMmFhODUwMDIzOTNjZWUwNSIsImlhdCI6MTc3MjI3MjA2MywiZXhwIjoxNzcyMjc1NjYzfQ.zo8JU7tcjByt7aqp20C5OozSKQD99KSivzTJwd5Ik3Q
