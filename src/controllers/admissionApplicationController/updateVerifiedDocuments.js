@@ -1,12 +1,13 @@
 const _ = require("lodash");
 const ErrorResponse = require("@MEUtils/errorResponse");
+const SchoolAddress = require("@MEModels/schoolAddressModel");
 const SchoolAcademicClass = require("@MEModels/schoolAcademicClassModel");
 const AdmissionApplication = require("@MEModels/admissionApplicationModel");
 
 const {
   HTTP_STATUS_CODES,
   ADMISSION_APPLICATION_STATUS,
-} = require("@MEHelpers/enums/admissionEnums");
+} = require("@MEHelpers/enums");
 const {
   admissionApplicationNotFound,
   admissionApplicationVerifiedDocumentFail,
