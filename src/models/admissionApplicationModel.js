@@ -202,6 +202,8 @@ const admissionApplicationSchema = Schema(
           ref: "user",
           required: [true, admissionApplicationFeePaymentSchedulerRequired],
         },
+        paid_at: { type: Date },
+        paid_by: { type: Schema.Types.ObjectId, ref: "user" },
         remarks: { type: String, trim: true },
       },
     ],
@@ -244,14 +246,16 @@ const admissionApplicationSchema = Schema(
           min: [minFeeAmount, yearlyFeeMinAmount],
           max: [maxFeeAmount, yearlyFeeMaxAmount],
         },
-        paid_at: { type: Date, default: Date.now },
-        txn_id: { type: String, trim: true },
       },
     ],
     payment_method: {
       type: String,
       enum: Object.values(ADMISSION_PAYMENT_METHODS),
       default: ADMISSION_PAYMENT_METHODS.NA,
+    },
+    transaction_id: {
+      type: String,
+      trim: true,
     },
     created_by: {
       type: Schema.Types.ObjectId,
