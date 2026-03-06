@@ -156,10 +156,16 @@ const rescheduleDocumentVerificationAppointment = asyncHandler(
       },
       {
         path: "document_verification_appointment",
-        populate: {
-          path: "booked_by",
-          select: ["_id", "username", "first_name", "last_name"],
-        },
+        populate: [
+          {
+            path: "booked_by",
+            select: ["_id", "username", "first_name", "last_name"],
+          },
+          {
+            path: "verified_by",
+            select: ["_id", "username", "first_name", "last_name"],
+          },
+        ],
       },
       {
         path: "status_history.changed_by",

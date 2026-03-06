@@ -137,7 +137,7 @@ const admissionApplicationSchema = Schema(
               return await validateDocumentNotesRequired(
                 notes,
                 this.is_verified,
-                this.school_admission_document
+                this.school_admission_document,
               );
             },
             message: admissionApplicationDocumentVerificationNotesRequired,
@@ -176,6 +176,8 @@ const admissionApplicationSchema = Schema(
             admissionApplicationDocumentVerificationSchedulerRequired,
           ],
         },
+        verified_at: { type: Date },
+        verified_by: { type: Schema.Types.ObjectId, ref: "user" },
         remarks: { type: String, trim: true },
       },
     ],
@@ -270,12 +272,12 @@ const admissionApplicationSchema = Schema(
       },
     },
   },
-  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } },
 );
 
 admissionApplicationSchema.index(
   { applicant_user: 1, school_academic_class: 1, academic_session: 1 },
-  { unique: true, index: true }
+  { unique: true, index: true },
 );
 
 admissionApplicationSchema.set("toJSON", {
@@ -299,5 +301,5 @@ admissionApplicationSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model(
   "admission_application",
-  admissionApplicationSchema
+  admissionApplicationSchema,
 );

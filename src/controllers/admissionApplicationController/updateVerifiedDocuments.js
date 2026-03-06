@@ -134,6 +134,16 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
   application.updated_by = req.user.id;
   application.status = newStatus;
 
+  // Stamp verified_at and verified_by on the latest appointment entry
+  if (application.document_verification_appointment.length > 0) {
+    const lastAppointment =
+      application.document_verification_appointment[
+        application.document_verification_appointment.length - 1
+      ];
+    lastAppointment.verified_at = new Date();
+    lastAppointment.verified_by = req.user.id;
+  }
+
   // Add to status history
   application.status_history.push({
     status: newStatus,
@@ -168,6 +178,19 @@ const updateVerifiedDocuments = asyncHandler(async (req, res, next) => {
             select: ["_id", "admission_document"],
           },
           select: ["_id", "admission_document", "is_required"],
+        },
+      ],
+    },
+    {
+      path: "document_verification_appointment",
+      populate: [
+        {
+          path: "booked_by",
+          select: ["_id", "username", "first_name", "last_name"],
+        },
+        {
+          path: "verified_by",
+          select: ["_id", "username", "first_name", "last_name"],
         },
       ],
     },
