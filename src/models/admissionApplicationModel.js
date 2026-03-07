@@ -252,6 +252,11 @@ const admissionApplicationSchema = Schema(
       type: String,
       trim: true,
     },
+    fee_paid_amount: {
+      type: Number,
+      min: [0, "Fee paid amount cannot be negative"],
+      default: 0,
+    },
     created_by: {
       type: Schema.Types.ObjectId,
       ref: "user",
