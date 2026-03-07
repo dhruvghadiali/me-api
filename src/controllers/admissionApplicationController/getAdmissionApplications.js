@@ -231,7 +231,12 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
               populate: [
                 { path: "student_profile" },
                 { path: "parent_profile" },
-                { path: "sibling_profile" },
+                {
+                  path: "sibling_profile",
+                  populate: [
+                    { path: "studying_in_class", select: ["academic_class"] },
+                  ],
+                },
                 {
                   path: "address",
                   populate: [
@@ -239,7 +244,7 @@ const getAdmissionApplications = asyncHandler(async (req, res, next) => {
                     { path: "district", select: ["_id", "name"] },
                     { path: "city", select: ["_id", "name"] },
                     { path: "area_name", select: ["_id", "name"] },
-                    {path: "zipcode", select: ["_id", "zipcode"]}
+                    { path: "zipcode", select: ["_id", "zipcode"] },
                   ],
                 },
                 { path: "emergency_contact" },
