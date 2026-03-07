@@ -21,9 +21,6 @@ const {
 const {
   addPaymentMethod,
 } = require("@MEControllers/admissionApplicationController/addPaymentMethod");
-const {
-  addFeePaymentAppointment,
-} = require("@MEControllers/admissionApplicationController/addFeePaymentAppointment");
 
 const {
   getAdmissionApplications,
@@ -42,7 +39,6 @@ module.exports = {
   rescheduleDocumentVerificationAppointment,
   feePaymentAppointmentBooking,
   addPaymentMethod,
-  addFeePaymentAppointment,
   getAdmissionApplications,
   getAdmissionApplicationSummary,
 };
