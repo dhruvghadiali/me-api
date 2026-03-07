@@ -203,7 +203,7 @@ const admissionApplicationSchema = Schema(
           required: [true, admissionApplicationFeePaymentSchedulerRequired],
         },
         paid_at: { type: Date },
-        paid_by: { type: Schema.Types.ObjectId, ref: "user" },
+        paid_by: { type: String },
         remarks: { type: String, trim: true },
       },
     ],
