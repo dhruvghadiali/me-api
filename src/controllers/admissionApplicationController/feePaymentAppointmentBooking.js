@@ -160,17 +160,22 @@ const feePaymentAppointmentBooking = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Populate the response with fee and appointment details
-  // await response.populate([
-  //   {
-  //     path: "fee_payments.fee_type",
-  //     select: "fee_type",
-  //   },
-  //   {
-  //     path: "fee_payment_appointment.booked_by",
-  //     select: "first_name last_name",
-  //   },
-  // ]);
+  // Populate the response with document details
+    await response.populate([
+      {
+        path: "fee_payment_appointment",
+        populate: [
+          {
+            path: "booked_by",
+            select: ["_id", "username", "first_name", "last_name"],
+          },
+        ],
+      },
+      {
+        path: "status_history.changed_by",
+        select: ["_id", "username", "first_name", "last_name"],
+      },
+    ]);
 
   // Send success response
   res.status(HTTP_STATUS_CODES.STATUS_200).json({
