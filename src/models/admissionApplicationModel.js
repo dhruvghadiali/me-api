@@ -241,11 +241,6 @@ const admissionApplicationSchema = Schema(
           min: [minFeeAmount, yearlyFeeMinAmount],
           max: [maxFeeAmount, yearlyFeeMaxAmount],
         },
-        amount_paid: {
-          type: Number,
-          min: [minFeeAmount, yearlyFeeMinAmount],
-          max: [maxFeeAmount, yearlyFeeMaxAmount],
-        },
       },
     ],
     payment_method: {
