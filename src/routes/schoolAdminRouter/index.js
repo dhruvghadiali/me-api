@@ -7,6 +7,7 @@ const facilityTypeRouter = require("@ME/routes/schoolAdminRouter/facilityTypeRou
 const academicClassRouter = require("@MERoutes/schoolAdminRouter/academicClassRouter");
 const schoolFacilityRouter = require("@MERoutes/schoolAdminRouter/schoolFacilityRouter");
 const admissionDocumentRouter = require("@MERoutes/schoolAdminRouter/admissionDocumentRouter");
+const organizationMemberRouter = require("@MERoutes/schoolAdminRouter/organizationMemberRouter");
 const schoolAcademicClassRouter = require("@MERoutes/schoolAdminRouter/schoolAcademicClassRouter");
 const admissionApplicationRouter = require("@MERoutes/schoolAdminRouter/admissionApplicationRouter");
 const schoolAdmissionDocumentRouter = require("@MERoutes/schoolAdminRouter/schoolAdmissionDocumentRouter");
@@ -20,6 +21,7 @@ router.use("/", schoolFeeRouter);
 router.use("/", academicClassRouter);
 router.use("/", schoolFacilityRouter);
 router.use("/", admissionDocumentRouter);
+router.use("/", organizationMemberRouter);
 router.use("/", schoolAcademicClassRouter);
 router.use("/", admissionApplicationRouter);
 router.use("/", schoolAdmissionDocumentRouter);
