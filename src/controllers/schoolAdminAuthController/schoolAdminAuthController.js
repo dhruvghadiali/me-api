@@ -126,6 +126,7 @@ const setSchoolInformation = (user) => {
         school_type: school.school_type
           ? school.school_type?.getSchoolType()
           : "",
+        established_year: school.established_year ? school.established_year : "",
         education_boards: school.education_boards,
         address: schoolAddress.address ? schoolAddress.address : "",
         state: schoolAddress.state ? schoolAddress.state?.getStateName() : "",
