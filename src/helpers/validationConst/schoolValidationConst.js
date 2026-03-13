@@ -10,6 +10,8 @@ const schoolValidationConst = {
   schoolEstablishedYearMinNumber: 1700,
   schoolLogoMinChar: 10,
   schoolLogoMaxChar: 500,
+  schoolAboutMaxChar: 1000,
+  schoolAboutMinChar: 10,
 };
 
 module.exports = schoolValidationConst;

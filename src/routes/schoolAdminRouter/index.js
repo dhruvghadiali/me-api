@@ -1,6 +1,7 @@
 const express = require("express");
 
 const authRouter = require("@MERoutes/schoolAdminRouter/authRouter");
+const schoolRouter = require("@MERoutes/schoolAdminRouter/schoolRouter");
 const feeTypeRouter = require("@MERoutes/schoolAdminRouter/feeTypeRouter");
 const schoolFeeRouter = require("@MERoutes/schoolAdminRouter/schoolFeeRouter");
 const facilityTypeRouter = require("@ME/routes/schoolAdminRouter/facilityTypeRouter");
@@ -15,6 +16,7 @@ const schoolAdmissionDocumentRouter = require("@MERoutes/schoolAdminRouter/schoo
 const router = express.Router();
 
 router.use("/", authRouter);
+router.use("/", schoolRouter);
 router.use("/", feeTypeRouter);
 router.use("/", facilityTypeRouter);
 router.use("/", schoolFeeRouter);

@@ -3,6 +3,8 @@ const {
   schoolNameMinChar,
   schoolLogoMaxChar,
   schoolLogoMinChar,
+  schoolAboutMaxChar,
+  schoolAboutMinChar,
   schoolShortNameMaxChar,
   schoolShortNameMinChar,
   schoolAffiliateNumberMaxChar,
@@ -54,6 +56,14 @@ const schoolValidationMessage = {
   schoolEducationBoardsMaxLength: `Cannot select more then ${schoolEducationBoardsMaxLimit} school boards`,
   schoolLogoMaxLength: `School logo must be less then ${schoolLogoMaxChar} characters`,
   schoolLogoMinLength: `School logo must be greater then ${schoolLogoMinChar} characters`,
+  schoolAboutMaxLength: `About section can have maximum ${schoolAboutMaxChar} characters`,
+  schoolAboutMinLength: `About section must have minimum ${schoolAboutMinChar} characters`,
+  schoolAboutEmpty: "About section cannot be empty",
+  schoolAboutBase: "About section must be string formate",
+  schoolAboutReqBodyBase: `About section request body must be an object`,
+  schoolAboutReqBodyEmpty: `About section request body cannot be empty`,
+  schoolAboutReqBodyUnknown: `Unknown field in about section request body`,
+  schoolAboutReqBodyRequired: `About section request body is required`,
 };
 
 module.exports = schoolValidationMessage;
