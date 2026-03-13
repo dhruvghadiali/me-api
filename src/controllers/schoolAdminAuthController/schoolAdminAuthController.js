@@ -128,6 +128,7 @@ const setSchoolInformation = (user) => {
           : "",
         established_year: school.established_year ? school.established_year : "",
         education_boards: school.education_boards,
+        about: school.about ? school.about : "",
         address: schoolAddress.address ? schoolAddress.address : "",
         state: schoolAddress.state ? schoolAddress.state?.getStateName() : "",
         district: schoolAddress.district
