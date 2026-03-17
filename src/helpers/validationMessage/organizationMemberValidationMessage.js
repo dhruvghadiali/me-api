@@ -23,6 +23,10 @@ const organizationMemberValidationMessage = {
   organizationMembersDetailsMinLength: `Provide at least one organization member details`,
   organizationMembersDetailsMustBeArray: `Organization member's details must be array formate`,
   organizationMembersDetailsMaxLength: `Can't add more then ${organizationMemberArrayMaxLength} organization member details`,
+  organizationMemberReqBodyBase: `Organization member request body must be an object formate`,
+  organizationMemberReqBodyEmpty: `Organization member request body cannot be empty`,
+  organizationMemberReqBodyUnknown: `Organization member request body have unknown property`,
+  organizationMemberReqBodyRequired: `Organization member request body is required`,
 };
 
 module.exports = organizationMemberValidationMessage;

@@ -1,5 +1,3 @@
-const _ = require("lodash");
-
 const ErrorResponse = require("@MEUtils/errorResponse");
 const OrganizationMember = require("@MEModels/organizationMemberModel");
 
@@ -10,22 +8,20 @@ const {
   organizationMemberDetailsPostRequestSuccess,
   organizationMemberDetailsPostRequestFail,
   organizationMemberLimitExceeded,
-  organizationMemberLimitWillExceed,
 } = require("@MEHelpers/responseMessage");
 
 /**
- * @desc    Add multiple organization members (max 5 per organization)
- * @route   POST /school-admin/organization-members/:organizationId
+ * @desc    Add a single organization member (max 5 per organization)
+ * @route   POST /school-admin/organization-members/:id
  * @access  School Admin
  */
 const addOrganizationMember = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
-  const { organizationId } = req.params;
-  const members = req.body;
+  const { id: organization } = req.params;
 
   // Check existing active members count for this organization
   const existingMembersCount = await OrganizationMember.countDocuments({
-    organization: organizationId,
+    organization: organization,
     is_active: true,
   });
 
@@ -38,34 +34,17 @@ const addOrganizationMember = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Check if adding new members would exceed the limit
-  const totalAfterAdd = existingMembersCount + _.size(members);
-  if (totalAfterAdd > organizationMemberArrayMaxLength) {
-    return next(
-      new ErrorResponse(
-        organizationMemberLimitWillExceed(
-          _.size(members),
-          existingMembersCount,
-          organizationMemberArrayMaxLength
-        ),
-        HTTP_STATUS_CODES.STATUS_400
-      )
-    );
-  }
+  // Insert member with organization reference and audit fields
+  const organizationMemberResponse = await OrganizationMember.create({
+    ...req.body,
+    organization: organization,
+    created_by: id,
+    updated_by: id,
+  });
 
-  // Insert members with organization reference and audit fields
-  const organizationMembersResponse = await OrganizationMember.insertMany(
-    _.map(members, (member) => ({
-      ...member,
-      organization: organizationId,
-      created_by: id,
-      updated_by: id,
-    }))
-  );
-
-  if (!_.isEmpty(organizationMembersResponse)) {
+  if (organizationMemberResponse) {
     res.status(HTTP_STATUS_CODES.STATUS_201).json({
-      data: organizationMembersResponse,
+      data: organizationMemberResponse,
       message: organizationMemberDetailsPostRequestSuccess,
       status: HTTP_STATUS_CODES.STATUS_201,
     });

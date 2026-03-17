@@ -3,18 +3,18 @@ const express = require("express");
 const { schoolAdminProtect } = require("@MEMiddleware/auth");
 const {
   addOrganizationMember,
-} = require("@MEControllers/organizationMemberController/addOrganizationMemberController");
+} = require("@MEControllers/organizationMemberController");
 const {
-  validateAddOrganizationMembersPostReqBody,
+  validateAddOrganizationMemberPostReqBody,
 } = require("@MEControllerValidators/organizationMemberValidator");
 
 const router = express.Router();
 
 router
-  .route("/organization-members/:organizationId")
+  .route("/organization-members/:id")
   .post(
     schoolAdminProtect,
-    validateAddOrganizationMembersPostReqBody,
+    validateAddOrganizationMemberPostReqBody,
     addOrganizationMember
   );
 

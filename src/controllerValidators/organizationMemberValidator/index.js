@@ -1,8 +1,8 @@
 // Import validators methods from separate files
 const {
-  validateAddOrganizationMembersPostReqBody,
+  validateAddOrganizationMemberPostReqBody,
 } = require("@MEControllerValidators/organizationMemberValidator/addOrganizationMemberValidator");
 
 module.exports = {
-  validateAddOrganizationMembersPostReqBody,
+  validateAddOrganizationMemberPostReqBody,
 };
