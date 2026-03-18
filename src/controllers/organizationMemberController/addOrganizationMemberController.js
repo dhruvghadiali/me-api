@@ -45,11 +45,11 @@ const addOrganizationMember = asyncHandler(async (req, res, next) => {
   });
 
   await organizationMemberResponse.populate([
-    { path: "state", select: ["name"] },
-    { path: "district", select: ["name"] },
-    { path: "city", select: ["name"] },
-    { path: "area_name", select: ["name"] },
-    { path: "zipcode", select: ["zipcode"] },
+    { path: "state", select: "name -_id", transform: (doc) => doc?.name },
+    { path: "district", select: "name -_id", transform: (doc) => doc?.name },
+    { path: "city", select: "name -_id", transform: (doc) => doc?.name },
+    { path: "area_name", select: "name -_id", transform: (doc) => doc?.name },
+    { path: "zipcode", select: "zipcode -_id", transform: (doc) => doc?.zipcode },
   ]);
 
   if (organizationMemberResponse) {
