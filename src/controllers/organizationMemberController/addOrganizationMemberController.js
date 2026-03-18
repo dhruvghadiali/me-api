@@ -3,7 +3,9 @@ const OrganizationMember = require("@MEModels/organizationMemberModel");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const { HTTP_STATUS_CODES } = require("@ME/helpers/enums");
-const { organizationMemberArrayMaxLength } = require("@MEHelpers/validationConst");
+const {
+  organizationMemberArrayMaxLength,
+} = require("@MEHelpers/validationConst");
 const {
   organizationMemberDetailsPostRequestSuccess,
   organizationMemberDetailsPostRequestFail,
@@ -29,8 +31,8 @@ const addOrganizationMember = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         organizationMemberLimitExceeded,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 
@@ -42,6 +44,14 @@ const addOrganizationMember = asyncHandler(async (req, res, next) => {
     updated_by: id,
   });
 
+  await organizationMemberResponse.populate([
+    { path: "state", select: ["name"] },
+    { path: "district", select: ["name"] },
+    { path: "city", select: ["name"] },
+    { path: "area_name", select: ["name"] },
+    { path: "zipcode", select: ["zipcode"] },
+  ]);
+
   if (organizationMemberResponse) {
     res.status(HTTP_STATUS_CODES.STATUS_201).json({
       data: organizationMemberResponse,
@@ -52,8 +62,8 @@ const addOrganizationMember = asyncHandler(async (req, res, next) => {
     next(
       new ErrorResponse(
         organizationMemberDetailsPostRequestFail,
-        HTTP_STATUS_CODES.STATUS_400
-      )
+        HTTP_STATUS_CODES.STATUS_400,
+      ),
     );
   }
 });
