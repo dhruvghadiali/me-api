@@ -54,7 +54,7 @@ const addOrganizationMember = asyncHandler(async (req, res, next) => {
 
   if (organizationMemberResponse) {
     res.status(HTTP_STATUS_CODES.STATUS_201).json({
-      data: organizationMemberResponse,
+      data: [organizationMemberResponse],
       message: organizationMemberDetailsPostRequestSuccess,
       status: HTTP_STATUS_CODES.STATUS_201,
     });
