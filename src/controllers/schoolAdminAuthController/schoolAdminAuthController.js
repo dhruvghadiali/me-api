@@ -52,6 +52,7 @@ const populateSchoolDetails = async (user) => {
                 populate: [
                   {
                     path: "organization_member",
+                    match: { is_active: true },
                     populate: addressPopulate,
                   },
                   ...addressPopulate,
