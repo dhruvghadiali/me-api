@@ -42,37 +42,7 @@ const updateOrganizationMember = asyncHandler(async (req, res, next) => {
   }
 });
 
-/**
- * @desc    Delete organization member
- * @route   DELETE /super-admin/organization-members/:id
- * @access  Super Admin
- */
-const deleteOrganizationMember = asyncHandler(async (req, res, next) => {
-  const { id } = req.user;
-
-  // Find organization member id and update is active status to false
-  const organizationMemberInfo = await OrganizationMember.findByIdAndUpdate(
-    req.params.id,
-    { is_active: false, updated_by: id },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-
-  if (organizationMemberInfo) {
-    // Send response
-    res.status(200).json({
-      data: [],
-      message: organizationMemberDeleteRequestSuccess,
-    });
-  } else {
-    // Send error response
-    next(new ErrorResponse(organizationMemberDeleteRequestFail, 400));
-  }
-});
 
 module.exports = {
   updateOrganizationMember,
-  deleteOrganizationMember,
 };
