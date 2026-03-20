@@ -3,7 +3,7 @@ const express = require("express");
 const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
   updateOrganizationMember,
-} = require("@MEControllers/organizationMemberController/organizationMemberController");
+} = require("@MEControllers/organizationMemberController");
 const { deleteOrganizationMember } = require("@MEControllers/organizationMemberController");
 
 const router = express.Router();

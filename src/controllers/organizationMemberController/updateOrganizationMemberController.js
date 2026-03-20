@@ -3,8 +3,6 @@ const ErrorResponse = require("@MEUtils/errorResponse");
 
 const { asyncHandler } = require("@MEMiddleware/async");
 const {
-  organizationMemberDeleteRequestFail,
-  organizationMemberDeleteRequestSuccess,
   organizationMemberDetailsPutRequestFail,
   organizationMemberDetailsPutRequestSuccess,
 } = require("@MEHelpers/responseMessage");
@@ -12,6 +10,7 @@ const {
 /**
  * @desc    Update organization member details
  * @route   PUT /super-admin/organization-members/:id
+ *          PUT /school-admin/organization-members/:id
  * @access  Super Admin
  * @param   {Object} req - Express request object containing the organization member details in the body and user ID in the user object.
  * @param   {Object} res - Express response object used to send the response.
