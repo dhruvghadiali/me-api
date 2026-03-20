@@ -9,6 +9,7 @@ const regex = {
   websiteURLRegex: /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\S*)?$/,
   twitterURLRegex: /^https?:\/\/(www\.)?twitter\.com\/([A-Za-z0-9_]{1,15})$/,
   zipcode: /^[1-9][0-9]{5}$/,
+  timeRegex: /^([01]\d|2[0-3]):([0-5]\d)$/,
 };
 
 module.exports = regex;

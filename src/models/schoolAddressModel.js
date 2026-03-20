@@ -27,17 +27,92 @@ const {
   schoolNameRequired,
   districtNameInvalid,
   districtNameRequired,
+  latitudeInvalidFormate,
+  latitudeMin: latitudeMinMsg,
+  latitudeMax: latitudeMaxMsg,
+  longitudeInvalidFormate,
+  longitudeMin: longitudeMinMsg,
+  longitudeMax: longitudeMaxMsg,
+  campusAreaInvalidFormate,
+  campusAreaMin: campusAreaMinMsg,
+  campusAreaMax: campusAreaMaxMsg,
+  buildingAreaInvalidFormate,
+  buildingAreaMin: buildingAreaMinMsg,
+  buildingAreaMax: buildingAreaMaxMsg,
+  outdoorAreaInvalidFormate,
+  outdoorAreaMin: outdoorAreaMinMsg,
+  outdoorAreaMax: outdoorAreaMaxMsg,
+  schoolHoursOpenTimeInvalid,
+  schoolHoursCloseTimeInvalid,
+  administrativeHoursOpenTimeInvalid,
+  administrativeHoursCloseTimeInvalid,
 } = require("@MEHelpers/validationMessage");
 const {
   addressMaxChar,
   addressMinChar,
+  latitudeMin,
+  latitudeMax,
+  longitudeMin,
+  longitudeMax,
+  campusAreaMin,
+  campusAreaMax,
+  buildingAreaMin,
+  buildingAreaMax,
+  outdoorAreaMin,
+  outdoorAreaMax,
 } = require("@MEHelpers/validationConst");
+
+const { timeRegex } = require("@MEHelpers/regex");
 
 const { getISTDateTime } = require("@MEUtils/utility");
 
 const { Schema } = mongoose;
 
 let schoolAddressTransformMode = "default";
+
+const dayTimeSchema = new Schema(
+  {
+    open_time: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v) => timeRegex.test(v),
+        message: schoolHoursOpenTimeInvalid,
+      },
+    },
+    close_time: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v) => timeRegex.test(v),
+        message: schoolHoursCloseTimeInvalid,
+      },
+    },
+  },
+  { _id: false }
+);
+
+const adminDayTimeSchema = new Schema(
+  {
+    open_time: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v) => timeRegex.test(v),
+        message: administrativeHoursOpenTimeInvalid,
+      },
+    },
+    close_time: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v) => timeRegex.test(v),
+        message: administrativeHoursCloseTimeInvalid,
+      },
+    },
+  },
+  { _id: false }
+);
 
 const schoolAddressSchema = Schema(
   {
@@ -103,6 +178,67 @@ const schoolAddressSchema = Schema(
         validator: isActiveZipcodeExistsValidator,
         message: zipcodeInvalid,
       },
+    },
+    latitude: {
+      type: Number,
+      min: [latitudeMin, latitudeMinMsg],
+      max: [latitudeMax, latitudeMaxMsg],
+      validate: {
+        validator: (v) => typeof v === "number",
+        message: latitudeInvalidFormate,
+      },
+    },
+    longitude: {
+      type: Number,
+      min: [longitudeMin, longitudeMinMsg],
+      max: [longitudeMax, longitudeMaxMsg],
+      validate: {
+        validator: (v) => typeof v === "number",
+        message: longitudeInvalidFormate,
+      },
+    },
+    campus_area: {
+      type: Number,
+      min: [campusAreaMin, campusAreaMinMsg],
+      max: [campusAreaMax, campusAreaMaxMsg],
+      validate: {
+        validator: (v) => typeof v === "number",
+        message: campusAreaInvalidFormate,
+      },
+    },
+    building_area: {
+      type: Number,
+      min: [buildingAreaMin, buildingAreaMinMsg],
+      max: [buildingAreaMax, buildingAreaMaxMsg],
+      validate: {
+        validator: (v) => typeof v === "number",
+        message: buildingAreaInvalidFormate,
+      },
+    },
+    outdoor_area: {
+      type: Number,
+      min: [outdoorAreaMin, outdoorAreaMinMsg],
+      max: [outdoorAreaMax, outdoorAreaMaxMsg],
+      validate: {
+        validator: (v) => typeof v === "number",
+        message: outdoorAreaInvalidFormate,
+      },
+    },
+    school_hours: {
+      monday: dayTimeSchema,
+      tuesday: dayTimeSchema,
+      wednesday: dayTimeSchema,
+      thursday: dayTimeSchema,
+      friday: dayTimeSchema,
+      saturday: dayTimeSchema,
+    },
+    administrative_hours: {
+      monday: adminDayTimeSchema,
+      tuesday: adminDayTimeSchema,
+      wednesday: adminDayTimeSchema,
+      thursday: adminDayTimeSchema,
+      friday: adminDayTimeSchema,
+      saturday: adminDayTimeSchema,
     },
     is_active: {
       type: Boolean,
