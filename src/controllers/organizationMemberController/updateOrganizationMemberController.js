@@ -26,10 +26,22 @@ const updateOrganizationMember = asyncHandler(async (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   ).populate("created_by updated_by");
 
   if (organizationMemberInfo) {
+    await organizationMemberInfo.populate([
+      { path: "state", select: "name -_id", transform: (doc) => doc?.name },
+      { path: "district", select: "name -_id", transform: (doc) => doc?.name },
+      { path: "city", select: "name -_id", transform: (doc) => doc?.name },
+      { path: "area_name", select: "name -_id", transform: (doc) => doc?.name },
+      {
+        path: "zipcode",
+        select: "zipcode -_id",
+        transform: (doc) => doc?.zipcode,
+      },
+    ]);
+
     // Send response
     res.status(200).json({
       data: [organizationMemberInfo],
@@ -40,7 +52,6 @@ const updateOrganizationMember = asyncHandler(async (req, res, next) => {
     next(new ErrorResponse(organizationMemberDetailsPutRequestFail, 400));
   }
 });
-
 
 module.exports = {
   updateOrganizationMember,
