@@ -2,9 +2,11 @@ const express = require("express");
 
 const { superAdminProtect } = require("@MEMiddleware/auth");
 const {
-  updateSchoolAddress,
   changeSchoolAddressStatus,
 } = require("@MEControllers/schoolAddressController/schoolAddressController");
+const {
+  updateSchoolAddress,
+} = require("@MEControllers/schoolAddressController");
 
 const router = express.Router();
 
