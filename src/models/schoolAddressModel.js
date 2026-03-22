@@ -88,6 +88,10 @@ const dayTimeSchema = new Schema(
         message: schoolHoursCloseTimeInvalid,
       },
     },
+    closed:{
+      type: Boolean,
+      default: false
+    }
   },
   { _id: false }
 );
@@ -110,6 +114,10 @@ const adminDayTimeSchema = new Schema(
         message: administrativeHoursCloseTimeInvalid,
       },
     },
+    closed:{
+      type: Boolean,
+      default: false
+    }
   },
   { _id: false }
 );
@@ -231,6 +239,7 @@ const schoolAddressSchema = Schema(
       thursday: dayTimeSchema,
       friday: dayTimeSchema,
       saturday: dayTimeSchema,
+      sunday: dayTimeSchema,
     },
     administrative_hours: {
       monday: adminDayTimeSchema,
@@ -239,6 +248,7 @@ const schoolAddressSchema = Schema(
       thursday: adminDayTimeSchema,
       friday: adminDayTimeSchema,
       saturday: adminDayTimeSchema,
+      sunday: adminDayTimeSchema,
     },
     is_active: {
       type: Boolean,
