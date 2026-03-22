@@ -76,7 +76,7 @@ const dayTimeSchema = new Schema(
       type: String,
       trim: true,
       validate: {
-        validator: (v) => timeRegex.test(v),
+        validator: (v) => v === "" || timeRegex.test(v),
         message: schoolHoursOpenTimeInvalid,
       },
     },
@@ -84,7 +84,7 @@ const dayTimeSchema = new Schema(
       type: String,
       trim: true,
       validate: {
-        validator: (v) => timeRegex.test(v),
+        validator: (v) => v === "" || timeRegex.test(v),
         message: schoolHoursCloseTimeInvalid,
       },
     },
@@ -102,7 +102,7 @@ const adminDayTimeSchema = new Schema(
       type: String,
       trim: true,
       validate: {
-        validator: (v) => timeRegex.test(v),
+        validator: (v) => v === "" || timeRegex.test(v),
         message: administrativeHoursOpenTimeInvalid,
       },
     },
@@ -110,7 +110,7 @@ const adminDayTimeSchema = new Schema(
       type: String,
       trim: true,
       validate: {
-        validator: (v) => timeRegex.test(v),
+        validator: (v) => v === "" || timeRegex.test(v),
         message: administrativeHoursCloseTimeInvalid,
       },
     },
