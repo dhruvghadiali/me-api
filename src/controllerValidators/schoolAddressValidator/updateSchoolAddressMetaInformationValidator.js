@@ -226,6 +226,7 @@ const validationPutSchema = Joi.object({
     thursday: schoolHoursDaySchema,
     friday: schoolHoursDaySchema,
     saturday: schoolHoursDaySchema,
+    sunday: schoolHoursDaySchema,
   })
     .unknown(false)
     .messages({
@@ -239,6 +240,7 @@ const validationPutSchema = Joi.object({
     thursday: administrativeHoursDaySchema,
     friday: administrativeHoursDaySchema,
     saturday: administrativeHoursDaySchema,
+    sunday: administrativeHoursDaySchema,
   })
     .unknown(false)
     .messages({
