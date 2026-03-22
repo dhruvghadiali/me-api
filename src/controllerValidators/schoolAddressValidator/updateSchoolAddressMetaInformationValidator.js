@@ -101,6 +101,9 @@ const schoolHoursDaySchema = Joi.object({
     "string.empty": schoolHoursCloseTimeEmpty,
     "string.pattern.base": schoolHoursCloseTimeInvalid,
   }),
+  closed: Joi.boolean().messages({
+    "boolean.base": schoolHoursDayInvalidFormate,
+  }),
 })
   .unknown(false)
   .messages({
@@ -118,6 +121,9 @@ const administrativeHoursDaySchema = Joi.object({
     "string.base": administrativeHoursCloseTimeInvalidFormate,
     "string.empty": administrativeHoursCloseTimeEmpty,
     "string.pattern.base": administrativeHoursCloseTimeInvalid,
+  }),
+  closed: Joi.boolean().messages({
+    "boolean.base": administrativeHoursDayInvalidFormate,
   }),
 })
   .unknown(false)
