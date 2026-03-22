@@ -91,14 +91,12 @@ const {
 } = require("@MEHelpers/validationMessage");
 
 const schoolHoursDaySchema = Joi.object({
-  open_time: Joi.string().trim().allow("").pattern(timeRegex).messages({
+  open_time: Joi.string().allow("").trim().pattern(timeRegex).messages({
     "string.base": schoolHoursOpenTimeInvalidFormate,
-    "string.empty": schoolHoursOpenTimeEmpty,
     "string.pattern.base": schoolHoursOpenTimeInvalid,
   }),
-  close_time: Joi.string().trim().allow("").pattern(timeRegex).messages({
+  close_time: Joi.string().allow("").trim().pattern(timeRegex).messages({
     "string.base": schoolHoursCloseTimeInvalidFormate,
-    "string.empty": schoolHoursCloseTimeEmpty,
     "string.pattern.base": schoolHoursCloseTimeInvalid,
   }),
   closed: Joi.boolean().messages({
@@ -112,14 +110,12 @@ const schoolHoursDaySchema = Joi.object({
   });
 
 const administrativeHoursDaySchema = Joi.object({
-  open_time: Joi.string().trim().allow("").pattern(timeRegex).messages({
+  open_time: Joi.string().allow("").trim().pattern(timeRegex).messages({
     "string.base": administrativeHoursOpenTimeInvalidFormate,
-    "string.empty": administrativeHoursOpenTimeEmpty,
     "string.pattern.base": administrativeHoursOpenTimeInvalid,
   }),
-  close_time: Joi.string().trim().allow("").pattern(timeRegex).messages({
+  close_time: Joi.string().allow("").trim().pattern(timeRegex).messages({
     "string.base": administrativeHoursCloseTimeInvalidFormate,
-    "string.empty": administrativeHoursCloseTimeEmpty,
     "string.pattern.base": administrativeHoursCloseTimeInvalid,
   }),
   closed: Joi.boolean().messages({
