@@ -28,30 +28,14 @@ const updateSchoolAddress = asyncHandler(async (req, res, next) => {
 
   if (schoolAddressInfo) {
     await schoolAddressInfo.populate([
-      {
-        path: "state",
-        select: ["name"],
-        transform: (doc, response) => response.name,
-      },
-      {
-        path: "district",
-        select: ["name"],
-        transform: (doc, response) => response.name,
-      },
-      {
-        path: "city",
-        select: ["name"],
-        transform: (doc, response) => response.name,
-      },
-      {
-        path: "area_name",
-        select: ["name"],
-        transform: (doc, response) => response.name,
-      },
+      { path: "state", select: "name -_id", transform: (doc) => doc?.name },
+      { path: "district", select: "name -_id", transform: (doc) => doc?.name },
+      { path: "city", select: "name -_id", transform: (doc) => doc?.name },
+      { path: "area_name", select: "name -_id", transform: (doc) => doc?.name },
       {
         path: "zipcode",
-        select: ["zipcode"],
-        transform: (doc, response) => response.zipcode,
+        select: "zipcode -_id",
+        transform: (doc) => doc?.zipcode,
       },
     ]);
 
