@@ -146,12 +146,12 @@ const setSchoolInformation = (user) => {
           : "",
         latitude: schoolAddress.latitude ? schoolAddress.latitude : "",
         longitude: schoolAddress.longitude ? schoolAddress.longitude : "",
-        campus_area: school.campus_area ? school.campus_area : "",
-        building_area: school.building_area ? school.building_area : "",
-        outdoor_area: school.outdoor_area ? school.outdoor_area : "",
-        school_hours: school.school_hours ? school.school_hours : {},
-        administrative_hours: school.administrative_hours
-          ? school.administrative_hours
+        campus_area: schoolAddress.campus_area ? schoolAddress.campus_area : "",
+        building_area: schoolAddress.building_area ? schoolAddress.building_area : "",
+        outdoor_area: schoolAddress.outdoor_area ? schoolAddress.outdoor_area : "",
+        school_hours: schoolAddress.school_hours ? schoolAddress.school_hours : {},
+        administrative_hours: schoolAddress.administrative_hours
+          ? schoolAddress.administrative_hours
           : {},
       },
     };
