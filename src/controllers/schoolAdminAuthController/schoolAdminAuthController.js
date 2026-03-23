@@ -127,7 +127,9 @@ const setSchoolInformation = (user) => {
         school_type: school.school_type
           ? school.school_type?.getSchoolType()
           : "",
-        established_year: school.established_year ? school.established_year : "",
+        established_year: school.established_year
+          ? school.established_year
+          : "",
         education_boards: school.education_boards,
         about: school.about ? school.about : "",
         address: schoolAddress.address ? schoolAddress.address : "",
@@ -142,6 +144,15 @@ const setSchoolInformation = (user) => {
         zipcode: schoolAddress.zipcode
           ? schoolAddress.zipcode?.getZipcode()
           : "",
+        latitude: schoolAddress.latitude ? schoolAddress.latitude : "",
+        longitude: schoolAddress.longitude ? schoolAddress.longitude : "",
+        campus_area: school.campus_area ? school.campus_area : "",
+        building_area: school.building_area ? school.building_area : "",
+        outdoor_area: school.outdoor_area ? school.outdoor_area : "",
+        school_hours: school.school_hours ? school.school_hours : {},
+        administrative_hours: school.administrative_hours
+          ? school.administrative_hours
+          : {},
       },
     };
   } catch (error) {
@@ -305,7 +316,7 @@ const updateSchoolAdminProfile = asyncHandler(async (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   );
 
   if (userInfo) {
@@ -335,7 +346,7 @@ const changePassword = asyncHandler(async (req, res, next) => {
       user_type: "SCHOOL_ADMIN",
     },
     { password: password, is_active: true, is_account_verified: true },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (user) {
