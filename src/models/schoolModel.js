@@ -205,7 +205,6 @@ const schoolSchema = Schema(
       trim: true,
       maxlength: [schoolAboutMaxChar, schoolAboutMaxLength],
       minlength: [schoolAboutMinChar, schoolAboutMinLength],
-      default: "",
     },
     is_active: {
       type: Boolean,
