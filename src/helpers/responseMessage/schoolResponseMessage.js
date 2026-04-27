@@ -4,6 +4,7 @@ const schoolResponseMessage = {
   schoolPostRequestSuccess: "New school details added successfully",
   schoolAboutPutRequestSuccess: "School about information updated successfully",
   schoolAboutPutRequestFail: "Facing issue while updating school about information",
+  schoolIdRequired: "School id is required",
   // schoolDetailsPutRequestSuccess: "School details updated successfully",
   // schoolDetailsPutRequestFail: "Facing issue while updating school details",
   // schoolTypePutRequestSuccess: "School type details updated successfully",

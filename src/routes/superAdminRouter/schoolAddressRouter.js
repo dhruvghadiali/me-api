@@ -5,8 +5,12 @@ const {
   changeSchoolAddressStatus,
 } = require("@MEControllers/schoolAddressController/schoolAddressController");
 const {
+  addSchoolAddress,
   updateSchoolAddress,
 } = require("@MEControllers/schoolAddressController");
+const {
+  validateSchoolAddressPostReqBody,
+} = require("@MEControllerValidators/schoolAddressValidator");
 
 const router = express.Router();
 
@@ -15,5 +19,9 @@ router
   .put(superAdminProtect, updateSchoolAddress)
   .delete(superAdminProtect, changeSchoolAddressStatus)
   .patch(superAdminProtect, changeSchoolAddressStatus);
+
+router
+  .route("/school-addresses")
+  .post(superAdminProtect, validateSchoolAddressPostReqBody, addSchoolAddress);
 
 module.exports = router;
