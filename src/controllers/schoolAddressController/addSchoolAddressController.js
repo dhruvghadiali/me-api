@@ -33,7 +33,7 @@ const addSchoolAddress = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(schoolAddressDetailsRequired, 400));
   } else {
     try {
-      let userResponse = await User.create(
+      let userResponse = await User.insertMany(
         [
           {
             ...school_admin,
@@ -47,7 +47,7 @@ const addSchoolAddress = asyncHandler(async (req, res, next) => {
         { session },
       );
 
-      await SchoolAddress.create(
+      await SchoolAddress.insertMany(
         [
           {
             ...school_address,
