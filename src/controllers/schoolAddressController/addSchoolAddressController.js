@@ -34,25 +34,29 @@ const addSchoolAddress = asyncHandler(async (req, res, next) => {
   } else {
     try {
       let userResponse = await User.create(
-        {
-          ...school_admin,
-          username: school_admin.phone_number,
-          password: hashedPassword,
-          user_type: "SCHOOL_ADMIN",
-          is_active: true,
-          is_account_verified: true,
-        },
+        [
+          {
+            ...school_admin,
+            username: school_admin.phone_number,
+            password: hashedPassword,
+            user_type: "SCHOOL_ADMIN",
+            is_active: true,
+            is_account_verified: true,
+          },
+        ],
         { session },
       );
 
       await SchoolAddress.create(
-        {
-          ...school_address,
-          school: school_id,
-          user: userResponse.id,
-          created_by: id,
-          updated_by: id,
-        },
+        [
+          {
+            ...school_address,
+            school: school_id,
+            user: userResponse[0].id,
+            created_by: id,
+            updated_by: id,
+          },
+        ],
         { session },
       );
 
