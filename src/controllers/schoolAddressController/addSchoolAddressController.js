@@ -36,7 +36,7 @@ const addSchoolAddress = asyncHandler(async (req, res, next) => {
       let userResponse = await User.create(
         {
           ...school_admin,
-          username: schoolAdmin.phone_number,
+          username: school_admin.phone_number,
           password: hashedPassword,
           user_type: "SCHOOL_ADMIN",
           is_active: true,
